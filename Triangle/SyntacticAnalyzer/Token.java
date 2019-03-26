@@ -61,61 +61,65 @@ final class Token extends Object {
   public static final int
 
     // literals, identifiers, operators...
-    INTLITERAL	= 0,
-    CHARLITERAL	= 1,
-    IDENTIFIER	= 2,
-    OPERATOR	= 3,
+    INTLITERAL  = 0,
+    CHARLITERAL = 1,
+    IDENTIFIER  = 2,
+    OPERATOR    = 3,
 
     // reserved words - must be in alphabetical order...
-    ARRAY		= 4,
-    CHOOSE	= 5,
-    CONST		= 6,
-    DO			= 7,
-    ELSE		= 8,
-    END			= 9,
-    FUNC		= 10,
-    FOR     = 11,
-    FROM    = 12,
-    IF			= 13,
-    IN			= 14,
-    LET			= 15,
-    LOOP    = 16,
-    OF			= 17,
-    PAR     = 18,
-    PASS    = 19,
-    PRIVATE = 20,
-    PROC		= 21,
-    RECORD		= 22,
-    RECURSIVE = 23,
-    THEN		= 24,
-    TO      = 25,
-    TYPE		= 26,
-    VAR			= 27,
-    WHILE		= 28,
-
+    // Se cambió la numeración
+    ARRAY       = 4,
+    // Se eliminó la palabra reservada begin
+    CHOOSE  = 5,   // Se agregó palabra reservada choose
+    CONST   = 6,
+    DO      = 7,
+    ELSE    = 8,
+    END     = 9,
+    FUNC    = 10,
+    FOR     = 11,   // Se agregó palabra reservada for
+    FROM    = 12,   // Se agregó palabra reservada from
+    IF      = 13,
+    IN      = 14,
+    LET     = 15,
+    LOOP    = 16,   // Se agregó palabra reservada loop
+    OF      = 17,
+    PAR     = 18,   // Se agregó palabra reservada par
+    PASS    = 19,   // Se agregó palabra reservada pass
+    PRIVATE = 20,   // Se agregó palabra reservada private
+    PROC    = 21,
+    RECORD  = 22,
+    RECURSIVE   = 23,   // Se agregó palabra reservada recursive
+    THEN        = 24,
+    TO      = 25,   // Se agregó palabra reservada to
+    TYPE    = 26,
+    UNTIL   = 27,   // Se agregó palabra reservada until
+    VAR     = 28,
+    WHEN    = 29,   // Se agregó palabra reservada when
+    WHILE   = 30,
+  
     // punctuation...
-    DOT			    = 29,
-    COLON		    = 31,
-    SEMICOLON	  = 32,
-    COMMA		    = 33,
-    BECOMES		  = 34,
-    IS			    = 35,
-    PIPE        = 36,
-    INITIALIZE  = 37,
-    DOLLAR      = 38,
-    RANGE       = 39,
+    DOT         = 31,
+    COLON       = 32,
+    SEMICOLON   = 33,
+    COMMA       = 34,
+    BECOMES     = 35,
+    IS          = 36,
+    PIPE        = 37,   // Se agregó simbolo |
+    INITIALIZE  = 38,   // Se agregó simbolo ::=
+    DOLLAR      = 39,   // Se agregó simbolo %
+    RANGE       = 40,   // Se agregó simbolo ..
 
     // brackets...
-    LPAREN		= 41,
-    RPAREN		= 42,
-    LBRACKET	= 43,
-    RBRACKET	= 44,
-    LCURLY		= 45,
-    RCURLY		= 46,
+    LPAREN      = 41,
+    RPAREN      = 42,
+    LBRACKET    = 43,
+    RBRACKET    = 44,
+    LCURLY      = 45,
+    RCURLY      = 46,
 
     // special tokens...
-    EOT			= 47,
-    ERROR		= 48;
+    EOT         = 47,
+    ERROR       = 48;
 
   private static String[] tokenTable = new String[] {
     "<int>",
@@ -123,31 +127,31 @@ final class Token extends Object {
     "<identifier>",
     "<operator>",
     "array",
-    "choose",
+    "choose",   // Se agregó el caracter de la palabra reservada choose
     "const",
     "do",
     "else",
     "end",
     "func",
-    "for",
-    "from",
+    "for",   // Se agregó el caracter de la palabra reservada for
+    "from",   // Se agregó el caracter de la palabra reservada from
     "if",
     "in",
     "let",
-    "loop",
+    "loop",   // Se agregó el caracter de la palabra reservada loop
     "of",
-    "par",
-    "pass",
-    "private",
+    "par",   // Se agregó el caracter de la palabra reservada par
+    "pass",   // Se agregó el caracter de la palabra reservada pass
+    "private",   // Se agregó el caracter de la palabra reservada private
     "proc",
     "record",
-    "recursive",
+    "recursive",   // Se agregó el caracter de la palabra reservada recursive
     "then",
-    "to",
+    "to",   // Se agregó el caracter de la palabra reservada to
     "type",
-    "until",
+    "until",   // Se agregó el caracter de la palabra reservada until
     "var",
-    "when",
+    "when",   // Se agregó el caracter de la palabra reservada when
     "while",
     ".",
     ":",
@@ -155,10 +159,10 @@ final class Token extends Object {
     ",",
     ":=",
     "~",
-    "|",
-    "::=",
-    "$",
-    "..",
+    "|",   // Se agregó el caracter del simbolo |
+    "::=",   // Se agregó el caracter del simbolo ::=
+    "$",   // Se agregó el caracter del simbolo %
+    "..",   // Se agregó el caracter del simbolo ..
     "(",
     ")",
     "[",
@@ -169,7 +173,7 @@ final class Token extends Object {
     "<error>"
   };
 
-  private final static int	firstReservedWord = Token.ARRAY,
-  				lastReservedWord  = Token.WHILE;
+  private final static int  firstReservedWord = Token.ARRAY,
+                lastReservedWord  = Token.WHILE;
 
 }
