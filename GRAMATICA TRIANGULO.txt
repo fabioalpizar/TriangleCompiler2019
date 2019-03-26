@@ -1,0 +1,74 @@
+Command 				::= 	single-Command (";" Commnand)*
+
+single-Command 			::=		"pass"
+						|		V-name ":=" Expression
+						|		Long-Identifier ( Actual-Parameter-Sequence )
+						|		Loop-Expression
+						|		"let" Declaration "in" Commnand "end"
+						|		"if" Expression "then" Commnand "else" Commnand "end"
+						|		"choose" Expression "from" Cases "end"
+
+Loop-Expression			::= 	"loop" (For-Expression | Looper) "end" 
+
+For-Expression 			::=		"for" Identifier "from" Expression "to" Expression [ W-or-U Expression] Action
+
+Action					::= 	"do" Commnand
+
+Looper 					::= 	W-or-U "Expression" Action
+						|		Action W-or-U "Expression"
+
+W-or-U					::= 	"While" | "Until"
+
+Cases 					::= 	Case (Case)* [ ElseCase ]
+
+Case					::=		"when" Case-Literals "then" Commnand
+
+ElseCase				::= 	"else" Commnand
+
+Case-Literals			::= 	Case-Range ( "|" Case-Range)*
+
+Case-Range				::= 	Case-Literal [ ".."  Case-Literal ]
+
+Case-Literal 			::= 	Integer-Literal	
+						|		Character-Literal
+
+Declaration 			::=		compound-Declaration (";" Declaration)*
+
+compound-Declaration	::=		single-Declaration
+						| 		"recursive" Proc-Funcs "end"
+						| 		"private" Declaration "in" Declaration "end"
+						| 		"par" single-Declaration "|" single-Declaration ("|" single-Declaration)* "end"
+
+Proc-Func				::= 	"proc" Identifier "(" Formal-Parameter-Sequence ")"
+									"~" Command "end"
+						| 		"func" Identifier "(" Formal-Parameter-Sequence ")"
+									":" Type-denoter "~" Expression
+
+Proc-Funcs				::= 	Proc-Func "|" Proc-Func (Proc-Func)*
+
+single-Declaration		::= 	"const" Identifier "~" Expression
+						|		"var" Identifier ":" Type-denoter
+						|		"var" Identifier "::=" Expression
+						|		"proc" Identifier "(" Formal-Parameter-Sequence ")" 
+									"~" Commnand "end"
+						|		"func" Identifier "(" Formal-Parameter-Sequence  ")"
+									":" Type-denoter "~" Expression
+						|		"type" Identifier "~" Type-denoter
+
+Program					::=		( Package-Declaration ";" )* Commnand
+
+Package-Declaration		::= 	"package" Package-Identifier "~" Declaration "end"
+
+Package-Identifier 		::= 	Identifier
+
+Long-Identifier 		::= 	[ Package-Identifier "$" ] Identifier
+
+V-name					::= 	[ Package-Identifier "$" ] Var-Name
+
+Var-Name				::=		Identifier
+						|		Var-Name "." Identifier
+						|		Var-Name "[" Expression "]"
+
+Type-denoter			::=		Long-Identifier
+						|		"array" Integer-Literal of Type-denoter
+						|		"record" Record-Type-denoter "end"
