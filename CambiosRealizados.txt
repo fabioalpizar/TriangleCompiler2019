@@ -1,0 +1,115 @@
+﻿
+----------------------------Cambios lexicos-------------------------------------
+
+AGRUEGAR PALABRAS RESERVADAS: 
+	choose, for, from, loop, par, pass, private, recursive, to, until, when  en TOKEN.java
+
+AGRUEGAR ALTERNATIVAS: | ::= $  en TOKEN.java
+
+QUITAR begin
+
+
+
+---------------------------Cambios sintacticos-----------------------------------
+
+-Command: Se elimina recursividad izquierda
+
+	Antes:
+		Command ::= single-Command | Command ";" single-Command
+
+	Ahora:
+		Command ::= single-Command (";" Commnand)*
+
+-Single-Commmand: se factorizan las reglas
+
+	Antes:
+		single-Command 		::=		"pass"
+							|		V-name ":=" Expression
+							|		Long-Identifier ( Actual-Parameter-Sequence )
+							|		"loop" "while" Expression "do" Commnand "end"
+							|		"loop" "until" Expression "do" Commnand "end"
+							|		"loop" "do" Commnand "while" Expression "end"
+							|		"loop" "do" Commnand "until" Expression "end"
+							|		"loop" "for" Identifier "from" Expression "to" Expression 
+										"do" Commnand "end"
+							|		"loop" "for" Identifier "from" Expression "to" Expression
+										"while" Expression "do" Commnand "end"
+							|		"loop for" Identifier "from" Expression "to" Expression
+										"until" Expression "do" Commnand "end"
+							|		"let" Declaration "in" Commnand "end"
+							|		"if" Expression "then" Commnand "else" Commnand "end"
+							|		"choose" Expression "from" Cases "end"
+
+	Después:
+
+		single-Command 		::=		"pass"
+							|		V-name ":=" Expression
+							|		Long-Identifier ( Actual-Parameter-Sequence )
+							|		Loop-Expression
+							|		"let" Declaration "in" Commnand "end"
+							|		"if" Expression "then" Commnand "else" Commnand "end"
+							|		"choose" Expression "from" Cases "end"
+
+		Loop-Expression		::= 	"loop" (For-Expression | Looper) "end" 
+
+		For-Expression 		::=		"for" Identifier "from" Expression "to" Expression [ W-or-U Expression] Action
+
+		Action				::= 	"do" Commnand
+
+		Looper 				::= 	W-or-U "Expression" Action
+							|		Action W-or-U "Expression"
+
+		W-or-U				::= 	"While" | "Until"
+
+-Declaration: Se elimina recursividad izquierda
+
+	Antes:
+		Declaration 	::= 	compound-Declaration
+						|		Declaration ";" compound-Declaration
+
+	Despues:
+		Declaration 	::=		compound-Declaration (";" Declaration)*		
+
+-Func-Procs: Se asume las 2 funciones
+	Antes:
+		Proc-Funcs		::= 	Proc-Func ("|" Proc-Func)+
+
+	Despues:
+		Proc-Funcs		::= 	Proc-Func "|" Proc-Func (Proc-Func)*
+
+-single-Declaration: se factorizan reglas
+	Antes:
+		single-Declaration		::= 	"const" Identifier "~" Expression
+								|		"var" Identifier ":" Type-denoter
+								|		"var" Identifier "::=" Expression
+								|		"proc" Identifier "(" Formal-Parameter-Sequence ")" 
+											"~" Commnand "end"
+								|		"func" Identifier "(" Formal-Parameter-Sequence  ")"
+											":" Type-denoter "~" Expression
+								|		"type" Identifier "~" Type-denoter
+
+	Despues:
+		single-Declaration		::= 	"const" Identifier "~" Expression
+								|		"var" Identifier (":" Type-denoter | "::=" Expression)
+								|		"proc" Identifier "(" Formal-Parameter-Sequence ")" 
+											"~" Commnand "end"
+								|		"func" Identifier "(" Formal-Parameter-Sequence  ")"
+											":" Type-denoter "~" Expression
+								|		"type" Identifier "~" Type-denoter
+
+-
+
+-Reglas agruegadas:
+
+	Loop-Expression			::= 	"loop" (For-Expression | Looper) "end" 
+
+	For-Expression 			::=		"for" Identifier "from" Expression "to" Expression [ W-or-U Expression] Action
+
+	Action					::= 	"do" Commnand
+
+	Looper 					::= 	W-or-U "Expression" Action
+							|		Action W-or-U "Expression"
+
+	W-or-U					::= 	"While" | "Until"
+
+
