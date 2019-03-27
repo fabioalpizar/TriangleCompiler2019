@@ -18,7 +18,7 @@ QUITAR begin
 		Command ::= single-Command | Command ";" single-Command
 
 	Ahora:
-		Command ::= single-Command (";" Commnand)*
+		Command ::= single-Command (";" single-Commnand)*
 
 -Single-Commmand: se factorizan las reglas
 
