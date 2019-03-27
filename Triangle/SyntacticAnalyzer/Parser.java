@@ -822,10 +822,23 @@ public class Parser {
 
     case Token.VAR:
       {
-        acceptIt();
-        Identifier iAST = parseIdentifier();
-        accept(Token.COLON);
-        TypeDenoter tAST = parseTypeDenoter();
+        acceptIt(); //"var"
+        Identifier iAST = parseIdentifier(); //Identifier
+        switch(currentToken.kind){
+          case Token.COLON:
+          {
+            acceptIt();
+            TypeDenoter tAST = parseTypeDenoter();
+
+          }
+          break;
+          case Token.INITIALIZE:
+          {
+            acceptIt();
+            Expression tAST = parseExpression();
+          }
+          break;
+        }
         finish(declarationPos);
         declarationAST = new VarDeclaration(iAST, tAST, declarationPos);
       }
