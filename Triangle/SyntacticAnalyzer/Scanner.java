@@ -151,6 +151,24 @@ public final class Scanner {
     case '~':
       takeIt();
       return Token.IS;
+		    
+    // Se agrego el case de pipe, initialize, dollar y range.
+      
+    case '|':
+      takeIt();
+      return Token.PIPE;
+
+    case '::=':
+      takeIt();
+      return Token.INITIALIZE;
+
+    case '$':
+      takeIt();
+      return Token.DOLLAR; 
+
+    case '..':
+      takeIt();
+      return Token.RANGE; 
 
     case '(':
       takeIt();
