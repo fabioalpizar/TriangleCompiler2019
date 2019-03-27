@@ -106,7 +106,7 @@ final class Token extends Object {
     IS          = 36,
     PIPE        = 37,   // Se agregó simbolo |
     INITIALIZE  = 38,   // Se agregó simbolo ::=
-    DOLLAR      = 39,   // Se agregó simbolo %
+    DOLLAR      = 39,   // Se agregó simbolo $
     RANGE       = 40,   // Se agregó simbolo ..
 
     // brackets...
@@ -161,7 +161,7 @@ final class Token extends Object {
     "~",
     "|",   // Se agregó el caracter del simbolo |
     "::=",   // Se agregó el caracter del simbolo ::=
-    "$",   // Se agregó el caracter del simbolo %
+    "$",   // Se agregó el caracter del simbolo $
     "..",   // Se agregó el caracter del simbolo ..
     "(",
     ")",
