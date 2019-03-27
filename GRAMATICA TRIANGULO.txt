@@ -44,7 +44,7 @@ Proc-Func				::= 	"proc" Identifier "(" Formal-Parameter-Sequence ")"
 						| 		"func" Identifier "(" Formal-Parameter-Sequence ")"
 									":" Type-denoter "~" Expression
 
-Proc-Funcs				::= 	Proc-Func "|" Proc-Func (Proc-Func)*
+Proc-Funcs				::= 	Proc-Func ("|" Proc-Func)+
 
 single-Declaration		::= 	"const" Identifier "~" Expression
 						|		"var" Identifier ":" Type-denoter
