@@ -658,14 +658,146 @@ public class Parser {
 
     SourcePosition declarationPos = new SourcePosition();
     start(declarationPos);
-    declarationAST = parseSingleDeclaration();
+    declarationAST = parseCompoundDeclaration();       // Se cambio de Single-Declaration a Compound-Declaration
     while (currentToken.kind == Token.SEMICOLON) {
       acceptIt();
-      Declaration d2AST = parseSingleDeclaration();
+      Declaration d2AST = parseDeclaration();         // Se cambio a Declaration
       finish(declarationPos);
-      declarationAST = new SequentialDeclaration(declarationAST, d2AST,
-        declarationPos);
+      declarationAST = new SequentialDeclaration(declarationAST, d2AST, declarationPos);
     }
+    return declarationAST;
+  }
+
+  // Se creó el metodo basado en la regla compound-Declaration
+  Declaration parseCompoundDeclaration() throws SyntaxError {
+    Declaration declarationAST = null; // in case there's a syntactic error
+
+    SourcePosition declarationPos = new SourcePosition();
+    start(declarationPos);
+
+    switch (currentToken.kind) {
+
+    case Token.RECURSIVE:
+      {
+        acceptIt();
+        switch (currentToken.kind) {
+
+          case Token.PROC:
+            {
+              acceptIt();
+              Identifier iAST = parseIdentifier();
+              accept(Token.LPAREN);
+              FormalParameterSequence fpsAST = parseFormalParameterSequence();
+              accept(Token.RPAREN);
+              accept(Token.IS);
+              Command cAST = parseSingleCommand();
+              accept(Token.END);
+              finish(declarationPos);
+              declarationAST = new ProcDeclaration(iAST, fpsAST, cAST, declarationPos);
+            }
+            break;
+
+          case Token.FUNC:
+            {
+              acceptIt();
+              Identifier iAST = parseIdentifier();
+              accept(Token.LPAREN);
+              FormalParameterSequence fpsAST = parseFormalParameterSequence();
+              accept(Token.RPAREN);
+              accept(Token.COLON);
+              TypeDenoter tAST = parseTypeDenoter();
+              accept(Token.IS);
+              Expression eAST = parseExpression();
+              finish(declarationPos);
+              declarationAST = new FuncDeclaration(iAST, fpsAST, tAST, eAST,
+                declarationPos);
+            }
+            break;
+
+          default:
+            syntacticError("\"%\" cannot start a declaration",
+              currentToken.spelling);
+            break;
+        }
+
+        while(currentToken.kind == Token.PIPE) {
+          acceptIt();
+          switch (currentToken.kind) {
+
+            case Token.PROC:
+              {
+                acceptIt();
+                Identifier iAST = parseIdentifier();
+                accept(Token.LPAREN);
+                FormalParameterSequence fpsAST = parseFormalParameterSequence();
+                accept(Token.RPAREN);
+                accept(Token.IS);
+                Command cAST = parseSingleCommand();
+                accept(Token.END);
+                finish(declarationPos);
+                declarationAST = new ProcDeclaration(iAST, fpsAST, cAST, declarationPos);
+              }
+              break;
+
+            case Token.FUNC:
+              {
+                acceptIt();
+                Identifier iAST = parseIdentifier();
+                accept(Token.LPAREN);
+                FormalParameterSequence fpsAST = parseFormalParameterSequence();
+                accept(Token.RPAREN);
+                accept(Token.COLON);
+                TypeDenoter tAST = parseTypeDenoter();
+                accept(Token.IS);
+                Expression eAST = parseExpression();
+                finish(declarationPos);
+                declarationAST = new FuncDeclaration(iAST, fpsAST, tAST, eAST,
+                  declarationPos);
+              }
+              break;
+
+            default:
+              syntacticError("\"%\" cannot start a declaration",
+                currentToken.spelling);
+              break;
+          }
+        }
+      }
+      break;
+
+    case Token.PRIVATE:
+      {
+        acceptIt();
+        Declaration d1AST = parseDeclaration();
+        Declaration d2AST = parseDeclaration();
+        finish(declarationPos);
+        declarationAST = new PrivateDeclaration(d1AST, d2AST, declarationPos);
+      }
+      break;
+
+    case Token.PAR:
+      {
+        acceptIt();
+        Declaration d1AST = parseSingleDeclaration();
+        accept(Token.PIPE);
+        Declaration d2AST = parseSingleDeclaration();
+        declarationAST = new SequentialDeclaration(d1AST, d2AST, declarationPos);
+        while (currentToken.kind == Token.PIPE) {
+          acceptIt();
+          Declaration d3AST = parseDeclaration();
+          finish(declarationPos);
+          declarationAST = new SequentialDeclaration(declarationAST, d3AST, declarationPos);
+        }
+        accept(Token.END);
+      }
+      break;
+
+    default:
+      declarationAST = parseSingleDeclaration();
+      break;
+
+    }
+
     return declarationAST;
   }
 
@@ -708,6 +840,7 @@ public class Parser {
         accept(Token.RPAREN);
         accept(Token.IS);
         Command cAST = parseSingleCommand();
+        accept(Token.END);      // Se agregó el token end al final de la declaracion
         finish(declarationPos);
         declarationAST = new ProcDeclaration(iAST, fpsAST, cAST, declarationPos);
       }
