@@ -372,7 +372,7 @@ public class Parser {
         acceptIt();
         Declaration dAST = parseDeclaration();
         accept(Token.IN);
-        Command cAST = parseSingleCommand();
+        Command cAST = parseCommand();      // Se cambio de parseSingleCommand a parseCommand
         finish(commandPos);
         commandAST = new LetCommand(dAST, cAST, commandPos);
       }
@@ -383,30 +383,15 @@ public class Parser {
         acceptIt();
         Expression eAST = parseExpression();
         accept(Token.THEN);
-        Command c1AST = parseSingleCommand();
+        Command c1AST = parseCommand();      // Se cambio de parseSingleCommand a parseCommand
         accept(Token.ELSE);
-        Command c2AST = parseSingleCommand();
+        Command c2AST = parseCommand();      // Se cambio de parseSingleCommand a parseCommand
         finish(commandPos);
         commandAST = new IfCommand(eAST, c1AST, c2AST, commandPos);
       }
       break;
 
-    case Token.WHILE:
-      {
-        acceptIt();
-        Expression eAST = parseExpression();
-        accept(Token.DO);
-        Command cAST = parseSingleCommand();
-        finish(commandPos);
-        commandAST = new WhileCommand(eAST, cAST, commandPos);
-      }
-      break;
-
-    case Token.SEMICOLON:
-    case Token.END:
-    case Token.ELSE:
-    case Token.IN:
-    case Token.EOT:
+    case Token.PASS:      // Se agrega pass y se quitan los otros caracteres
 
       finish(commandPos);
       commandAST = new EmptyCommand(commandPos);
