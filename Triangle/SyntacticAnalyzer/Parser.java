@@ -304,7 +304,7 @@ public class Parser {
           Expression e1AST = parseExpression();
           accept(Token.TO);
           Expression e2AST = parseExpression();
-          /**/
+
           if (currentToken.kind == Token.WHILE) {
             acceptIt();
             Expression e3AST = parseExpression();
@@ -336,7 +336,7 @@ public class Parser {
           accept(Token.DO);
           Command cAST = parseCommand();
           finish(commandPos);
-          commandAST = new WhileCommand(eAST, cAST commandPos);
+          commandAST = new WhileCommand(eAST, cAST, commandPos);
           break;
         }
         if (currentToken.kind == Token.UNTIL) {
@@ -367,7 +367,7 @@ public class Parser {
       }
       break;
 
-    case Token.LET:
+    case Token.LET: // Cambiar LET, afecta la tabla de identificación
       {
         acceptIt();
         Declaration dAST = parseDeclaration();
@@ -378,14 +378,14 @@ public class Parser {
       }
       break;
 
-    case Token.IF:
+    case Token.IF: // FALTA CAMBIAR EL IF
       {
         acceptIt();
         Expression eAST = parseExpression();
         accept(Token.THEN);
-        Command c1AST = parseSingleCommand();
+        Command c1AST = parseCommand();
         accept(Token.ELSE);
-        Command c2AST = parseSingleCommand();
+        Command c2AST = parseCommand();
         finish(commandPos);
         commandAST = new IfCommand(eAST, c1AST, c2AST, commandPos);
       }
@@ -402,6 +402,9 @@ public class Parser {
       }
       break;
 
+    /*AGREGAR CHOOSE*/
+
+      /*Borrar*/
     case Token.SEMICOLON:
     case Token.END:
     case Token.ELSE:
@@ -421,6 +424,18 @@ public class Parser {
 
     return commandAST;
   }
+
+/*
+  // Se agregó 
+  
+  LoopCommand loopCommandParser(){
+    LoopCommand = null;
+
+    SourcePosition loopCommandPos = new SourcePosition();
+    start(loopCommandPos);
+
+  }
+*/
 
 ///////////////////////////////////////////////////////////////////////////////
 //
