@@ -1,18 +1,18 @@
-Command 				::= 	single-Command (";" single-Commnand)*
+Command 				::= 	single-Command (";" single-Command)*
 
 single-Command 			::=		"pass"
 						|		V-name ":=" Expression
 						|		Long-Identifier ( Actual-Parameter-Sequence )
-						|		Loop-Expression
-						|		"let" Declaration "in" Commnand "end"
-						|		"if" Expression "then" Commnand "else" Commnand "end"
+						|		Loop-Command
+						|		"let" Declaration "in" Command "end"
+						|		"if" Expression "then" Command "else" Command "end"
 						|		"choose" Expression "from" Cases "end"
 
-Loop-Expression			::= 	"loop" (For-Expression | Looper) "end" 
+Loop- Command			::= 	"loop" (For-Command | Looper) "end" 
 
-For-Expression 			::=		"for" Identifier "from" Expression "to" Expression [ W-or-U Expression] Action
+For-Command			::=		"for" Identifier "from" Expression "to" Expression [ W-or-U Expression] Action
 
-Action					::= 	"do" Commnand
+Action					::= 	"do" Command
 
 Looper 					::= 	W-or-U "Expression" Action
 						|		Action W-or-U "Expression"
@@ -21,9 +21,9 @@ W-or-U					::= 	"While" | "Until"
 
 Cases 					::= 	Case (Case)* [ ElseCase ]
 
-Case					::=		"when" Case-Literals "then" Commnand
+Case					::=		"when" Case-Literals "then" Command
 
-ElseCase				::= 	"else" Commnand
+ElseCase				::= 	"else" Command
 
 Case-Literals			::= 	Case-Range ( "|" Case-Range)*
 
@@ -32,7 +32,7 @@ Case-Range				::= 	Case-Literal [ ".."  Case-Literal ]
 Case-Literal 			::= 	Integer-Literal	
 						|		Character-Literal
 
-Declaration 			::=		compound-Declaration (";" Declaration)*
+Declaration 			::=		compound-Declaration (";"  compound-Declaration)*
 
 compound-Declaration	::=		single-Declaration
 						| 		"recursive" Proc-Funcs "end"
@@ -44,18 +44,18 @@ Proc-Func				::= 	"proc" Identifier "(" Formal-Parameter-Sequence ")"
 						| 		"func" Identifier "(" Formal-Parameter-Sequence ")"
 									":" Type-denoter "~" Expression
 
-Proc-Funcs				::= 	Proc-Func ("|" Proc-Func)+
+Proc-Funcs				::= 	Proc-Func "|" Proc-Func ("|" Proc-Func)*
 
 single-Declaration		::= 	"const" Identifier "~" Expression
 						|		"var" Identifier ":" Type-denoter
 						|		"var" Identifier "::=" Expression
 						|		"proc" Identifier "(" Formal-Parameter-Sequence ")" 
-									"~" Commnand "end"
+									"~" Command "end"
 						|		"func" Identifier "(" Formal-Parameter-Sequence  ")"
 									":" Type-denoter "~" Expression
 						|		"type" Identifier "~" Type-denoter
 
-Program					::=		( Package-Declaration ";" )* Commnand
+Program					::=		( Package-Declaration ";" )* Command
 
 Package-Declaration		::= 	"package" Package-Identifier "~" Declaration "end"
 

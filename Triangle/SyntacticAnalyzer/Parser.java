@@ -402,6 +402,16 @@ public class Parser {
       }
       break;
 
+    case Token.CHOOSE: // Se agrega choose 
+      {
+        acceptIt();
+        Expression eAST = parseExpression();
+        accept(Token.FROM);
+        Cases cAST = parseCases(); //Agregar parse
+        finish(commandPos);
+        commandAST = new ChooseCommand(eAST, cAST, commandPos);
+      }
+
     /*AGREGAR CHOOSE*/
     case Token.PASS:      // Se agrega pass y se quitan los otros caracteres
 
@@ -430,6 +440,54 @@ public class Parser {
 
   }
 */
+///////////////////////////////////////////////////////////////////////////////
+//
+// Cases
+//
+///////////////////////////////////////////////////////////////////////////////
+
+  Cases parseCases() throws SyntaxError{ //Se agrega parse
+    Cases casesExpressionAST = null;
+
+    SourcePosition casesExpressionPos = new SourcePosition();
+    start(casesExpressionPos);
+    Case aAST = parseCaseExpression(); //falta
+    Case bAST;
+    while(currentToken.kind == Token.WHEN){
+      bAST = parseCaseExpression(); //falta clase
+      finish(casesExpressionPos);
+      casesExpressionAST = new SequentialCase(aAST, bAST, casesExpressionPos);
+    }
+    switch(currentToken.kind){
+      case Token.ELSE:
+      {
+        acceptIt()
+        bAST = parseCommand();
+        finish(casesExpressionPos);
+        casesExpressionAST = new ElseCase(aAST,bAST, casesExpressionPos);
+      }
+    }
+    return casesExpressionAST;
+
+  }
+
+
+/*   FALTA CORREGIR ESTRUCTURA O ELIMINARLA   */
+  Case parseCase() throws SyntaxError{
+    Case caseAST = null;
+    SourcePosition casePos = new SourcePosition();
+    start(casePos);
+    acceptIt();
+    CaseLiterals aAST = parseCaseLiterals(); //agregar caseliterals
+    accept(Token.THEN);
+    Command bAST = parseCommand();
+    finish(casePos);
+    caseAST = new Case(aAST, bAST, casePos);
+    return caseAST;
+  }
+
+
+
 
 ///////////////////////////////////////////////////////////////////////////////
 //
@@ -578,6 +636,7 @@ public class Parser {
     }
     return expressionAST;
   }
+
 
   RecordAggregate parseRecordAggregate() throws SyntaxError {
     RecordAggregate aggregateAST = null; // in case there's a syntactic error

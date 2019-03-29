@@ -1,10 +1,13 @@
-﻿
+﻿¨ForDcl ::=  Identifier "from" Expression
+--For arbol Ternario
+
+
 ----------------------------Cambios lexicos-------------------------------------
 
 AGRUEGAR PALABRAS RESERVADAS: 
-	choose, for, from, loop, par, pass, private, recursive, to, until, when  en TOKEN.java
+	choose, for, from, loop, par, pass, private, recursive, to, until, when  en TOKEN
 
-AGRUEGAR ALTERNATIVAS: | ::= $  en TOKEN.java
+ALTERNATIVAS: | ::= $
 
 QUITAR begin
 
@@ -19,6 +22,8 @@ QUITAR begin
 
 	Ahora:
 		Command ::= single-Command (";" single-Commnand)*
+
+
 
 -Single-Commmand: se factorizan las reglas
 
@@ -50,9 +55,9 @@ QUITAR begin
 							|		"if" Expression "then" Commnand "else" Commnand "end"
 							|		"choose" Expression "from" Cases "end"
 
-		Loop-Expression		::= 	"loop" (For-Expression | Looper) "end" 
+		Loop-Command		::= 	"loop" (For-Command | Looper) "end" 
 
-		For-Expression 		::=		"for" Identifier "from" Expression "to" Expression [ W-or-U Expression] Action
+		For-Command 		::=		"for" Identifier "from" Expression "to" Expression [ W-or-U Expression] Action
 
 		Action				::= 	"do" Commnand
 
@@ -69,6 +74,13 @@ QUITAR begin
 
 	Despues:
 		Declaration 	::=		compound-Declaration (";" Declaration)*		
+
+-Func-Procs: Se asume las 2 funciones
+	Antes:
+		Proc-Funcs		::= 	Proc-Func ("|" Proc-Func)+
+
+	Despues:
+		Proc-Funcs		::= 	Proc-Func "|" Proc-Func (Proc-Func)*
 
 -single-Declaration: se factorizan reglas
 	Antes:
@@ -94,9 +106,9 @@ QUITAR begin
 
 -Reglas agruegadas:
 
-	Loop-Expression			::= 	"loop" (For-Expression | Looper) "end" 
+	Loop-Command			::= 	"loop" (For-Command | Looper) "end" 
 
-	For-Expression 			::=		"for" Identifier "from" Expression "to" Expression [ W-or-U Expression] Action
+	For-Command 			::=		"for" Identifier "from" Expression "to" Expression [ W-or-U Expression] Action
 
 	Action					::= 	"do" Commnand
 
@@ -105,14 +117,21 @@ QUITAR begin
 
 	W-or-U					::= 	"While" | "Until"
 
-	compound-Declaration	::=		single-Declaration
-							| 		"recursive" Proc-Funcs "end"
-							| 		"private" Declaration "in" Declaration "end"
-							| 		"par" single-Declaration ("|" single-Declaration)+ "end"
 
-	Proc-Func				::= 	"proc" Identifier "(" Formal-Parameter-Sequence ")"
-										"~" Command "end"
-							| 		"func" Identifier "(" Formal-Parameter-Sequence ")"
-										":" Type-denoter "~" Expression
+	Cases 					::= 	Case (Case)* [ ElseCase ]
 
-	Proc-Funcs				::= 	Proc-Func ("|" Proc-Func)+
+	Case 					::= 	"when" Case-Literals "then" Command
+
+	ElseCase 				::= 	"else" Command
+
+	Case-Literals 			::= 	Case-Range ( "|" Case-Range)*
+
+	Case-Range 				::= 	Case-Literal [ ".." Case-Literal ]
+
+	Case-Literal 			::= 	Integer-Literal	
+							| 		Character-Literal
+	
+	
+
+
+
