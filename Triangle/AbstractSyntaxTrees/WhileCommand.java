@@ -1,3 +1,4 @@
+//Nueva Clase While Command
 package Triangle.AbstractSyntaxTrees;
 
 import Triangle.SyntacticAnalyzer.SourcePosition;
