@@ -516,7 +516,7 @@ public class Parser {
       acceptIt();
       CaseLiteral bAST = parseCaseLiteral();
       finish(caseRangePos);
-      caseRangeAST = new LimitedRange(aAST, bAST, caseRangePos); //Se agrega nueva clase
+      caseRangeAST = new DualRange(aAST, bAST, caseRangePos); //Se agrega nueva clase
     }else{
       finish(caseRangePos);
       caseRangeAST = new SingleRange(aAST, caseRangePos); // Se agrega nueva clase
