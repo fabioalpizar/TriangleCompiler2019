@@ -297,73 +297,47 @@ public class Parser {
     case Token.LOOP:
       {
         acceptIt();
-        if (currentToken.kind == Token.FOR) {
-          acceptIt();
-          Identifier iAST = parseIdentifier();
-          accept(Token.FROM);
-          Expression e1AST = parseExpression();
-          accept(Token.TO);
-          Expression e2AST = parseExpression();
+          switch (currentToken.kind) {
+            case Token.WHILE:
+              {
+                acceptIt();
+                Expression eAST = parseExpression();
+                accept(Token.DO);
+                Command cAST = parseCommand();
+                accept(Token.END);
+                finish(commandPos);
+                commandAST = new DoWhileCommand(cAST, eAST, commandPos);
+              }
+              break;
 
-          if (currentToken.kind == Token.WHILE) {
-            acceptIt();
-            Expression e3AST = parseExpression();
-            accept(Token.DO);
-            Command cAST = parseCommand();
-            finish(commandPos);
-            commandAST = new ForWhileCommand(iAST, e1AST, e2AST, e3AST, cAST, commandPos);
-            break;
+            case Token.UNTIL:
+              {
+                acceptIt();
+                Expression eAST = parseExpression();
+                accept(Token.DO);
+                Command cAST = parseCommand();
+                accept(Token.END);
+                finish(commandPos);
+                commandAST = new DoUntilCommand(cAST, eAST, commandPos);
+              }
+              break;
+
+            case Token.DO:
+              {
+                commandAST = ParseDoCommand();
+              }
+              break;
+
+            case Token.FOR:
+              {
+                commandAST = ParseForCommand();
+              }
+              break;
+
+            default:
+              syntacticError("\"%\" cannot start a command", currentToken.spelling);
+              break;
           }
-          if (currentToken.kind == Token.UNTIL) {
-            acceptIt();
-            Expression e3AST = parseExpression();
-            accept(Token.DO);
-            Command cAST = parseCommand();
-            finish(commandPos);
-            commandAST = new ForUntilCommand(iAST, e1AST, e2AST, e3AST, cAST, commandPos);
-            break;
-          }
-          /**/
-          accept(Token.DO);
-          Command cAST = parseCommand();
-          finish(commandPos);
-          commandAST = new ForCommand(iAST, e1AST, e2AST, cAST, commandPos);
-          break;
-        }
-        if (currentToken.kind == Token.WHILE) {
-          acceptIt();
-          Expression eAST = parseExpression();
-          accept(Token.DO);
-          Command cAST = parseCommand();
-          finish(commandPos);
-          commandAST = new WhileCommand(eAST, cAST, commandPos);
-          break;
-        }
-        if (currentToken.kind == Token.UNTIL) {
-          acceptIt();
-          Expression eAST = parseExpression();
-          accept(Token.DO);
-          Command cAST = parseCommand();
-          finish(commandPos);
-          commandAST = new UntilCommand(eAST, cAST, commandPos);
-          break;
-        }
-        if (currentToken.kind == Token.DO) {
-          acceptIt();
-          Command cAST = parseCommand();
-          if (currentToken.kind == Token.WHILE) {
-            acceptIt();
-            Expression eAST = parseExpression();
-            commandAST = new DoWhileCommand(cAST, eAST, commandPos);
-            break;
-          }
-          if (currentToken.kind == Token.UNTIL) {
-            acceptIt();
-            Expression eAST = parseExpression();
-            commandAST = new DoUntilCommand(cAST, eAST, commandPos);
-            break;
-          }
-        }
       }
       break;
 
@@ -429,17 +403,101 @@ public class Parser {
     return commandAST;
   }
 
-/*
+
   // Se agregó 
-  
-  LoopCommand loopCommandParser(){
-    LoopCommand = null;
+  /* FOR */
+  Command ParseForCommand() throws SyntaxError {
+    Command commandAST = null; // in case there's a syntactic error
 
-    SourcePosition loopCommandPos = new SourcePosition();
-    start(loopCommandPos);
+    SourcePosition commandPos = new SourcePosition();
+    start(commandPos);
 
+    accept(Token.FOR);
+    Identifier iAST = parseIdentifier();
+    accept(Token.FROM);
+    Expression e1AST = parseExpression();
+    accept(Token.TO);
+    Expression e2AST = parseExpression();
+    switch (currentToken.kind) {
+      case Token.WHILE:
+        {
+          accept(Token.WHILE);
+          Expression e3AST = parseExpression();
+          accept(Token.DO);
+          Command cAST = parseCommand();
+          finish(commandPos);
+          commandAST = new ForWhileCommand(iAST, e1AST, e2AST, e3AST, cAST, commandPos);
+        }
+        break;
+
+      case Token.UNTIL:
+        {
+          accept(Token.UNTIL);
+          Expression e3AST = parseExpression();
+          accept(Token.DO);
+          Command cAST = parseCommand();
+          finish(commandPos);
+          commandAST = new ForUntilCommand(iAST, e1AST, e2AST, e3AST, cAST, commandPos);
+        }
+        break;
+
+      case Token.DO:
+        {
+          accept(Token.DO);
+          Command cAST = parseCommand();
+          finish(commandPos);
+          commandAST = new ForCommand(iAST, e1AST, e2AST, cAST, commandPos);
+        }
+        break;
+
+      default:
+        syntacticError("\"%\" cannot start a command", currentToken.spelling);
+        break;
+    }
+
+    return commandAST;
   }
-*/
+
+  // Se agregó 
+  /* DO */
+  Command ParseDoCommand() throws SyntaxError {
+    Command commandAST = null; // in case there's a syntactic error
+
+    SourcePosition commandPos = new SourcePosition();
+    start(commandPos);
+
+    accept(Token.DO);
+    Command cAST = parseCommand();
+
+    switch (currentToken.kind) {
+      case Token.WHILE:
+        {
+          acceptIt();
+          Expression eAST = parseExpression();
+          accept(Token.END);
+          finish(commandPos);
+          commandAST = new DoWhileCommand(cAST, eAST, commandPos);
+        }
+        break;
+
+      case Token.UNTIL:
+        {
+          acceptIt();
+          Expression eAST = parseExpression();
+          accept(Token.END);
+          finish(commandPos);
+          commandAST = new DoUntilCommand(cAST, eAST, commandPos);
+        }
+        break;
+
+      default:
+        syntacticError("\"%\" cannot start a command", currentToken.spelling);
+        break;
+    }
+
+    return commandAST;
+  }
+
 ///////////////////////////////////////////////////////////////////////////////
 //
 // Cases
