@@ -365,17 +365,6 @@ public class Parser {
       }
       break;
 
-    case Token.WHILE:
-      {
-        acceptIt();
-        Expression eAST = parseExpression();
-        accept(Token.DO);
-        Command cAST = parseSingleCommand();
-        finish(commandPos);
-        commandAST = new WhileCommand(eAST, cAST, commandPos);
-      }
-      break;
-
     case Token.CHOOSE: // Se agrega choose 
       {
         acceptIt();
