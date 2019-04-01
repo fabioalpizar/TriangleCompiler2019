@@ -392,6 +392,7 @@ public class Parser {
     Identifier iAST = parseIdentifier();
     accept(Token.FROM);
     Expression e1AST = parseExpression();
+    Declaration dAST = new ForDeclaration(iAST, eAST, commandPos);
     accept(Token.TO);
     Expression e2AST = parseExpression();
     switch (currentToken.kind) {
@@ -402,7 +403,7 @@ public class Parser {
           accept(Token.DO);
           Command cAST = parseCommand();
           finish(commandPos);
-          commandAST = new ForWhileCommand(iAST, e1AST, e2AST, e3AST, cAST, commandPos);
+          commandAST = new ForWhileCommand(dAST, e2AST, e3AST, cAST, commandPos);
         }
         break;
 
@@ -413,7 +414,7 @@ public class Parser {
           accept(Token.DO);
           Command cAST = parseCommand();
           finish(commandPos);
-          commandAST = new ForUntilCommand(iAST, e1AST, e2AST, e3AST, cAST, commandPos);
+          commandAST = new ForUntilCommand(dAST, e2AST, e3AST, cAST, commandPos);
         }
         break;
 
@@ -422,7 +423,7 @@ public class Parser {
           accept(Token.DO);
           Command cAST = parseCommand();
           finish(commandPos);
-          commandAST = new ForCommand(iAST, e1AST, e2AST, cAST, commandPos);
+          commandAST = new ForCommand(dAST, e2AST, cAST, commandPos);
         }
         break;
 
