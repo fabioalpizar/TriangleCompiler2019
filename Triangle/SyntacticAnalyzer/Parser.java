@@ -272,121 +272,108 @@ public class Parser {
     start(commandPos);
 
     switch (currentToken.kind) {
-
-    case Token.IDENTIFIER:
-      {
-        Identifier iAST = parseIdentifier();
-        if (currentToken.kind == Token.LPAREN) {
-          acceptIt();
-          ActualParameterSequence apsAST = parseActualParameterSequence();
-          accept(Token.RPAREN);
-          finish(commandPos);
-          commandAST = new CallCommand(iAST, apsAST, commandPos);
-
-        } else {
-
-          Vname vAST = parseRestOfVname(iAST);
-          accept(Token.BECOMES);
-          Expression eAST = parseExpression();
-          finish(commandPos);
-          commandAST = new AssignCommand(vAST, eAST, commandPos);
-        }
-      }
-      break;
-
-    case Token.LOOP:
-      {
-        acceptIt();
-          switch (currentToken.kind) {
-            case Token.WHILE:
-              {
-                acceptIt();
-                Expression eAST = parseExpression();
-                accept(Token.DO);
-                Command cAST = parseCommand();
-                accept(Token.END);
-                finish(commandPos);
-                commandAST = new DoWhileCommand(cAST, eAST, commandPos);
-              }
-              break;
-
-            case Token.UNTIL:
-              {
-                acceptIt();
-                Expression eAST = parseExpression();
-                accept(Token.DO);
-                Command cAST = parseCommand();
-                accept(Token.END);
-                finish(commandPos);
-                commandAST = new DoUntilCommand(cAST, eAST, commandPos);
-              }
-              break;
-
-            case Token.DO:
-              {
-                commandAST = ParseDoCommand();
-              }
-              break;
-
-            case Token.FOR:
-              {
-                commandAST = ParseForCommand();
-              }
-              break;
-
-            default:
-              syntacticError("\"%\" cannot start a command", currentToken.spelling);
-              break;
+      case Token.PASS:      // Se agrega pass y se quitan los otros caracteres
+        finish(commandPos);
+        commandAST = new EmptyCommand(commandPos);
+        break;
+      case Token.IDENTIFIER:
+        {
+          Identifier iAST = parseIdentifier();
+          if (currentToken.kind == Token.LPAREN) {
+            acceptIt();
+            ActualParameterSequence apsAST = parseActualParameterSequence();
+            accept(Token.RPAREN);
+            finish(commandPos);
+            commandAST = new CallCommand(iAST, apsAST, commandPos);
+          } else {
+            Vname vAST = parseRestOfVname(iAST);
+            accept(Token.BECOMES);
+            Expression eAST = parseExpression();
+            finish(commandPos);
+            commandAST = new AssignCommand(vAST, eAST, commandPos);
           }
-      }
-      break;
+        }
+        break;
+      case Token.LOOP:
+        {
+          acceptIt();
+            switch (currentToken.kind) {
+              case Token.WHILE:
+                {
+                  acceptIt();
+                  Expression eAST = parseExpression();
+                  accept(Token.DO);
+                  Command cAST = parseCommand();
+                  accept(Token.END);
+                  finish(commandPos);
+                  commandAST = new DoWhileCommand(cAST, eAST, commandPos);
+                }
+                break;
 
-    case Token.LET: // Cambiar LET, afecta la tabla de identificación
-      {
-        acceptIt();
-        Declaration dAST = parseDeclaration();
-        accept(Token.IN);
-        Command cAST = parseCommand();      // Se cambio de parseSingleCommand a parseCommand
-        finish(commandPos);
-        commandAST = new LetCommand(dAST, cAST, commandPos);
-      }
-      break;
-
-    case Token.IF: // FALTA CAMBIAR EL IF
-      {
-        acceptIt();
-        Expression eAST = parseExpression();
-        accept(Token.THEN);
-        Command c1AST = parseCommand();      // Se cambio de parseSingleCommand a parseCommand
-        accept(Token.ELSE);
-        Command c2AST = parseCommand();      // Se cambio de parseSingleCommand a parseCommand
-        finish(commandPos);
-        commandAST = new IfCommand(eAST, c1AST, c2AST, commandPos);
-      }
-      break;
-
-    case Token.CHOOSE: // Se agrega choose 
-      {
-        acceptIt();
-        Expression eAST = parseExpression();
-        accept(Token.FROM);
-        Cases cAST = parseCases(); //Agregar parse
-        finish(commandPos);
-        commandAST = new ChooseCommand(eAST, cAST, commandPos);
-      }
-
-    /*AGREGAR CHOOSE*/
-    case Token.PASS:      // Se agrega pass y se quitan los otros caracteres
-
-      finish(commandPos);
-      commandAST = new EmptyCommand(commandPos);
-      break;
-
-    default:
-      syntacticError("\"%\" cannot start a command",
-        currentToken.spelling);
-      break;
-
+              case Token.UNTIL:
+                {
+                  acceptIt();
+                  Expression eAST = parseExpression();
+                  accept(Token.DO);
+                  Command cAST = parseCommand();
+                  accept(Token.END);
+                  finish(commandPos);
+                  commandAST = new DoUntilCommand(cAST, eAST, commandPos);
+                }
+                break;
+              case Token.DO:
+                {
+                  finish(commandPos);
+                  commandAST = ParseDoCommand();
+                }
+                break;
+              case Token.FOR:
+                {
+                  finish(commandPos);
+                  commandAST = ParseForCommand();
+                }
+                break;
+              default:
+                syntacticError("\"%\" cannot start a command", currentToken.spelling);
+                break;
+            }
+        }
+        break;
+      case Token.LET: // Cambiar LET, afecta la tabla de identificación
+        {
+          acceptIt();
+          Declaration dAST = parseDeclaration();
+          accept(Token.IN);
+          Command cAST = parseCommand();      // Se cambio de parseSingleCommand a parseCommand
+          finish(commandPos);
+          commandAST = new LetCommand(dAST, cAST, commandPos);
+        }
+        break;
+      case Token.IF: // FALTA CAMBIAR EL IF
+        {
+          acceptIt();
+          Expression eAST = parseExpression();
+          accept(Token.THEN);
+          Command c1AST = parseCommand();      // Se cambio de parseSingleCommand a parseCommand
+          accept(Token.ELSE);
+          Command c2AST = parseCommand();      // Se cambio de parseSingleCommand a parseCommand
+          finish(commandPos);
+          commandAST = new IfCommand(eAST, c1AST, c2AST, commandPos);
+        }
+        break;
+      case Token.CHOOSE: // Se agrega choose 
+        {
+          acceptIt();
+          Expression eAST = parseExpression();
+          accept(Token.FROM);
+          Cases cAST = parseCases(); //Agregar parse
+          finish(commandPos);
+          commandAST = new ChooseCommand(eAST, cAST, commandPos);
+        }
+      default:
+        syntacticError("\"%\" cannot start a command",
+          currentToken.spelling);
+        break;
     }
 
     return commandAST;
@@ -493,7 +480,7 @@ public class Parser {
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-  Cases parseCases() throws SyntaxError{ //Se agrega parse
+  SequentialCase parseCases() throws SyntaxError{ //Se agrega parse
     Cases casesExpressionAST = null;
 
     SourcePosition casesExpressionPos = new SourcePosition();
@@ -586,6 +573,11 @@ public class Parser {
       case Token.CHARLITERAL:
       {
         caseLiteralAST = parseCharacterLiteral();
+        break;
+      }
+      default:
+      {
+        syntacticError("\"%\" cannot start a Case literal", currentToken.spelling);
         break;
       }
     }
