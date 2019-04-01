@@ -5,13 +5,12 @@ import Triangle.SyntacticAnalyzer.SourcePosition;
 
 public class ForWhileCommand extends Command {
 
-  public ForWhileCommand (Identifier iAST, Expression e1AST, Expression e2AST, Expression e3AST
+  public ForWhileCommand (Declaration dAST, Expression e1AST, Expression e2AST
                ,Command cAST, SourcePosition thePosition) {
     super (thePosition);
-    I = iAST;
+    D = dAST;
     E1 = e1AST;
     E2 = e2AST;
-    E3 = e3AST;
     C = cAST;
   }
 
@@ -19,7 +18,7 @@ public class ForWhileCommand extends Command {
     return v.visitForWhileCommand(this, o);
   }
 
-  public Identifier I;
-  public Expression E1,E2,E3;
+  public Declaration D;
+  public Expression E1,E2;
   public Command C;
 }
