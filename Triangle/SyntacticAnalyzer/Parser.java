@@ -997,18 +997,26 @@ public class Parser {
           {
             acceptIt();
             TypeDenoter tAST = parseTypeDenoter();
-
+            finish(declarationPos);
+            declarationAST = new VarDeclaration(iAST, tAST, declarationPos);
           }
           break;
-          case Token.INITIALIZE:
+          case Token.INITIALIZE:    // Regla nueva
           {
             acceptIt();
-            Expression tAST = parseExpression();
+            Expression eAST = parseExpression();
+            finish(declarationPos);
+            declarationAST = new InitVarDeclaration(iAST, eAST, declarationPos);
           }
           break;
+
+          default:
+            syntacticError("\"%\" cannot start a declaration",
+              currentToken.spelling);
+            break;
+
         }
-        finish(declarationPos);
-        declarationAST = new VarDeclaration(iAST, tAST, declarationPos);
+        
       }
       break;
 
@@ -1020,7 +1028,7 @@ public class Parser {
         FormalParameterSequence fpsAST = parseFormalParameterSequence();
         accept(Token.RPAREN);
         accept(Token.IS);
-        Command cAST = parseSingleCommand();
+        Command cAST = parseCommand();    // Se cambió de single-command a command
         accept(Token.END);      // Se agregó el token end al final de la declaracion
         finish(declarationPos);
         declarationAST = new ProcDeclaration(iAST, fpsAST, cAST, declarationPos);
