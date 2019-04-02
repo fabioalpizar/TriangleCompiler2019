@@ -5,9 +5,9 @@ import Triangle.SyntacticAnalyzer.SourcePosition;
 
 public class ForCommand extends Command {
 
-  public ForCommand (Identifier iAST, Expression eAST, Command cAST, SourcePosition thePosition) {
+  public ForCommand (Declaration dAST, Expression eAST, Command cAST, SourcePosition thePosition) {
     super (thePosition);
-    D = iAST;
+    D = dAST;
     E = eAST;
     C = cAST;
   }
