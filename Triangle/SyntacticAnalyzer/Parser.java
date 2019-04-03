@@ -148,18 +148,17 @@ public class Parser {
     previousTokenPosition.start = 0;
     previousTokenPosition.finish = 0;
     currentToken = lexicalAnalyser.scan();
-
+    SourcePosition pos = new SourcePosition();
     try {
-      /*
-      Package pAST;
-      while(currentToken.kind == Token.PACKAGE){
-
+      Package p1AST;
+      if(currentToken.kind == Package){
+        p1AST = parsePackageDeclaration();
       }
-
-      
-
-
-      */
+      while(currentToken.kind == Token.PACKAGE){
+        Pacakge p2AST = parsePackageDeclaration();
+        finish(pos)
+        p1AST = new SequentialPackageDeclaration(p1AST, p2AST, previousTokenPosition);
+      }
       Command cAST = parseCommand();
       // Modificar clase Program para que admita packages
       programAST = new Program(cAST, previousTokenPosition);
@@ -502,15 +501,8 @@ public class Parser {
     while(currentToken.kind == Token.WHEN){
       bAST = parseCase(); //falta clase
       finish(casesExpressionPos);
-
-      /*
-        TODO: Corregir esta vara
-
-      */
-
-
-
       casesExpressionAST = new SequentialCase(aAST, bAST, casesExpressionPos);
+      aAST = bAST;
     }
     switch(currentToken.kind){
       case Token.ELSE:
@@ -552,11 +544,8 @@ public class Parser {
         while(currentToken.kind == Token.PIPE){
           CaseRange cr2AST = parseCaseRange();
           finish(casesLiteralsPos);
-
-          //CORREGIR ESTA VARA (TAL VEZ)
-
-
           casesLiteralsAST = new SequentialCaseRange(cr1AST, cr2AST, casesExpressionPos); 
+          cr1AST = cr2AST;
         }
       }
     }
