@@ -1,0 +1,164 @@
+<?xml version="1.0" standalone="yes"?>
+<Program>
+<LetCommand>
+<SequentialDeclaration>
+<SequentialDeclaration>
+<SequentialDeclaration>
+<VarDeclaration>
+<Identifier value="i"/>
+<IntTypeDenoter/>
+</VarDeclaration>
+<VarDeclaration>
+<Identifier value="j"/>
+<IntTypeDenoter/>
+</VarDeclaration>
+</SequentialDeclaration>
+<VarDeclaration>
+<Identifier value="k"/>
+<IntTypeDenoter/>
+</VarDeclaration>
+</SequentialDeclaration>
+<VarDeclaration>
+<Identifier value="num"/>
+<IntTypeDenoter/>
+</VarDeclaration>
+</SequentialDeclaration>
+<SequentialCommand>
+<SequentialCommand>
+<SequentialCommand>
+<SequentialCommand>
+<CallCommand>
+<Identifier value="getint"/>
+<SingleActualParameterSequence>
+<VarActualParameter>
+<SimpleVname>
+<Identifier value="num"/>
+</SimpleVname>
+</VarActualParameter>
+</SingleActualParameterSequence>
+</CallCommand>
+<AssignCommand>
+<SimpleVname>
+<Identifier value="i"/>
+</SimpleVname>
+<IntegerExpression>
+<IntegerLiteral value="1"/>
+</IntegerExpression>
+</AssignCommand>
+</SequentialCommand>
+<AssignCommand>
+<SimpleVname>
+<Identifier value="j"/>
+</SimpleVname>
+<IntegerExpression>
+<IntegerLiteral value="2"/>
+</IntegerExpression>
+</AssignCommand>
+</SequentialCommand>
+<WhileCommand>
+<BinaryExpression>
+<VnameExpression>
+<SimpleVname>
+<Identifier value="num"/>
+</SimpleVname>
+</VnameExpression>
+<Operator value=">"/>
+<IntegerExpression>
+<IntegerLiteral value="0"/>
+</IntegerExpression>
+</BinaryExpression>
+<SequentialCommand>
+<SequentialCommand>
+<SequentialCommand>
+<SequentialCommand>
+<SequentialCommand>
+<SequentialCommand>
+<CallCommand>
+<Identifier value="putint"/>
+<SingleActualParameterSequence>
+<ConstActualParameter>
+<VnameExpression>
+<SimpleVname>
+<Identifier value="i"/>
+</SimpleVname>
+</VnameExpression>
+</ConstActualParameter>
+</SingleActualParameterSequence>
+</CallCommand>
+<CallCommand>
+<Identifier value="put"/>
+<SingleActualParameterSequence>
+<ConstActualParameter>
+<CharacterExpression>
+<CharacterLiteral value="' '"/>
+</CharacterExpression>
+</ConstActualParameter>
+</SingleActualParameterSequence>
+</CallCommand>
+</SequentialCommand>
+<AssignCommand>
+<SimpleVname>
+<Identifier value="k"/>
+</SimpleVname>
+<BinaryExpression>
+<VnameExpression>
+<SimpleVname>
+<Identifier value="i"/>
+</SimpleVname>
+</VnameExpression>
+<Operator value="+"/>
+<VnameExpression>
+<SimpleVname>
+<Identifier value="j"/>
+</SimpleVname>
+</VnameExpression>
+</BinaryExpression>
+</AssignCommand>
+</SequentialCommand>
+<AssignCommand>
+<SimpleVname>
+<Identifier value="i"/>
+</SimpleVname>
+<VnameExpression>
+<SimpleVname>
+<Identifier value="j"/>
+</SimpleVname>
+</VnameExpression>
+</AssignCommand>
+</SequentialCommand>
+<AssignCommand>
+<SimpleVname>
+<Identifier value="j"/>
+</SimpleVname>
+<VnameExpression>
+<SimpleVname>
+<Identifier value="k"/>
+</SimpleVname>
+</VnameExpression>
+</AssignCommand>
+</SequentialCommand>
+<AssignCommand>
+<SimpleVname>
+<Identifier value="num"/>
+</SimpleVname>
+<BinaryExpression>
+<VnameExpression>
+<SimpleVname>
+<Identifier value="num"/>
+</SimpleVname>
+</VnameExpression>
+<Operator value="-"/>
+<IntegerExpression>
+<IntegerLiteral value="1"/>
+</IntegerExpression>
+</BinaryExpression>
+</AssignCommand>
+</SequentialCommand>
+<EmptyCommand/>
+</SequentialCommand>
+</WhileCommand>
+</SequentialCommand>
+<EmptyCommand/>
+</SequentialCommand>
+</LetCommand>
+</Program>
