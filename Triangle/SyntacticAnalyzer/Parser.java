@@ -150,7 +150,18 @@ public class Parser {
     currentToken = lexicalAnalyser.scan();
 
     try {
+      /*
+      Package pAST;
+      while(currentToken.kind == Token.PACKAGE){
+
+      }
+
+      
+
+
+      */
       Command cAST = parseCommand();
+      // Modificar clase Program para que admita packages
       programAST = new Program(cAST, previousTokenPosition);
       if (currentToken.kind != Token.EOT) {
         syntacticError("\"%\" not expected after end of program",
@@ -491,6 +502,14 @@ public class Parser {
     while(currentToken.kind == Token.WHEN){
       bAST = parseCase(); //falta clase
       finish(casesExpressionPos);
+
+      /*
+        TODO: Corregir esta vara
+
+      */
+
+
+
       casesExpressionAST = new SequentialCase(aAST, bAST, casesExpressionPos);
     }
     switch(currentToken.kind){
@@ -533,6 +552,10 @@ public class Parser {
         while(currentToken.kind == Token.PIPE){
           CaseRange cr2AST = parseCaseRange();
           finish(casesLiteralsPos);
+
+          //CORREGIR ESTA VARA (TAL VEZ)
+
+
           casesLiteralsAST = new SequentialCaseRange(cr1AST, cr2AST, casesExpressionPos); 
         }
       }
@@ -1348,4 +1371,8 @@ public class Parser {
     }
     return fieldAST;
   }
+
+  //PackageDeclaration parsePackageDe
+
+
 }
