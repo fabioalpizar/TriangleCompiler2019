@@ -72,3 +72,6 @@ Var-Name				::=		Identifier
 Type-denoter			::=		Long-Identifier
 						|		"array" Integer-Literal of Type-denoter
 						|		"record" Record-Type-denoter "end"
+
+
+primary-Expression		::= 	LongIdentifier "(" Actual-Parameter-Sequence ")"
