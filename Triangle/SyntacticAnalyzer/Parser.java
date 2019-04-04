@@ -149,9 +149,19 @@ public class Parser {
     previousTokenPosition.start = 0;
     previousTokenPosition.finish = 0;
     currentToken = lexicalAnalyser.scan();
-
+    SourcePosition pos = new SourcePosition();
     try {
+      PackageDeclaration p1AST;
+      if(currentToken.kind == Token.PACKAGE){
+        p1AST = parsePackageDeclaration();
+      }
+      while(currentToken.kind == Token.PACKAGE){
+        Pacakge p2AST = parsePackageDeclaration();
+        finish(pos)
+        p1AST = new SequentialPackageDeclaration(p1AST, p2AST, previousTokenPosition);
+      }
       Command cAST = parseCommand();
+      // Modificar clase Program para que admita packages
       programAST = new Program(cAST, previousTokenPosition);
       if (currentToken.kind != Token.EOT) {
         syntacticError("\"%\" not expected after end of program",
@@ -493,6 +503,7 @@ public class Parser {
       bAST = parseCase(); //falta clase
       finish(casesExpressionPos);
       casesExpressionAST = new SequentialCase(aAST, bAST, casesExpressionPos);
+      aAST = bAST;
     }
     switch(currentToken.kind){
       case Token.ELSE:
@@ -527,14 +538,14 @@ public class Parser {
     SourcePosition caseLiteralsPos = new SourcePosition();
     start(casesLiteralsPos);
 
-    CaseRange cr1AST = parseCaseRange();
+    CaseRange casesLiteralsAST = parseCaseRange();
     switch(currentToken.kind){
       case Token.PIPE:
       {
         while(currentToken.kind == Token.PIPE){
           CaseRange cr2AST = parseCaseRange();
           finish(casesLiteralsPos);
-          casesLiteralsAST = new SequentialCaseRange(cr1AST, cr2AST, casesExpressionPos); 
+          casesLiteralsAST = new SequentialCaseRange(casesLiteralsAST, cr2AST, casesExpressionPos);
         }
       }
     }
@@ -1359,4 +1370,21 @@ public class Parser {
     }
     return fieldAST;
   }
+
+  PackageDeclaration parsePackageDeclaration() throws SyntaxError { // Se agrega parse package declaration
+    PackageDeclaration packageAST = null;
+    SourcePosition packagePos = new SourcePosition();
+
+    start(packagePos);
+    accept(Token.PACKAGE);
+    Identifier piAST = parseIdentifier();
+    accept(Token.IS);
+    Declaration dAST = parseDeclaration();
+    accept(Token.END);
+    finish(packagePos);
+    packageAST = new PackageDeclaration(piAST, dAST, packagePos);
+    return packageAST;
+  }
+
+
 }
