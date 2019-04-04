@@ -104,6 +104,7 @@ public interface Visitor {
 
   // Programs
   public abstract Object visitProgram(Program ast, Object o);
+  public abstract Object visitProgramPackage(ProgramPackage ast, Object o);
   
   
     //____New Visitors____//
@@ -134,6 +135,6 @@ public interface Visitor {
     //V-Name
     public abstract Object visitPackageVName(PackageVName ast, Object o);
   
-  
+  //
 
 }
