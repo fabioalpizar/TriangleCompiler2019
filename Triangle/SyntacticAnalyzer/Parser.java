@@ -80,6 +80,7 @@ import Triangle.AbstractSyntaxTrees.VarDeclaration;
 import Triangle.AbstractSyntaxTrees.VarFormalParameter;
 import Triangle.AbstractSyntaxTrees.Vname;
 import Triangle.AbstractSyntaxTrees.VnameExpression;
+import Triangle.AbstractSyntaxTrees.PackageVName;
 import Triangle.AbstractSyntaxTrees.WhileCommand;
 
 public class Parser {
@@ -785,10 +786,20 @@ public class Parser {
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-  Vname parseVname () throws SyntaxError {
+  name parseVname () throws SyntaxError {
     Vname vnameAST = null; // in case there's a syntactic error
     Identifier iAST = parseIdentifier();
-    vnameAST = parseRestOfVname(iAST);
+    SourcePosition vNamePos = new SourcePosition();
+    start(vNamePos);
+    if(currentToken.kind == Token.DOLLAR){ // Se agrregó el if si es un package identifier o un var-name
+      acceptIt();
+      finish(vNamePos);
+      Vname vnameAST2 = parseRestOfVname(iAST);
+      vnameAST = new PackageVName(iAST,vnameAST2,vNamePos); //Se agrega nueva clase
+    }else{
+      finish(vNamePos);
+      vnameAST = parseRestOfVname(iAST);
+    }
     return vnameAST;
   }
 
