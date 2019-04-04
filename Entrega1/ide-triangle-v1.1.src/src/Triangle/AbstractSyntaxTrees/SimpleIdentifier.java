@@ -5,9 +5,9 @@ import Triangle.SyntacticAnalyzer.SourcePosition;
 
 public class SimpleIdentifier extends LongIdentifier {
 
-  public SimpleIdentifier (Identifier id1AST, SourcePosition thePosition) {
+  public SimpleIdentifier (Identifier idAST, SourcePosition thePosition) {
     super (thePosition);
-    ID = id2AST;
+    ID = idAST;
   }
 
   public Object visit(Visitor v, Object o) {
