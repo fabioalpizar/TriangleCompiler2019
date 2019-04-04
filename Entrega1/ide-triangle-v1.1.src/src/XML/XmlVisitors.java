@@ -52,6 +52,7 @@ import Triangle.AbstractSyntaxTrees.FuncFormalParameter;
 import Triangle.AbstractSyntaxTrees.Identifier;
 import Triangle.AbstractSyntaxTrees.IfCommand;
 import Triangle.AbstractSyntaxTrees.IfExpression;
+import Triangle.AbstractSyntaxTrees.InitVarDeclaration;
 import Triangle.AbstractSyntaxTrees.IntTypeDenoter;
 import Triangle.AbstractSyntaxTrees.IntegerExpression;
 import Triangle.AbstractSyntaxTrees.IntegerLiteral;
@@ -63,17 +64,23 @@ import Triangle.AbstractSyntaxTrees.MultipleFieldTypeDenoter;
 import Triangle.AbstractSyntaxTrees.MultipleFormalParameterSequence;
 import Triangle.AbstractSyntaxTrees.MultipleRecordAggregate;
 import Triangle.AbstractSyntaxTrees.Operator;
+import Triangle.AbstractSyntaxTrees.PackageDeclaration;
+import Triangle.AbstractSyntaxTrees.PackageId;
+import Triangle.AbstractSyntaxTrees.PackageVName;
 import Triangle.AbstractSyntaxTrees.PrivateDeclaration;
 import Triangle.AbstractSyntaxTrees.ProcActualParameter;
 import Triangle.AbstractSyntaxTrees.ProcDeclaration;
 import Triangle.AbstractSyntaxTrees.ProcFormalParameter;
 import Triangle.AbstractSyntaxTrees.Program;
+import Triangle.AbstractSyntaxTrees.ProgramPackage;
 import Triangle.AbstractSyntaxTrees.RecordExpression;
 import Triangle.AbstractSyntaxTrees.RecordTypeDenoter;
 import Triangle.AbstractSyntaxTrees.SequentialCase;
 import Triangle.AbstractSyntaxTrees.SequentialCommand;
 import Triangle.AbstractSyntaxTrees.SequentialDeclaration;
+import Triangle.AbstractSyntaxTrees.SequentialPackageDeclaration;
 import Triangle.AbstractSyntaxTrees.SequentialRange;
+import Triangle.AbstractSyntaxTrees.SimpleIdentifier;
 import Triangle.AbstractSyntaxTrees.SimpleTypeDenoter;
 import Triangle.AbstractSyntaxTrees.SimpleVname;
 import Triangle.AbstractSyntaxTrees.SingleActualParameterSequence;
@@ -157,6 +164,74 @@ public class XmlVisitors implements Visitor {
         ast.E.visit(this, null);
         ast.C.visit(this, null);
         writeLineHTML("</WhileCommand>");
+        return null;
+    }
+    
+        @Override
+    public Object visitDoUntilCommand(DoUntilCommand ast, Object o) {
+        writeLineHTML("<DoUntilCommand>");
+        ast.C.visit(this, null);
+        ast.E.visit(this, null);
+        writeLineHTML("</DoUntilCommand>");
+        return null;
+    }
+
+    @Override
+    public Object visitDoWhileCommand(DoWhileCommand ast, Object o) {
+        writeLineHTML("<DoWhileCommand>");
+        ast.C.visit(this, null);
+        ast.E.visit(this, null);
+        writeLineHTML("</DoWhileCommand>");
+        return null;
+    }
+
+    @Override
+    public Object visitForCommand(ForCommand ast, Object o) {
+        writeLineHTML("<ForCommand>");
+        ast.C.visit(this, null);
+        ast.E.visit(this, null);
+        ast.D.visit(this, null);
+        writeLineHTML("</ForCommand>");
+        return null;
+    }
+    
+        @Override
+    public Object visitForUntilCommand(ForUntilCommand ast, Object o) {
+        writeLineHTML("<ForUntilCommand>");
+        ast.C.visit(this, null);
+        ast.D.visit(this, null);
+        ast.E1.visit(this, null);
+        ast.E2.visit(this, null);
+        writeLineHTML("</ForUntilCommand>");
+        return null;
+    }
+
+    @Override
+    public Object visitForWhileCommand(ForWhileCommand ast, Object o) {
+        writeLineHTML("<ForWhileCommand>");
+        ast.C.visit(this, null);
+        ast.D.visit(this, null);
+        ast.E1.visit(this, null);
+        ast.E2.visit(this, null);
+        writeLineHTML("</ForWhileCommand>");
+        return null;
+    }
+    
+        @Override
+    public Object visitUntilCommand(UntilCommand ast, Object o) {
+        writeLineHTML("<UntilCommand>");
+        ast.C.visit(this, null);
+        ast.E.visit(this,null);
+        writeLineHTML("</UntilCommand>");
+        return null;
+    }
+    
+    @Override
+    public Object visitChooseCommand(ChooseCommand ast, Object o) {
+        writeLineHTML("<ChooseCommand>");
+        ast.C.visit(this, null);
+        ast.E.visit(this,null);
+        writeLineHTML("</ChooseCommand>");
         return null;
     }
 
@@ -313,6 +388,51 @@ public class XmlVisitors implements Visitor {
         ast.I.visit(this, null);
         ast.T.visit(this, null);
         writeLineHTML("</VarDeclaration>");
+        return null;
+    }
+    
+    @Override
+    public Object visitForDeclaration(ForDeclaration ast, Object o) {
+        writeLineHTML("<ForDeclaration>");
+        ast.I.visit(this, null);
+        ast.E.visit(this, null);
+        writeLineHTML("</ForDeclaration>");
+        return null;
+    }
+    
+        @Override
+    public Object visitPrivateDeclaration(PrivateDeclaration ast, Object o) {
+        writeLineHTML("<PrivateDeclaration>");
+        ast.D1.visit(this, null);
+        ast.D2.visit(this, null);
+        writeLineHTML("</PrivateDeclaration>");
+        return null;
+    }
+    
+        @Override
+    public Object visitInitVarDeclaration(InitVarDeclaration ast, Object o) {
+        writeLineHTML("<InitVarDeclaration>");
+        ast.E.visit(this, null);
+        ast.I.visit(this, null);
+        writeLineHTML("</InitVarDeclaration>");
+        return null;
+    }
+    
+        @Override
+    public Object visitSequentialPackageDeclaration(SequentialPackageDeclaration ast, Object o) {
+        writeLineHTML("<SequentialPackageDeclaration>");
+        ast.P1.visit(this, null);
+        ast.P2.visit(this, null);
+        writeLineHTML("</SequentialPackageDeclaration>");
+        return null;
+    }
+
+    @Override
+    public Object visitPackageDeclaration(PackageDeclaration ast, Object o) {
+        writeLineHTML("<PackageDeclaration>");
+        ast.D.visit(this, null);
+        ast.I.visit(this, null);
+        writeLineHTML("</PackageDeclaration>");
         return null;
     }
 
@@ -572,6 +692,15 @@ public class XmlVisitors implements Visitor {
         writeLineHTML("</SubscriptVname>");
         return null;
     }
+    
+        @Override
+    public Object visitPackageVName(PackageVName ast, Object o) {
+        writeLineHTML("<PackageVName>");
+        ast.V.visit(this, null);
+        ast.I.visit(this, null);
+        writeLineHTML("</PackageVName>");
+        return null;
+    }
 
 
     // Programs
@@ -579,6 +708,15 @@ public class XmlVisitors implements Visitor {
         writeLineHTML("<Program>");
         ast.C.visit(this, null);
         writeLineHTML("</Program>");
+        return null;
+    }
+    
+        @Override
+    public Object visitProgramPackage(ProgramPackage ast, Object o) {
+        writeLineHTML("<ProgramPackage>");
+        ast.C.visit(this, null);
+        ast.P.visit(this, null);
+        writeLineHTML("</ProgramPackage>");
         return null;
     }
 
@@ -604,8 +742,64 @@ public class XmlVisitors implements Visitor {
             return operator;
     }
 
+    
+    // Cases
+    
     @Override
     public Object visitCase(Case ast, Object o) {
+        writeLineHTML("<Case>");
+        ast.C1.visit(this, null);
+        ast.C2.visit(this,null);
+        writeLineHTML("</Case>");
+        return null;
+    }
+
+    @Override
+    public Object visitSequentialCase(SequentialCase ast, Object o) {
+        writeLineHTML("<SequentialCase>");
+        ast.C1.visit(this, null);
+        ast.C2.visit(this,null);
+        writeLineHTML("</SequentialCase>");
+        return null;
+    }
+
+    @Override
+    public Object visitSequentialRange(SequentialRange ast, Object o) {
+        writeLineHTML("<SequentialRange>");
+        ast.R1.visit(this, null);
+        ast.R2.visit(this,null);
+        writeLineHTML("</SequentialRange>");
+        return null;
+    }
+
+    @Override
+    public Object visitSingleRange(SingleRange ast, Object o) {
+        writeLineHTML("<SingleRange>");
+        ast.C1.visit(this, null);
+        writeLineHTML("</SingleRange>");
+        return null;
+    }
+
+    @Override
+    public Object visitDualRange(DualRange ast, Object o) {
+        writeLineHTML("<DualRange>");
+        ast.C1.visit(this, null);
+        ast.C2.visit(this,null);
+        writeLineHTML("</DualRange>");
+        return null;
+    }
+
+    @Override
+    public Object visitElseCase(ElseCase ast, Object o) {
+        writeLineHTML("<ElseCase>");
+        ast.C1.visit(this, null);
+        ast.C2.visit(this,null);
+        writeLineHTML("</ElseCase>");
+        return null;
+    }
+
+    @Override
+    public Object visitPackageId(PackageId ast, Object o) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -620,72 +814,7 @@ public class XmlVisitors implements Visitor {
     }
 
     @Override
-    public Object visitDoUntilCommand(DoUntilCommand ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitDoWhileCommand(DoWhileCommand ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitForCommand(ForCommand ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitForDeclaration(ForDeclaration ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitForUntilCommand(ForUntilCommand ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitForWhileCommand(ForWhileCommand ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitSequentialCase(SequentialCase ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitSequentialRange(SequentialRange ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitSingleRange(SingleRange ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitUntilCommand(UntilCommand ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitPrivateDeclaration(PrivateDeclaration ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitDualRange(DualRange ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitElseCase(ElseCase ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitChooseCommand(ChooseCommand ast, Object o) {
+    public Object visitSimpleIdentifier(SimpleIdentifier ast, Object o) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
