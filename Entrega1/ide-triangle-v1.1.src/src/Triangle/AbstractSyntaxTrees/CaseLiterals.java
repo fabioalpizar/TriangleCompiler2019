@@ -5,8 +5,7 @@ import Triangle.SyntacticAnalyzer.SourcePosition;
 
 public class CaseLiterals extends CaseLiteral {
 
-  public CaseLiterals (CaseRange cRangeAST,
-                  SourcePosition thePosition) {
+  public CaseLiterals (CaseRange cRangeAST, SourcePosition thePosition) {
     super (thePosition);
     CRange = cRangeAST;
   }

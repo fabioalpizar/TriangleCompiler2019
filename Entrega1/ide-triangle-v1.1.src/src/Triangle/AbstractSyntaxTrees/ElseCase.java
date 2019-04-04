@@ -5,16 +5,14 @@ import Triangle.SyntacticAnalyzer.SourcePosition;
 
 public class ElseCase extends CaseCommand {
 
-  public ElseCase (Case c1AST, Command c2AST, SourcePosition thePosition) {
+  public ElseCase (Command c2AST, SourcePosition thePosition) {
     super (thePosition);
-    C1 = c1AST;
-    C2 = c2AST;
+    C = c2AST;
   }
 
   public Object visit(Visitor v, Object o) {
     return v.visitElseCase(this, o);
   }
 
-  public Case C1;
-  public Command C2;
+  public Command C;
 }

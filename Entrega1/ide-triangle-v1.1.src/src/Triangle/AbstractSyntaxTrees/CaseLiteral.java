@@ -5,10 +5,10 @@ import Triangle.AbstractSyntaxTrees.Terminal;
 import Triangle.AbstractSyntaxTrees.Visitor;
 import Triangle.SyntacticAnalyzer.SourcePosition;
 
-public class CaseLiteral extends AST {
+public class CaseLiteral extends Terminal {
 
-  public CaseLiteral ( SourcePosition thePosition) {
-    super (thePosition);
+  public CaseLiteral (String theSpelling, SourcePosition thePosition) {
+    super (theSpelling, thePosition);
   }
 
   public Object visit(Visitor v, Object o) {
