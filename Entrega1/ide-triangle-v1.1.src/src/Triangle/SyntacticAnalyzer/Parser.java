@@ -534,7 +534,7 @@ public class Parser {
     switch(currentToken.kind){
       case Token.ELSE:
       {
-        acceptIt()
+        acceptIt();
         bAST = parseCommand();
         finish(casesExpressionPos);
         casesExpressionAST = new ElseCase(aAST,bAST, casesExpressionPos);
@@ -569,6 +569,7 @@ public class Parser {
       case Token.PIPE:
       {
         while(currentToken.kind == Token.PIPE){
+          acceptIt();
           CaseRange cr2AST = parseCaseRange();
           finish(caseLiteralsPos);
           casesLiteralsAST = new SequentialCaseRange(casesLiteralsAST, cr2AST, caseLiteralsPos);
@@ -1415,13 +1416,18 @@ public class Parser {
     LongIdentifier parseLongIdentifier() throws SyntaxError {
       LongIdentifier indentifierAST = null;
       SourcePosition indentifierPos = new SourcePosition();
-      
       start(indentifierPos);
+
       Identifier i1AST = parseIdentifier();
-      accept(Token.IS);
-      Identifier i2AST = parseIdentifier();
-      finish(indentifierPos);
-      indentifierAST = new LongIdentifier(i1AST, i2AST, indentifierPos);
+      if(currentToken.kind == Token.DOLLAR){
+        acceptIt();
+        Identifier i2AST = parseIdentifier();
+        finish(indentifierPos);
+        identifierAST = new PackageIdentifier(i1AST, i2AST, indentifierPos);
+      }else{
+        finish(indentifierPos);
+        indentifierAST = new SimpleIdentifier(i1AST, indentifierPos);
+      }
       
       return indentifierAST;
   }
