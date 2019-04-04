@@ -31,7 +31,7 @@ Case-Range				::= 	Case-Literal [ ".."  Case-Literal ]
 
 Case-Literal 			::= 	Integer-Literal	
 						|		Character-Literal
-
+ 
 Declaration 			::=		compound-Declaration (";"  compound-Declaration)*
 
 compound-Declaration	::=		single-Declaration

@@ -3,7 +3,7 @@ package Triangle.AbstractSyntaxTrees;
 
 import Triangle.SyntacticAnalyzer.SourcePosition;
 
-public class SequentialCase extends Case {
+public class SequentialCase extends CaseCommand {
 
   public SequentialCase (Case c1AST, Case c2AST, SourcePosition thePosition) {
     super (thePosition);

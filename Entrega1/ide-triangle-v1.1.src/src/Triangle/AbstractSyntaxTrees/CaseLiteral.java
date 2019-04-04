@@ -1,12 +1,14 @@
 //Nueva Clase Case Literal
+package Triangle.AbstractSyntaxTrees;
+
 import Triangle.AbstractSyntaxTrees.Terminal;
 import Triangle.AbstractSyntaxTrees.Visitor;
 import Triangle.SyntacticAnalyzer.SourcePosition;
 
-public class CaseLiteral extends Terminal {
+public class CaseLiteral extends AST {
 
-  public CaseLiteral (String theSpelling, SourcePosition thePosition) {
-    super (theSpelling, thePosition);
+  public CaseLiteral ( SourcePosition thePosition) {
+    super (thePosition);
   }
 
   public Object visit(Visitor v, Object o) {

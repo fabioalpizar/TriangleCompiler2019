@@ -32,6 +32,8 @@ import Triangle.AbstractSyntaxTrees.ConstDeclaration;
 import Triangle.AbstractSyntaxTrees.ConstFormalParameter;
 import Triangle.AbstractSyntaxTrees.Declaration;
 import Triangle.AbstractSyntaxTrees.DotVname;
+import Triangle.AbstractSyntaxTrees.DoUntilCommand;
+import Triangle.AbstractSyntaxTrees.DoWhileCommand;
 import Triangle.AbstractSyntaxTrees.EmptyActualParameterSequence;
 import Triangle.AbstractSyntaxTrees.EmptyCommand;
 import Triangle.AbstractSyntaxTrees.EmptyFormalParameterSequence;
@@ -49,6 +51,8 @@ import Triangle.AbstractSyntaxTrees.IntegerExpression;
 import Triangle.AbstractSyntaxTrees.IntegerLiteral;
 import Triangle.AbstractSyntaxTrees.LetCommand;
 import Triangle.AbstractSyntaxTrees.LetExpression;
+import Triangle.AbstractSyntaxTrees.PackageDeclaration;
+import Triangle.AbstractSyntaxTrees.CaseLiteral;
 import Triangle.AbstractSyntaxTrees.MultipleActualParameterSequence;
 import Triangle.AbstractSyntaxTrees.MultipleArrayAggregate;
 import Triangle.AbstractSyntaxTrees.MultipleFieldTypeDenoter;
@@ -64,6 +68,7 @@ import Triangle.AbstractSyntaxTrees.RecordExpression;
 import Triangle.AbstractSyntaxTrees.RecordTypeDenoter;
 import Triangle.AbstractSyntaxTrees.SequentialCommand;
 import Triangle.AbstractSyntaxTrees.SequentialDeclaration;
+import Triangle.AbstractSyntaxTrees.SequentialPackageDeclaration;
 import Triangle.AbstractSyntaxTrees.SimpleTypeDenoter;
 import Triangle.AbstractSyntaxTrees.SimpleVname;
 import Triangle.AbstractSyntaxTrees.SingleActualParameterSequence;
@@ -81,6 +86,7 @@ import Triangle.AbstractSyntaxTrees.VarFormalParameter;
 import Triangle.AbstractSyntaxTrees.Vname;
 import Triangle.AbstractSyntaxTrees.VnameExpression;
 import Triangle.AbstractSyntaxTrees.PackageVName;
+import Triangle.AbstractSyntaxTrees.ProgramPackage;
 import Triangle.AbstractSyntaxTrees.WhileCommand;
 
 public class Parser {
@@ -151,20 +157,25 @@ public class Parser {
     currentToken = lexicalAnalyser.scan();
     SourcePosition pos = new SourcePosition();
     try {
-      PackageDeclaration p1AST;
+      Declaration p1AST = null;
       if(currentToken.kind == Token.PACKAGE){
         p1AST = parsePackageDeclaration();
         accept(Token.SEMICOLON);
+        while(currentToken.kind == Token.PACKAGE){
+            PackageDeclaration p2AST = parsePackageDeclaration();
+            accept(Token.SEMICOLON);
+            finish(pos);
+            p1AST = new SequentialPackageDeclaration(p1AST, p2AST, previousTokenPosition);
+        }
+        Command cAST = parseCommand();
+        // Modificar clase Program para que admita packages
+        programAST = new ProgramPackage((PackageDeclaration) p1AST, cAST, previousTokenPosition);
+        
+      } else {
+        Command cAST = parseCommand();
+        // Modificar clase Program para que admita packages
+        programAST = new Program(cAST, previousTokenPosition);
       }
-      while(currentToken.kind == Token.PACKAGE){
-        Pacakge p2AST = parsePackageDeclaration();
-        accept(Token.SEMICOLON);
-        finish(pos)
-        p1AST = new SequentialPackageDeclaration(p1AST, p2AST, previousTokenPosition);
-      }
-      Command cAST = parseCommand();
-      // Modificar clase Program para que admita packages
-      programAST = new Program(cAST, previousTokenPosition);
       if (currentToken.kind != Token.EOT) {
         syntacticError("\"%\" not expected after end of program",
           currentToken.spelling);
@@ -799,7 +810,7 @@ public class Parser {
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-  name parseVname () throws SyntaxError {
+  Vname parseVname () throws SyntaxError {
     Vname vnameAST = null; // in case there's a syntactic error
     Identifier iAST = parseIdentifier();
     SourcePosition vNamePos = new SourcePosition();
