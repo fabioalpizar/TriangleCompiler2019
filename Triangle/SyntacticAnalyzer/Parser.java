@@ -154,9 +154,11 @@ public class Parser {
       PackageDeclaration p1AST;
       if(currentToken.kind == Token.PACKAGE){
         p1AST = parsePackageDeclaration();
+        accept(Token.SEMICOLON);
       }
       while(currentToken.kind == Token.PACKAGE){
         Pacakge p2AST = parsePackageDeclaration();
+        accept(Token.SEMICOLON);
         finish(pos)
         p1AST = new SequentialPackageDeclaration(p1AST, p2AST, previousTokenPosition);
       }
