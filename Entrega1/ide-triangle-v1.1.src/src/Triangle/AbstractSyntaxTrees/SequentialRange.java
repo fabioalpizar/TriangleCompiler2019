@@ -7,10 +7,11 @@ public class SequentialRange extends CaseRange {
 
   public SequentialRange (CaseRange r1AST, CaseRange r2AST, SourcePosition thePosition) {
     super (thePosition);
-    R1 = c1AST;
-    R2 = c2AST;
+    R1 = r1AST;
+    R2 = r2AST;
   }
 
+  @Override
   public Object visit(Visitor v, Object o) {
     return v.visitSequentialRange(this, o);
   }

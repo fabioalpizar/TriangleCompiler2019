@@ -128,6 +128,11 @@ public interface Visitor {
     public abstract Object visitDualRange(DualRange ast, Object o);
     public abstract Object visitElseCase(ElseCase ast, Object o);
     public abstract Object visitChooseCommand(ChooseCommand ast, Object o);
+    //Declaration
+    public abstract Object visitSequentialPackageDeclaration(SequentialPackageDeclaration ast,Object o);
+    public abstract Object visitPackageDeclaration(PackageDeclaration ast,Object o);
+    //V-Name
+    public abstract Object visitPackageVName(PackageVName ast, Object o);
   
   
 
