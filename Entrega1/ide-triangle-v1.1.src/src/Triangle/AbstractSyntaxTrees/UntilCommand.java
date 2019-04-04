@@ -5,8 +5,7 @@ import Triangle.SyntacticAnalyzer.SourcePosition;
 
 public class UntilCommand extends Command {
 
-  public UntilCommand (Expression eAST,
-                Command cAST, SourcePosition thePosition) {
+  public UntilCommand (Expression eAST, Command cAST, SourcePosition thePosition) {
     super (thePosition);
     E = eAST;
     C = cAST;

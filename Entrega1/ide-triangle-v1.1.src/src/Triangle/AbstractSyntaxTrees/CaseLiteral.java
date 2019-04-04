@@ -1,5 +1,3 @@
-package Triangle.AbstractSyntaxTrees;
-
 //Nueva Clase Case Literal
 import Triangle.SyntacticAnalyzer.SourcePosition;
 

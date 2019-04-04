@@ -14,9 +14,9 @@ public class InitVarDeclaration extends Declaration {
   }
 
   public Object visit(Visitor v, Object o) {
-    return v.visitVarDeclaration(this, o);
+    return v.visitInitVarDeclaration(this, o);
   }
 
-  public Expression I;
-  public TypeDenoter E;
+  public Identifier I;
+  public Expression E;
 }

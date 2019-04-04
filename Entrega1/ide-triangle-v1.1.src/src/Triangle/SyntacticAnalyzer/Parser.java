@@ -14,7 +14,6 @@
 
 package Triangle.SyntacticAnalyzer;
 
-import Triangle.AbstractSyntaxTrees.CaseLiteral;
 import Triangle.ErrorReporter;
 import Triangle.AbstractSyntaxTrees.ActualParameter;
 import Triangle.AbstractSyntaxTrees.ActualParameterSequence;
@@ -27,12 +26,15 @@ import Triangle.AbstractSyntaxTrees.CallCommand;
 import Triangle.AbstractSyntaxTrees.CallExpression;
 import Triangle.AbstractSyntaxTrees.CharacterExpression;
 import Triangle.AbstractSyntaxTrees.CharacterLiteral;
+import Triangle.AbstractSyntaxTrees.ChooseCommand;
 import Triangle.AbstractSyntaxTrees.Command;
 import Triangle.AbstractSyntaxTrees.ConstActualParameter;
 import Triangle.AbstractSyntaxTrees.ConstDeclaration;
 import Triangle.AbstractSyntaxTrees.ConstFormalParameter;
 import Triangle.AbstractSyntaxTrees.Declaration;
 import Triangle.AbstractSyntaxTrees.DotVname;
+import Triangle.AbstractSyntaxTrees.DoWhileCommand;
+import Triangle.AbstractSyntaxTrees.DoUntilCommand;
 import Triangle.AbstractSyntaxTrees.EmptyActualParameterSequence;
 import Triangle.AbstractSyntaxTrees.EmptyCommand;
 import Triangle.AbstractSyntaxTrees.EmptyFormalParameterSequence;
@@ -40,12 +42,17 @@ import Triangle.AbstractSyntaxTrees.Expression;
 import Triangle.AbstractSyntaxTrees.FieldTypeDenoter;
 import Triangle.AbstractSyntaxTrees.FormalParameter;
 import Triangle.AbstractSyntaxTrees.FormalParameterSequence;
+import Triangle.AbstractSyntaxTrees.ForCommand;
+import Triangle.AbstractSyntaxTrees.ForDeclaration;
+import Triangle.AbstractSyntaxTrees.ForUntilCommand;
+import Triangle.AbstractSyntaxTrees.ForWhileCommand;
 import Triangle.AbstractSyntaxTrees.FuncActualParameter;
 import Triangle.AbstractSyntaxTrees.FuncDeclaration;
 import Triangle.AbstractSyntaxTrees.FuncFormalParameter;
 import Triangle.AbstractSyntaxTrees.Identifier;
 import Triangle.AbstractSyntaxTrees.IfCommand;
 import Triangle.AbstractSyntaxTrees.IfExpression;
+import Triangle.AbstractSyntaxTrees.InitVarDeclaration;
 import Triangle.AbstractSyntaxTrees.IntegerExpression;
 import Triangle.AbstractSyntaxTrees.IntegerLiteral;
 import Triangle.AbstractSyntaxTrees.LetCommand;
@@ -56,6 +63,7 @@ import Triangle.AbstractSyntaxTrees.MultipleFieldTypeDenoter;
 import Triangle.AbstractSyntaxTrees.MultipleFormalParameterSequence;
 import Triangle.AbstractSyntaxTrees.MultipleRecordAggregate;
 import Triangle.AbstractSyntaxTrees.Operator;
+import Triangle.AbstractSyntaxTrees.PrivateDeclaration;
 import Triangle.AbstractSyntaxTrees.ProcActualParameter;
 import Triangle.AbstractSyntaxTrees.ProcDeclaration;
 import Triangle.AbstractSyntaxTrees.ProcFormalParameter;
@@ -76,29 +84,14 @@ import Triangle.AbstractSyntaxTrees.SubscriptVname;
 import Triangle.AbstractSyntaxTrees.TypeDeclaration;
 import Triangle.AbstractSyntaxTrees.TypeDenoter;
 import Triangle.AbstractSyntaxTrees.UnaryExpression;
+import Triangle.AbstractSyntaxTrees.UntilCommand;
 import Triangle.AbstractSyntaxTrees.VarActualParameter;
 import Triangle.AbstractSyntaxTrees.VarDeclaration;
 import Triangle.AbstractSyntaxTrees.VarFormalParameter;
 import Triangle.AbstractSyntaxTrees.Vname;
 import Triangle.AbstractSyntaxTrees.VnameExpression;
+import Triangle.AbstractSyntaxTrees.PackageVName;
 import Triangle.AbstractSyntaxTrees.WhileCommand;
-//____New Imports____//
-import Triangle.AbstractSyntaxTrees.DoUntilCommand;
-import Triangle.AbstractSyntaxTrees.Case;
-import Triangle.AbstractSyntaxTrees.ChooseCommand;
-import Triangle.AbstractSyntaxTrees.ForDeclaration;
-import Triangle.AbstractSyntaxTrees.ForWhileCommand;
-import Triangle.AbstractSyntaxTrees.ForUntilCommand;
-import Triangle.AbstractSyntaxTrees.ForCommand;
-import Triangle.AbstractSyntaxTrees.DoUntilCommand;
-import Triangle.AbstractSyntaxTrees.SequentialCase;
-import Triangle.AbstractSyntaxTrees.ElseCase;
-import Triangle.AbstractSyntaxTrees.CaseLiterals;
-import Triangle.AbstractSyntaxTrees.CaseRange;
-import Triangle.AbstractSyntaxTrees.DualRange;
-import Triangle.AbstractSyntaxTrees.SingleRange;
-import Triangle.AbstractSyntaxTrees.InitVarDeclaration;
-import Triangle.AbstractSyntaxTrees.PrivateDeclaration;
 
 public class Parser {
 
@@ -166,19 +159,59 @@ public class Parser {
     previousTokenPosition.start = 0;
     previousTokenPosition.finish = 0;
     currentToken = lexicalAnalyser.scan();
-
-    try {
-      Command cAST = parseCommand();
-      programAST = new Program(cAST, previousTokenPosition);
-      if (currentToken.kind != Token.EOT) {
-        syntacticError("\"%\" not expected after end of program",
-          currentToken.spelling);
-      }
+    SourcePosition pos = new SourcePosition();
+    try {        
+        
+        while(currentToken.kind == Token.PACKAGE){
+            PackageDeclaration pAST = parsePackageDeclaration();
+            accept(Token.SEMICOLON);
+            finish(pos);
+            pAST = new PackageDeclaration(pAST, previousTokenPosition);
+        }
+        Command cAST = parseCommand();
+        // Modificar clase Program para que admita packages
+        programAST = new Program(cAST, previousTokenPosition);
+      
+        if (currentToken.kind != Token.EOT) {
+          syntacticError("\"%\" not expected after end of program",
+            currentToken.spelling);
+        }
     }
     catch (SyntaxError s) { return null; }
     return programAST;
   }
+  
+  
+    PackageDeclaration parsePackageDeclaration() throws SyntaxError { // Se agrega parse package declaration
+        PackageDeclaration packageAST = null;
+        SourcePosition packagePos = new SourcePosition();
 
+        start(packagePos);
+        accept(Token.PACKAGE);
+        Identifier piAST = parseIdentifier();
+        accept(Token.IS);
+        Declaration dAST = parseDeclaration();
+        accept(Token.END);
+        finish(packagePos);
+        packageAST = new PackageDeclaration(piAST, dAST, packagePos);
+        return packageAST;
+  }
+  
+  LongIdentifier parseLongIdentifier() throws SyntaxError {
+      LongIdentifier indentifierAST = null;
+      SourcePosition indentifierPos = new SourcePosition();
+      
+      start(indentifierPos);
+      Identifier i1AST = parseIdentifier();
+      accept(Token.IS);
+      Identifier i2AST = parseIdentifier();
+      finish(indentifierPos);
+      indentifierAST = new LongIdentifier(i1AST, i2AST, indentifierPos);
+      
+      return indentifierAST;
+  }
+
+    
 ///////////////////////////////////////////////////////////////////////////////
 //
 // LITERALS
@@ -324,7 +357,7 @@ public class Parser {
                   Command cAST = parseCommand();
                   accept(Token.END);
                   finish(commandPos);
-                  commandAST = new DoWhileCommand(cAST, eAST, commandPos);
+                  commandAST = new WhileCommand(eAST, cAST, commandPos);
                 }
                 break;
 
@@ -336,7 +369,7 @@ public class Parser {
                   Command cAST = parseCommand();
                   accept(Token.END);
                   finish(commandPos);
-                  commandAST = new DoUntilCommand(cAST, eAST, commandPos);
+                  commandAST = new UntilCommand(eAST, cAST, commandPos);
                 }
                 break;
               case Token.DO:
@@ -384,7 +417,7 @@ public class Parser {
           acceptIt();
           Expression eAST = parseExpression();
           accept(Token.FROM);
-          Case cAST = parseCases(); //Agregar parse
+          Cases cAST = parseCases(); //Agregar parse
           finish(commandPos);
           commandAST = new ChooseCommand(eAST, cAST, commandPos);
         }
@@ -410,7 +443,7 @@ public class Parser {
     Identifier iAST = parseIdentifier();
     accept(Token.FROM);
     Expression e1AST = parseExpression();
-    Declaration dAST = new ForDeclaration(iAST, eAST, commandPos);
+    Declaration dAST = new ForDeclaration(iAST, e1AST, commandPos);
     accept(Token.TO);
     Expression e2AST = parseExpression();
     switch (currentToken.kind) {
@@ -500,7 +533,7 @@ public class Parser {
 ///////////////////////////////////////////////////////////////////////////////
 
   SequentialCase parseCases() throws SyntaxError{ //Se agrega parse
-    Case casesExpressionAST = null;
+    Cases casesExpressionAST = null;
 
     SourcePosition casesExpressionPos = new SourcePosition();
     start(casesExpressionPos);
@@ -510,6 +543,7 @@ public class Parser {
       bAST = parseCase(); //falta clase
       finish(casesExpressionPos);
       casesExpressionAST = new SequentialCase(aAST, bAST, casesExpressionPos);
+      aAST = bAST;
     }
     switch(currentToken.kind){
       case Token.ELSE:
@@ -544,14 +578,14 @@ public class Parser {
     SourcePosition caseLiteralsPos = new SourcePosition();
     start(casesLiteralsPos);
 
-    CaseRange cr1AST = parseCaseRange();
+    CaseRange casesLiteralsAST = parseCaseRange();
     switch(currentToken.kind){
       case Token.PIPE:
       {
         while(currentToken.kind == Token.PIPE){
           CaseRange cr2AST = parseCaseRange();
           finish(casesLiteralsPos);
-          casesLiteralsAST = new SequentialCaseRange(cr1AST, cr2AST, casesExpressionPos); 
+          casesLiteralsAST = new SequentialCaseRange(casesLiteralsAST, cr2AST, casesExpressionPos);
         }
       }
     }
@@ -806,7 +840,17 @@ public class Parser {
   Vname parseVname () throws SyntaxError {
     Vname vnameAST = null; // in case there's a syntactic error
     Identifier iAST = parseIdentifier();
-    vnameAST = parseRestOfVname(iAST);
+    SourcePosition vNamePos = new SourcePosition();
+    start(vNamePos);
+    if(currentToken.kind == Token.DOLLAR){ // Se agrregó el if si es un package identifier o un var-name
+      acceptIt();
+      finish(vNamePos);
+      Vname vnameAST2 = parseRestOfVname(iAST);
+      vnameAST = new PackageVName(iAST,vnameAST2,vNamePos); //Se agrega nueva clase
+    }else{
+      finish(vNamePos);
+      vnameAST = parseRestOfVname(iAST);
+    }
     return vnameAST;
   }
 
@@ -1366,4 +1410,21 @@ public class Parser {
     }
     return fieldAST;
   }
+
+  PackageDeclaration parsePackageDeclaration() throws SyntaxError { // Se agrega parse package declaration
+        PackageDeclaration packageAST = null;
+        SourcePosition packagePos = new SourcePosition();
+
+        start(packagePos);
+        accept(Token.PACKAGE);
+        Identifier piAST = parseIdentifier();
+        accept(Token.IS);
+        Declaration dAST = parseDeclaration();
+        accept(Token.END);
+        finish(packagePos);
+        packageAST = new PackageDeclaration(piAST, dAST, packagePos);
+        return packageAST;
+  }
+
+
 }

@@ -119,7 +119,10 @@ final class Token extends Object {
 
     // special tokens...
     EOT         = 47,
-    ERROR       = 48;
+    ERROR       = 48,
+  
+    // package
+    PACKAGE     = 49;
 
   private static String[] tokenTable = new String[] {
     "<int>",
@@ -170,7 +173,8 @@ final class Token extends Object {
     "{",
     "}",
     "",
-    "<error>"
+    "<error>",
+    "package"
   };
 
   private final static int  firstReservedWord = Token.ARRAY,

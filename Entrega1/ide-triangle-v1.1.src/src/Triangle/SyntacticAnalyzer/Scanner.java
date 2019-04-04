@@ -131,9 +131,9 @@ public final class Scanner {
     case '.':
       takeIt();
       if (currentChar == '.') {
-        takeIt();
-        return Token.RANGE;
-      } else
+          takeIt();
+          return Token.RANGE;
+      }
       return Token.DOT;
 
     case ':':
@@ -141,11 +141,15 @@ public final class Scanner {
       if (currentChar == '=') {
         takeIt();
         return Token.BECOMES;
-      }if (currentChar == ':') {
-        takeIt();
-        return Token.INITIALIZE;
-      } else
-        return Token.COLON;
+      }
+      if (currentChar == ':') {
+          takeIt();
+          if (currentChar == '=') {
+              takeIt();
+              return Token.INITIALIZE;
+          }
+      }
+      return Token.COLON;
 
     case ';':
       takeIt();
