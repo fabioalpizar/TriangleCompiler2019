@@ -25,6 +25,7 @@ import Triangle.AbstractSyntaxTrees.BinaryExpression;
 import Triangle.AbstractSyntaxTrees.CallCommand;
 import Triangle.AbstractSyntaxTrees.CallExpression;
 import Triangle.AbstractSyntaxTrees.Case;
+import Triangle.AbstractSyntaxTrees.CaseCommand;
 import Triangle.AbstractSyntaxTrees.CharacterExpression;
 import Triangle.AbstractSyntaxTrees.CharacterLiteral;
 import Triangle.AbstractSyntaxTrees.ChooseCommand;
@@ -64,6 +65,7 @@ import Triangle.AbstractSyntaxTrees.CaseLiteral;
 import Triangle.AbstractSyntaxTrees.CaseLiterals;
 import Triangle.AbstractSyntaxTrees.CaseRange;
 import Triangle.AbstractSyntaxTrees.DualRange;
+import Triangle.AbstractSyntaxTrees.ElseCase;
 import Triangle.AbstractSyntaxTrees.MultipleActualParameterSequence;
 import Triangle.AbstractSyntaxTrees.MultipleArrayAggregate;
 import Triangle.AbstractSyntaxTrees.MultipleFieldTypeDenoter;
@@ -100,6 +102,7 @@ import Triangle.AbstractSyntaxTrees.VnameExpression;
 import Triangle.AbstractSyntaxTrees.PackageVName;
 import Triangle.AbstractSyntaxTrees.ProgramPackage;
 import Triangle.AbstractSyntaxTrees.SequentialCase;
+import Triangle.AbstractSyntaxTrees.SingleRange;
 import Triangle.AbstractSyntaxTrees.WhileCommand;
 
 public class Parser {
@@ -519,25 +522,25 @@ public class Parser {
 ///////////////////////////////////////////////////////////////////////////////
 
   SequentialCase parseCases() throws SyntaxError{ //Se agrega parse
-    Cases casesExpressionAST = null;
+    SequentialCase casesExpressionAST = null;
 
     SourcePosition casesExpressionPos = new SourcePosition();
     start(casesExpressionPos);
-    Case aAST = parseCase(); //falta
+    CaseCommand cAST = parseCase(); //falta
     Case bAST;
+    
     while(currentToken.kind == Token.WHEN){
       bAST = parseCase(); //falta clase
       finish(casesExpressionPos);
-      casesExpressionAST = new SequentialCase(aAST, bAST, casesExpressionPos);
-      aAST = bAST;
+      cAST = new SequentialCase((Case) cAST, bAST, casesExpressionPos);
     }
     switch(currentToken.kind){
       case Token.ELSE:
       {
-        acceptIt()
-        bAST = parseCommand();
+        acceptIt();
+        Command comAST = parseCommand();
         finish(casesExpressionPos);
-        casesExpressionAST = new ElseCase(aAST,bAST, casesExpressionPos);
+        casesExpressionAST = new ElseCase(comAST,cAST, casesExpressionPos);
       }
     }
     return casesExpressionAST;
@@ -550,7 +553,7 @@ public class Parser {
     Case caseAST = null;
     SourcePosition casePos = new SourcePosition();
     start(casePos);
-    acceptIt();
+    accept(Token.WHEN);
     CaseLiterals aAST = parseCaseLiterals(); //agregar caseliterals
     accept(Token.THEN);
     Command cmmdAST = parseCommand();
