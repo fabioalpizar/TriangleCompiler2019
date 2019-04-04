@@ -24,19 +24,6 @@ public interface Visitor {
   public abstract Object visitLetCommand(LetCommand ast, Object o);
   public abstract Object visitSequentialCommand(SequentialCommand ast, Object o);
   public abstract Object visitWhileCommand(WhileCommand ast, Object o);
-  public abstract Object visitDoWhileCommand(DoWhileCommand ast, Object o);
-  public abstract Object visitUntilCommand(UntilCommand ast, Object o);
-  public abstract Object visitDoUntilCommand(DoUntilCommand ast, Object o);
-  
-  
-  // For
-  public abstract Object visitForCommand(ForCommand ast, Object o);
-  public abstract Object visitForDeclaration(ForDeclaration ast, Object o);
-  public abstract Object visitForWhileCommand(ForWhileCommand ast, Object o);
-  public abstract Object visitForUntilCommand(ForUntilCommand ast, Object o);
-  
-  // Cases
-  public abstract Object visitCase(Case aThis, Object o);
 
 
   // Expressions
@@ -56,7 +43,6 @@ public interface Visitor {
   public abstract Object visitBinaryOperatorDeclaration(BinaryOperatorDeclaration ast, Object o);
   public abstract Object visitConstDeclaration(ConstDeclaration ast, Object o);
   public abstract Object visitFuncDeclaration(FuncDeclaration ast, Object o);
-  public abstract Object visitPrivateDeclaration(PrivateDeclaration ast, Object o);
   public abstract Object visitProcDeclaration(ProcDeclaration ast, Object o);
   public abstract Object visitSequentialDeclaration(SequentialDeclaration ast, Object o);
   public abstract Object visitTypeDeclaration(TypeDeclaration ast, Object o);
@@ -118,6 +104,31 @@ public interface Visitor {
 
   // Programs
   public abstract Object visitProgram(Program ast, Object o);
-    
+  
+  
+    //____New Visitors____//
+    //Case
+    public abstract Object visitCase(Case ast, Object o);
+    public abstract Object visitCaseLiteral(CaseLiteral ast, Object o);
+    public abstract Object visitCaseLiterals(CaseLiterals ast, Object o);
+    //Do
+    public abstract Object visitDoUntilCommand(DoUntilCommand ast, Object o);
+    public abstract Object visitDoWhileCommand(DoWhileCommand ast, Object o);
+    //For
+    public abstract Object visitForCommand(ForCommand ast, Object o);
+    public abstract Object visitForDeclaration(ForDeclaration ast, Object o);
+    public abstract Object visitForUntilCommand(ForUntilCommand ast, Object o);
+    public abstract Object visitForWhileCommand(ForWhileCommand ast, Object o);
+    //Extras
+    public abstract Object visitSequentialCase(SequentialCase ast, Object o);
+    public abstract Object visitSequentialRange(SequentialRange ast, Object o);
+    public abstract Object visitSingleRange(SingleRange ast, Object o);
+    public abstract Object visitUntilCommand(UntilCommand ast, Object o);
+    public abstract Object visitPrivateDeclaration(PrivateDeclaration ast, Object o);
+    public abstract Object visitDualRange(DualRange ast, Object o);
+    public abstract Object visitElseCase(ElseCase ast, Object o);
+    public abstract Object visitChooseCommand(ChooseCommand ast, Object o);
+  
+  
 
 }

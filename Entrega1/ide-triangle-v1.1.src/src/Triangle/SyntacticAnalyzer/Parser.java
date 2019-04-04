@@ -163,10 +163,12 @@ public class Parser {
     try {        
         
         while(currentToken.kind == Token.PACKAGE){
-            PackageDeclaration pAST = parsePackageDeclaration();
+            PackageDeclaration p1AST = parsePackageDeclaration();
             accept(Token.SEMICOLON);
             finish(pos);
-            pAST = new PackageDeclaration(pAST, previousTokenPosition);
+            Pacakge p2AST = parsePackageDeclaration();
+            finish(pos)
+            p1AST = new SequentialPackageDeclaration(p1AST, p2AST, previousTokenPosition);
         }
         Command cAST = parseCommand();
         // Modificar clase Program para que admita packages
