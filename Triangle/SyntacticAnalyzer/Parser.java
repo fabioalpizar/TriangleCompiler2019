@@ -149,6 +149,7 @@ public class Parser {
     previousTokenPosition.finish = 0;
     currentToken = lexicalAnalyser.scan();
     SourcePosition pos = new SourcePosition();
+    // Se agrega la funcionalidad para package declaration
     try {
       Package p1AST;
       if(currentToken.kind == Package){
@@ -159,8 +160,10 @@ public class Parser {
         finish(pos)
         p1AST = new SequentialPackageDeclaration(p1AST, p2AST, previousTokenPosition);
       }
+      //
       Command cAST = parseCommand();
       // Modificar clase Program para que admita packages
+      // programAST = new Program(p1AST, cAST, previusTokenPosiion)
       programAST = new Program(cAST, previousTokenPosition);
       if (currentToken.kind != Token.EOT) {
         syntacticError("\"%\" not expected after end of program",
