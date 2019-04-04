@@ -151,8 +151,8 @@ public class Parser {
     SourcePosition pos = new SourcePosition();
     // Se agrega la funcionalidad para package declaration
     try {
-      Package p1AST;
-      if(currentToken.kind == Package){
+      PackageDeclaration p1AST;
+      if(currentToken.kind == Token.PACKAGE){
         p1AST = parsePackageDeclaration();
       }
       while(currentToken.kind == Token.PACKAGE){
@@ -540,15 +540,14 @@ public class Parser {
     SourcePosition caseLiteralsPos = new SourcePosition();
     start(casesLiteralsPos);
 
-    CaseRange cr1AST = parseCaseRange();
+    CaseRange casesLiteralsAST = parseCaseRange();
     switch(currentToken.kind){
       case Token.PIPE:
       {
         while(currentToken.kind == Token.PIPE){
           CaseRange cr2AST = parseCaseRange();
           finish(casesLiteralsPos);
-          casesLiteralsAST = new SequentialCaseRange(cr1AST, cr2AST, casesExpressionPos); 
-          cr1AST = cr2AST;
+          casesLiteralsAST = new SequentialCaseRange(casesLiteralsAST, cr2AST, casesExpressionPos);
         }
       }
     }
@@ -1364,7 +1363,20 @@ public class Parser {
     return fieldAST;
   }
 
-  //PackageDeclaration parsePackageDe
+  PackageDeclaration parsePackageDeclaration() throws SyntaxError { // Se agrega parse package declaration
+    PackageDeclaration packageAST = null;
+    SourcePosition packagePos = new SourcePosition();
+
+    start(packagePos);
+    accept(Token.PACKAGE);
+    Identifier piAST = parseIdentifier();
+    accept(Token.IS);
+    Declaration dAST = parseDeclaration();
+    accept(Token.END);
+    finish(packagePos);
+    packageAST = new PackageDeclaration(piAST, dAST, packagePos);
+    return packageAST;
+  }
 
 
 }
