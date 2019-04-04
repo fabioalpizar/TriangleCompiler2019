@@ -24,8 +24,10 @@ import Triangle.AbstractSyntaxTrees.AssignCommand;
 import Triangle.AbstractSyntaxTrees.BinaryExpression;
 import Triangle.AbstractSyntaxTrees.CallCommand;
 import Triangle.AbstractSyntaxTrees.CallExpression;
+import Triangle.AbstractSyntaxTrees.Case;
 import Triangle.AbstractSyntaxTrees.CharacterExpression;
 import Triangle.AbstractSyntaxTrees.CharacterLiteral;
+import Triangle.AbstractSyntaxTrees.ChooseCommand;
 import Triangle.AbstractSyntaxTrees.Command;
 import Triangle.AbstractSyntaxTrees.ConstActualParameter;
 import Triangle.AbstractSyntaxTrees.ConstDeclaration;
@@ -41,18 +43,27 @@ import Triangle.AbstractSyntaxTrees.Expression;
 import Triangle.AbstractSyntaxTrees.FieldTypeDenoter;
 import Triangle.AbstractSyntaxTrees.FormalParameter;
 import Triangle.AbstractSyntaxTrees.FormalParameterSequence;
+import Triangle.AbstractSyntaxTrees.ForCommand;
+import Triangle.AbstractSyntaxTrees.ForDeclaration;
+import Triangle.AbstractSyntaxTrees.ForUntilCommand;
+import Triangle.AbstractSyntaxTrees.ForWhileCommand;
 import Triangle.AbstractSyntaxTrees.FuncActualParameter;
 import Triangle.AbstractSyntaxTrees.FuncDeclaration;
 import Triangle.AbstractSyntaxTrees.FuncFormalParameter;
 import Triangle.AbstractSyntaxTrees.Identifier;
 import Triangle.AbstractSyntaxTrees.IfCommand;
 import Triangle.AbstractSyntaxTrees.IfExpression;
+import Triangle.AbstractSyntaxTrees.InitVarDeclaration;
 import Triangle.AbstractSyntaxTrees.IntegerExpression;
 import Triangle.AbstractSyntaxTrees.IntegerLiteral;
 import Triangle.AbstractSyntaxTrees.LetCommand;
 import Triangle.AbstractSyntaxTrees.LetExpression;
 import Triangle.AbstractSyntaxTrees.PackageDeclaration;
+import Triangle.AbstractSyntaxTrees.PrivateDeclaration;
 import Triangle.AbstractSyntaxTrees.CaseLiteral;
+import Triangle.AbstractSyntaxTrees.CaseLiterals;
+import Triangle.AbstractSyntaxTrees.CaseRange;
+import Triangle.AbstractSyntaxTrees.DualRange;
 import Triangle.AbstractSyntaxTrees.MultipleActualParameterSequence;
 import Triangle.AbstractSyntaxTrees.MultipleArrayAggregate;
 import Triangle.AbstractSyntaxTrees.MultipleFieldTypeDenoter;
@@ -80,6 +91,7 @@ import Triangle.AbstractSyntaxTrees.SubscriptVname;
 import Triangle.AbstractSyntaxTrees.TypeDeclaration;
 import Triangle.AbstractSyntaxTrees.TypeDenoter;
 import Triangle.AbstractSyntaxTrees.UnaryExpression;
+import Triangle.AbstractSyntaxTrees.UntilCommand;
 import Triangle.AbstractSyntaxTrees.VarActualParameter;
 import Triangle.AbstractSyntaxTrees.VarDeclaration;
 import Triangle.AbstractSyntaxTrees.VarFormalParameter;
@@ -87,6 +99,7 @@ import Triangle.AbstractSyntaxTrees.Vname;
 import Triangle.AbstractSyntaxTrees.VnameExpression;
 import Triangle.AbstractSyntaxTrees.PackageVName;
 import Triangle.AbstractSyntaxTrees.ProgramPackage;
+import Triangle.AbstractSyntaxTrees.SequentialCase;
 import Triangle.AbstractSyntaxTrees.WhileCommand;
 
 public class Parser {
@@ -390,7 +403,7 @@ public class Parser {
           acceptIt();
           Expression eAST = parseExpression();
           accept(Token.FROM);
-          Cases cAST = parseCases(); //Agregar parse
+          SequentialCase cAST = parseCases(); //Agregar parse
           finish(commandPos);
           commandAST = new ChooseCommand(eAST, cAST, commandPos);
         }
@@ -416,7 +429,7 @@ public class Parser {
     Identifier iAST = parseIdentifier();
     accept(Token.FROM);
     Expression e1AST = parseExpression();
-    Declaration dAST = new ForDeclaration(iAST, eAST, commandPos);
+    Declaration dAST = new ForDeclaration(iAST, e1AST, commandPos);
     accept(Token.TO);
     Expression e2AST = parseExpression();
     switch (currentToken.kind) {
@@ -549,7 +562,7 @@ public class Parser {
   CaseLiterals parseCaseLiterals() throws SyntaxError{
     CaseLiterals casesLiteralsAST= null;
     SourcePosition caseLiteralsPos = new SourcePosition();
-    start(casesLiteralsPos);
+    start(caseLiteralsPos);
 
     CaseRange casesLiteralsAST = parseCaseRange();
     switch(currentToken.kind){
@@ -557,8 +570,8 @@ public class Parser {
       {
         while(currentToken.kind == Token.PIPE){
           CaseRange cr2AST = parseCaseRange();
-          finish(casesLiteralsPos);
-          casesLiteralsAST = new SequentialCaseRange(casesLiteralsAST, cr2AST, casesExpressionPos);
+          finish(caseLiteralsPos);
+          casesLiteralsAST = new SequentialCaseRange(casesLiteralsAST, cr2AST, caseLiteralsPos);
         }
       }
     }
@@ -607,7 +620,7 @@ public class Parser {
         break;
       }
     }
-    return casesLiteralAST;
+    return caseLiteralAST;
   }
 
 
@@ -1399,5 +1412,18 @@ public class Parser {
     return packageAST;
   }
 
+    LongIdentifier parseLongIdentifier() throws SyntaxError {
+      LongIdentifier indentifierAST = null;
+      SourcePosition indentifierPos = new SourcePosition();
+      
+      start(indentifierPos);
+      Identifier i1AST = parseIdentifier();
+      accept(Token.IS);
+      Identifier i2AST = parseIdentifier();
+      finish(indentifierPos);
+      indentifierAST = new LongIdentifier(i1AST, i2AST, indentifierPos);
+      
+      return indentifierAST;
+  }
 
 }
