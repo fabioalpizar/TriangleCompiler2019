@@ -52,6 +52,7 @@ import Triangle.AbstractSyntaxTrees.FuncFormalParameter;
 import Triangle.AbstractSyntaxTrees.Identifier;
 import Triangle.AbstractSyntaxTrees.IfCommand;
 import Triangle.AbstractSyntaxTrees.IfExpression;
+import Triangle.AbstractSyntaxTrees.InitVarDeclaration;
 import Triangle.AbstractSyntaxTrees.IntTypeDenoter;
 import Triangle.AbstractSyntaxTrees.IntegerExpression;
 import Triangle.AbstractSyntaxTrees.IntegerLiteral;
@@ -63,17 +64,23 @@ import Triangle.AbstractSyntaxTrees.MultipleFieldTypeDenoter;
 import Triangle.AbstractSyntaxTrees.MultipleFormalParameterSequence;
 import Triangle.AbstractSyntaxTrees.MultipleRecordAggregate;
 import Triangle.AbstractSyntaxTrees.Operator;
+import Triangle.AbstractSyntaxTrees.PackageDeclaration;
+import Triangle.AbstractSyntaxTrees.PackageId;
+import Triangle.AbstractSyntaxTrees.PackageVName;
 import Triangle.AbstractSyntaxTrees.PrivateDeclaration;
 import Triangle.AbstractSyntaxTrees.ProcActualParameter;
 import Triangle.AbstractSyntaxTrees.ProcDeclaration;
 import Triangle.AbstractSyntaxTrees.ProcFormalParameter;
 import Triangle.AbstractSyntaxTrees.Program;
+import Triangle.AbstractSyntaxTrees.ProgramPackage;
 import Triangle.AbstractSyntaxTrees.RecordExpression;
 import Triangle.AbstractSyntaxTrees.RecordTypeDenoter;
 import Triangle.AbstractSyntaxTrees.SequentialCase;
 import Triangle.AbstractSyntaxTrees.SequentialCommand;
 import Triangle.AbstractSyntaxTrees.SequentialDeclaration;
+import Triangle.AbstractSyntaxTrees.SequentialPackageDeclaration;
 import Triangle.AbstractSyntaxTrees.SequentialRange;
+import Triangle.AbstractSyntaxTrees.SimpleIdentifier;
 import Triangle.AbstractSyntaxTrees.SimpleTypeDenoter;
 import Triangle.AbstractSyntaxTrees.SimpleVname;
 import Triangle.AbstractSyntaxTrees.SingleActualParameterSequence;
@@ -102,6 +109,8 @@ public class HtmlVisitors implements Visitor {
     private FileWriter fileWriter;
     private boolean SeqDeclarationFlag = false;
     private boolean SeqCommandFlag = false;
+    private boolean SeqCaseFlag = false;
+    private boolean SeqRangeFlag = false;
 
     HtmlVisitors(FileWriter fileWriter) {
         this.fileWriter = fileWriter;
@@ -169,7 +178,90 @@ public class HtmlVisitors implements Visitor {
         writeTxtHTML("<p><b>end;</b></p>");
         return null;
     }
+    
+    @Override
+    public Object visitChooseCommand(ChooseCommand ast, Object o) {
+        writeTxtHTML("<b>choose</b> (");
+        ast.E.visit(this, null);
+        writeTxtHTML(") <b>from</b>");
+        writeTxtHTML("<p><b>begin</b></p>");
+        ast.C.visit(this, null);
+        writeTxtHTML("<p><b>end;</b></p>");
+        return null;
+    }
+    
+    @Override
+    public Object visitUntilCommand(UntilCommand ast, Object o) {
+        writeTxtHTML("<b>until</b> (");
+        ast.E.visit(this, null);
+        writeTxtHTML(") <b>do</b>");
+        writeTxtHTML("<p><b>begin</b></p>");
+        ast.C.visit(this, null);
+        writeTxtHTML("<p><b>end;</b></p>");
+        return null;
+    }
+    
+        @Override
+    public Object visitForUntilCommand(ForUntilCommand ast, Object o) {
+        writeTxtHTML("<b>for</b> (");
+        ast.D.visit(this, null);
+        writeTxtHTML(") <b>to</b>");
+        ast.E1.visit(this,null);
+        writeTxtHTML("<p><b>until</b></p>");
+        ast.E2.visit(this, null);
+        writeTxtHTML("<p><b>do;</b></p>");
+        ast.C.visit(this, null);
+        writeTxtHTML("<p><b>end;</b></p>");
+        return null;
+    }
 
+    @Override
+    public Object visitForWhileCommand(ForWhileCommand ast, Object o) {
+        writeTxtHTML("<b>for</b> (");
+        ast.D.visit(this, null);
+        writeTxtHTML(") <b>to</b>");
+        ast.E1.visit(this,null);
+        writeTxtHTML("<p><b>while</b></p>");
+        ast.E2.visit(this, null);
+        writeTxtHTML("<p><b>do;</b></p>");
+        ast.C.visit(this, null);
+        writeTxtHTML("<p><b>end;</b></p>");
+        return null;
+    }
+    
+    @Override
+    public Object visitDoUntilCommand(DoUntilCommand ast, Object o) {
+        writeTxtHTML("<b>do</b> (");
+        ast.C.visit(this, null);
+        writeTxtHTML(") <b>until</b>");
+        writeTxtHTML("<p><b>begin</b></p>");
+        ast.E.visit(this, null);
+        writeTxtHTML("<p><b>end;</b></p>");
+        return null;
+    }
+
+    @Override
+    public Object visitDoWhileCommand(DoWhileCommand ast, Object o) {
+        writeTxtHTML("<b>do</b> (");
+        ast.C.visit(this, null);
+        writeTxtHTML(") <b>while</b>");
+        writeTxtHTML("<p><b>begin</b></p>");
+        ast.E.visit(this, null);
+        writeTxtHTML("<p><b>end;</b></p>");
+        return null;
+    }
+
+    @Override
+    public Object visitForCommand(ForCommand ast, Object o) {
+        writeTxtHTML("<b>for</b> (");
+        ast.D.visit(this, null);
+        writeTxtHTML(") <b>to</b>");
+        ast.E.visit(this,null);
+        writeTxtHTML("<p><b>do;</b></p>");
+        ast.C.visit(this, null);
+        writeTxtHTML("<p><b>end;</b></p>");
+        return null;
+    }
 
     // Expressions
     public Object visitArrayExpression(ArrayExpression ast, Object obj) {
@@ -178,7 +270,8 @@ public class HtmlVisitors implements Visitor {
         writeLineHTML("</ArrayExpression>");
         return null;
     }
-
+    
+    
     public Object visitBinaryExpression(BinaryExpression ast, Object obj) {
         writeLineHTML("<BinaryExpression>");
         ast.E1.visit(this, null);
@@ -329,6 +422,56 @@ public class HtmlVisitors implements Visitor {
         ast.I.visit(this, null);
         writeTxtHTML("</font>");
         ast.T.visit(this, null);
+        writeTxtHTML("</p>");
+        return null;
+    }
+    
+    @Override
+    public Object visitForDeclaration(ForDeclaration ast, Object o) {
+        writeTxtHTML("<p style=\"text-indent: 40px\">const ");
+        ast.I.visit(this, null);
+        ast.E.visit(this, null);
+        writeLineHTML("</ForDeclaration>");
+        writeTxtHTML("</p>");
+        return null;
+    }
+    
+    @Override
+    public Object visitPrivateDeclaration(PrivateDeclaration ast, Object o) {
+        writeTxtHTML("<p style=\"text-indent: 40px\">const ");
+        ast.D1.visit(this, null);
+        ast.D2.visit(this, null);
+        writeLineHTML("</PrivateDeclaration>");
+        writeTxtHTML("</p>");
+        return null;
+    }
+    
+    @Override
+    public Object visitInitVarDeclaration(InitVarDeclaration ast, Object o) {
+        writeTxtHTML("<p style=\"text-indent: 40px\">const ");
+        ast.E.visit(this, null);
+        ast.I.visit(this, null);
+        writeLineHTML("</InitVarDeclaration>");
+        writeTxtHTML("</p>");
+        return null;
+    }
+    
+    @Override
+    public Object visitSequentialPackageDeclaration(SequentialPackageDeclaration ast, Object o) {
+        writeTxtHTML("<p style=\"text-indent: 40px\">const ");
+        ast.P1.visit(this, null);
+        ast.P2.visit(this, null);
+        writeLineHTML("</SequentialPackageDeclaration>");
+        writeTxtHTML("</p>");
+        return null;
+    }
+
+    @Override
+    public Object visitPackageDeclaration(PackageDeclaration ast, Object o) {
+        writeTxtHTML("<p style=\"text-indent: 40px\">const ");
+        ast.D.visit(this, null);
+        ast.I.visit(this, null);
+        writeLineHTML("</PackageDeclaration>");
         writeTxtHTML("</p>");
         return null;
     }
@@ -587,6 +730,15 @@ public class HtmlVisitors implements Visitor {
         writeLineHTML("</SubscriptVname>");
         return null;
     }
+    
+    @Override
+    public Object visitPackageVName(PackageVName ast, Object o) {
+        writeLineHTML("<SubscriptVname>");
+        ast.I.visit(this, null);
+        ast.V.visit(this, null);
+        writeLineHTML("</SubscriptVname>");
+        return null;
+    }
 
 
     // Programs
@@ -598,6 +750,21 @@ public class HtmlVisitors implements Visitor {
                         "</style>\n</head>");
         writeLineHTML("<body>");
         ast.C.visit(this, null);
+        writeLineHTML("\n</body>");
+        writeLineHTML("\n</html>");
+        return null;
+    }
+    
+    @Override
+    public Object visitProgramPackage(ProgramPackage ast, Object o) {
+        writeLineHTML("<html>");
+        writeLineHTML("<head>\n<style>" +
+                        "\n body {\nfont-size: 1em !important;\n" +
+                        "font-family: Courier !important;\n}\n" +
+                        "</style>\n</head>");
+        writeLineHTML("<body>");
+        ast.C.visit(this, null);
+        ast.P.visit(this, null);
         writeLineHTML("\n</body>");
         writeLineHTML("\n</html>");
         return null;
@@ -621,6 +788,7 @@ public class HtmlVisitors implements Visitor {
             e.printStackTrace();
         }
     }
+    
 
     /*
     * Convert the characters "<" & "<=" to their equivalents in html
@@ -634,9 +802,67 @@ public class HtmlVisitors implements Visitor {
             return operator;
     }
 
+    
+    // Cases
     @Override
     public Object visitCase(Case ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        writeTxtHTML("<b>when</b> (");
+        ast.C1.visit(this, null);
+        writeTxtHTML(") <b>then</b>");
+        ast.C2.visit(this,null);
+        return null;
+    }
+    
+    @Override
+    public Object visitSequentialCase(SequentialCase ast, Object o) {
+        if(SeqCaseFlag == false){
+            this.SeqCaseFlag = true;
+            writeTxtHTML("<p><b>begin</b></p>");
+            ast.C1.visit(this, null);
+            ast.C2.visit(this, null);
+            writeTxtHTML("<p><b>end</b></p>");
+        }else{
+            ast.C1.visit(this, null);
+            ast.C2.visit(this, null);
+        }
+        return null;
+    }
+
+    @Override
+    public Object visitSequentialRange(SequentialRange ast, Object o) {
+        if(SeqRangeFlag == false){
+            this.SeqRangeFlag = true;
+            writeTxtHTML("<p><b>begin</b></p>");
+            ast.R1.visit(this, null);
+            ast.R2.visit(this, null);
+            writeTxtHTML("<p><b>end</b></p>");
+        }else{
+            ast.R1.visit(this, null);
+            ast.R2.visit(this, null);
+        }
+        return null;
+    }
+
+    @Override
+    public Object visitSingleRange(SingleRange ast, Object o) {
+        writeTxtHTML("<b>singleRange</b> (");
+        ast.C1.visit(this, null);
+        return null;
+    }
+
+    @Override
+    public Object visitDualRange(DualRange ast, Object o) {
+        writeTxtHTML("<b>DualRange</b> (");
+        ast.C1.visit(this, null);
+        ast.C2.visit(this, null);
+        return null;
+    }
+
+    @Override
+    public Object visitElseCase(ElseCase ast, Object o) {
+        writeTxtHTML("<b>else</b> (");
+        ast.C.visit(this, null);
+        return null;
     }
 
     @Override
@@ -650,72 +876,12 @@ public class HtmlVisitors implements Visitor {
     }
 
     @Override
-    public Object visitDoUntilCommand(DoUntilCommand ast, Object o) {
+    public Object visitPackageId(PackageId ast, Object o) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Object visitDoWhileCommand(DoWhileCommand ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitForCommand(ForCommand ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitForDeclaration(ForDeclaration ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitForUntilCommand(ForUntilCommand ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitForWhileCommand(ForWhileCommand ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitSequentialCase(SequentialCase ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitSequentialRange(SequentialRange ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitSingleRange(SingleRange ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitUntilCommand(UntilCommand ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitPrivateDeclaration(PrivateDeclaration ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitDualRange(DualRange ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitElseCase(ElseCase ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitChooseCommand(ChooseCommand ast, Object o) {
+    public Object visitSimpleIdentifier(SimpleIdentifier ast, Object o) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
