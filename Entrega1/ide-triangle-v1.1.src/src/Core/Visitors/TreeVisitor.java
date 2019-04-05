@@ -51,7 +51,6 @@ import Triangle.AbstractSyntaxTrees.IntegerExpression;
 import Triangle.AbstractSyntaxTrees.IntegerLiteral;
 import Triangle.AbstractSyntaxTrees.LetCommand;
 import Triangle.AbstractSyntaxTrees.LetExpression;
-import Triangle.AbstractSyntaxTrees.LongIdentifier;
 import Triangle.AbstractSyntaxTrees.MultipleActualParameterSequence;
 import Triangle.AbstractSyntaxTrees.MultipleArrayAggregate;
 import Triangle.AbstractSyntaxTrees.MultipleFieldTypeDenoter;
@@ -558,38 +557,9 @@ public class TreeVisitor implements Visitor {
         return(t);             
     }
     // </editor-fold>
-<<<<<<< HEAD
-
-    @Override
-    public Object visitCase(Case ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitCaseLiterals(CaseLiterals ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitDoUntilCommand(DoUntilCommand ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitDoWhileCommand(DoWhileCommand ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitForCommand(ForCommand ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-=======
     
     // <editor-fold defaultstate="collapsed" desc=" Program ">
     // Se agregaron los metodos visit ProgramPackage y PackageId
->>>>>>> 19266d39baeabe117606bf7b4aa17a5dd3d94a93
     @Override
     public Object visitProgramPackage(ProgramPackage ast, Object o) {
         return(createBinary("Program Package", ast.C, ast.P));
@@ -633,23 +603,5 @@ public class TreeVisitor implements Visitor {
     public Object visitElseCase(ElseCase ast, Object o) {
         return(createUnary("Else Case", ast.C));
     }
-<<<<<<< HEAD
-
-    @Override
-    public Object visitCaseIntegerLiteral(CaseIntegerLiteral ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitCaseCharacterLiteral(CaseCharacterLiteral ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitLongIdentifier(LongIdentifier ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-=======
     // </editor-fold>
->>>>>>> 19266d39baeabe117606bf7b4aa17a5dd3d94a93
 }

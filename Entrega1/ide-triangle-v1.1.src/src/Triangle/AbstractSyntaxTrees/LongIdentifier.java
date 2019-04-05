@@ -18,4 +18,5 @@ public abstract class LongIdentifier extends AST {
     public LongIdentifier (SourcePosition thePosition) {
         super (thePosition);
     }
+
 }

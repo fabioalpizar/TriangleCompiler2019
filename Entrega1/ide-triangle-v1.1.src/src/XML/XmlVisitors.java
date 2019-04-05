@@ -59,7 +59,6 @@ import Triangle.AbstractSyntaxTrees.IntegerExpression;
 import Triangle.AbstractSyntaxTrees.IntegerLiteral;
 import Triangle.AbstractSyntaxTrees.LetCommand;
 import Triangle.AbstractSyntaxTrees.LetExpression;
-import Triangle.AbstractSyntaxTrees.LongIdentifier;
 import Triangle.AbstractSyntaxTrees.MultipleActualParameterSequence;
 import Triangle.AbstractSyntaxTrees.MultipleArrayAggregate;
 import Triangle.AbstractSyntaxTrees.MultipleFieldTypeDenoter;
@@ -826,29 +825,11 @@ public class XmlVisitors implements Visitor {
 
     @Override
     public Object visitCaseIntegerLiteral(CaseIntegerLiteral ast, Object o) {
-<<<<<<< HEAD
-        writeLineHTML("<CaseIntegerLiteral>");
-        ast.IL.visit(this, null);
-        writeLineHTML("</CaseIntegerLiteral>");
-        return null;
-=======
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
->>>>>>> 19266d39baeabe117606bf7b4aa17a5dd3d94a93
     }
 
     @Override
     public Object visitCaseCharacterLiteral(CaseCharacterLiteral ast, Object o) {
-<<<<<<< HEAD
-        writeLineHTML("<CaseCharacterLiteral>");
-        ast.CL.visit(this, null);
-        writeLineHTML("</CaseCharacterLiteral>");
-        return null;
-    }
-
-    @Override
-    public Object visitLongIdentifier(LongIdentifier ast, Object o) {
-=======
->>>>>>> 19266d39baeabe117606bf7b4aa17a5dd3d94a93
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
