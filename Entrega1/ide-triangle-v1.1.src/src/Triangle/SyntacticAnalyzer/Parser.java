@@ -73,7 +73,7 @@ import Triangle.AbstractSyntaxTrees.MultipleFieldTypeDenoter;
 import Triangle.AbstractSyntaxTrees.MultipleFormalParameterSequence;
 import Triangle.AbstractSyntaxTrees.MultipleRecordAggregate;
 import Triangle.AbstractSyntaxTrees.Operator;
-import Triangle.AbstractSyntaxTrees.PackageIdentifier;
+import Triangle.AbstractSyntaxTrees.PackageId;
 import Triangle.AbstractSyntaxTrees.ProcActualParameter;
 import Triangle.AbstractSyntaxTrees.ProcDeclaration;
 import Triangle.AbstractSyntaxTrees.ProcFormalParameter;
@@ -1461,7 +1461,7 @@ public class Parser {
         acceptIt();
         Identifier i2AST = parseIdentifier();
         finish(indentifierPos);
-        indentifierAST = new PackageIdentifier(i1AST, i2AST, indentifierPos);
+        indentifierAST = new PackageId(i1AST, i2AST, indentifierPos);
       }else{
         finish(indentifierPos);
         indentifierAST = new SimpleIdentifier(i1AST, indentifierPos);
