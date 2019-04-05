@@ -5,9 +5,9 @@ import Triangle.SyntacticAnalyzer.SourcePosition;
 
 public class ElseCase extends CaseCommand {
 
-  public ElseCase (Command c2AST, SourcePosition thePosition) {
+  public ElseCase (Command c1AST, SourcePosition thePosition) {
     super (thePosition);
-    C = c2AST;
+    C = c1AST;
   }
 
   public Object visit(Visitor v, Object o) {

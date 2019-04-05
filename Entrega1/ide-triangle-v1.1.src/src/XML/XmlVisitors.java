@@ -792,8 +792,7 @@ public class XmlVisitors implements Visitor {
     @Override
     public Object visitElseCase(ElseCase ast, Object o) {
         writeLineHTML("<ElseCase>");
-        ast.C1.visit(this, null);
-        ast.C2.visit(this,null);
+        ast.C.visit(this, null);
         writeLineHTML("</ElseCase>");
         return null;
     }
