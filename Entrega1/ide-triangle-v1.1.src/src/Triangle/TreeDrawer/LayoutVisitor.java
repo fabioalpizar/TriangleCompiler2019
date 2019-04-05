@@ -148,37 +148,37 @@ public class LayoutVisitor implements Visitor {
   
   @Override
     public Object visitDoUntilCommand(DoUntilCommand ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return layoutBinary("DoUntilCom.", ast.E, ast.C);
     }
 
     @Override
     public Object visitDoWhileCommand(DoWhileCommand ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return layoutBinary("DoWhileCom.", ast.E, ast.C);
     }
 
     @Override
     public Object visitForCommand(ForCommand ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return layoutTernary("ForCom.", ast.E, ast.C, ast.D);
     }
     
     @Override
     public Object visitForUntilCommand(ForUntilCommand ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return layoutQuaternary("ForUntilCom.", ast.C, ast.D, ast.E1, ast.E2);
     }
 
     @Override
     public Object visitForWhileCommand(ForWhileCommand ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return layoutQuaternary("ForWhileCom.", ast.C, ast.D, ast.E1, ast.E2);
     }
     
     @Override
     public Object visitUntilCommand(UntilCommand ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return layoutBinary("UntilCom.", ast.E, ast.C);
     }
     
         @Override
     public Object visitChooseCommand(ChooseCommand ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return layoutBinary("ChooseCom.", ast.E, ast.C);
     }
 
   // Expressions
@@ -262,27 +262,27 @@ public class LayoutVisitor implements Visitor {
   
   @Override
     public Object visitInitVarDeclaration(InitVarDeclaration ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return layoutBinary("InitVarDecl.", ast.I, ast.E);
     }
     
     @Override
     public Object visitForDeclaration(ForDeclaration ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return layoutBinary("ForDecl.", ast.I, ast.E);
     }
     
     @Override
     public Object visitPrivateDeclaration(PrivateDeclaration ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return layoutBinary("ForDecl.", ast.D1, ast.D2);
     }
     
     @Override
     public Object visitSequentialPackageDeclaration(SequentialPackageDeclaration ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return layoutBinary("ForDecl.", ast.P1, ast.P2);
     }
 
     @Override
     public Object visitPackageDeclaration(PackageDeclaration ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return layoutBinary("ForDecl.", ast.I, ast.D);
     }
 
 
