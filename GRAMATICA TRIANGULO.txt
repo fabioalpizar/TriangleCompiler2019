@@ -65,9 +65,11 @@ Long-Identifier 		::= 	[ Package-Identifier "$" ] Identifier
 
 V-name					::= 	[ Package-Identifier "$" ] Var-Name
 
-Var-Name				::=		Identifier
-						|		Var-Name "." Identifier
-						|		Var-Name "[" Expression "]"
+/*
+Var-Name				::=		Identifier 
+							([Identifier "." Var-name]
+							| Var-Name "[" Expression "]")
+*/
 
 Type-denoter			::=		Long-Identifier
 						|		"array" Integer-Literal of Type-denoter
@@ -75,3 +77,9 @@ Type-denoter			::=		Long-Identifier
 
 
 primary-Expression		::= 	LongIdentifier "(" Actual-Parameter-Sequence ")"
+
+Vname ::= LongIdentifer 
+			( 
+				"." Identifier |
+			 	"[" Expression "]" 
+			 )*
