@@ -387,14 +387,18 @@ public class Parser {
                 break;
               case Token.DO:
                 {
-                  finish(commandPos);
+                  //
                   commandAST = ParseDoCommand();
+                  accept(Token.END);
+                  finish(commandPos);
                 }
                 break;
               case Token.FOR:
                 {
-                  finish(commandPos);
+                  //
                   commandAST = ParseForCommand();
+                  accept(Token.END);
+                  finish(commandPos);
                 }
                 break;
               default:
