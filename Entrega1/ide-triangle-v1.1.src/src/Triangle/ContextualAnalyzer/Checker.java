@@ -1082,21 +1082,33 @@ public final class Checker implements Visitor {
     }
 
     @Override
+<<<<<<< HEAD
     public Object visitCaseIntegerLiteral(CaseIntegerLiteral ast, Object o) {
+=======
+    public Object visitCaseLiteral(CaseLiteralAST ast, Object o) {
+>>>>>>> 19266d39baeabe117606bf7b4aa17a5dd3d94a93
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
+<<<<<<< HEAD
     public Object visitCaseCharacterLiteral(CaseCharacterLiteral ast, Object o) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     private void reportUndeclared(LongIdentifier I) {
+=======
+    public Object visitCaseIntegerLiteral(CaseIntegerLiteral ast, Object o) {
+>>>>>>> 19266d39baeabe117606bf7b4aa17a5dd3d94a93
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
+<<<<<<< HEAD
     public Object visitLongIdentifier(LongIdentifier ast, Object o) {
+=======
+    public Object visitCaseCharacterLiteral(CaseCharacterLiteral ast, Object o) {
+>>>>>>> 19266d39baeabe117606bf7b4aa17a5dd3d94a93
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

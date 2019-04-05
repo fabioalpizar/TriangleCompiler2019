@@ -141,6 +141,44 @@ public class TreeVisitor implements Visitor {
     public Object visitWhileCommand(WhileCommand ast, Object obj) {
         return(createBinary("While Command", ast.E, ast.C));
     }
+    
+    /* Se agregaron los metodos visit chooseCommand, untilCommand,
+            forUntilCommand, forWhileCommand, forCommand, doUntilCommand, doWhileCommand*/
+    
+    @Override
+    public Object visitChooseCommand(ChooseCommand ast, Object o) {
+        return(createBinary("Choose Command", ast.E, ast.C));
+    }
+    
+    @Override
+    public Object visitUntilCommand(UntilCommand ast, Object o) {
+        return(createBinary("Until Command", ast.E, ast.C));
+    }
+    
+    @Override
+    public Object visitForUntilCommand(ForUntilCommand ast, Object o) {
+        return(createQuaternary("For Until Command", ast.C, ast.D, ast.E1, ast.E2));
+    }
+
+    @Override
+    public Object visitForWhileCommand(ForWhileCommand ast, Object o) {
+        return(createQuaternary("For While Command", ast.C, ast.D, ast.E1, ast.E2));
+    }
+    
+    @Override
+    public Object visitForCommand(ForCommand ast, Object o) {
+        return(createTernary("For Command", ast.E, ast.C, ast.D));
+    }
+    
+    @Override
+    public Object visitDoUntilCommand(DoUntilCommand ast, Object o) {
+        return(createBinary("Do Until Command", ast.E, ast.C));
+    }
+
+    @Override
+    public Object visitDoWhileCommand(DoWhileCommand ast, Object o) {
+        return(createBinary("Do Until Command", ast.E, ast.C));
+    }
     // </editor-fold>
     
     // <editor-fold defaultstate="collapsed" desc=" Expressions ">
@@ -222,6 +260,33 @@ public class TreeVisitor implements Visitor {
     
     public Object visitVarDeclaration(VarDeclaration ast, Object obj) {
         return(createBinary("Variable Declaration", ast.I, ast.T));
+    }
+       /* Se agregaron los metodos visit de SequentialPackageDeclaration, 
+            PackageDeclaration, InitVarDeclaration, PrivateDeclaration, ForDeclaration*/
+    
+    @Override
+    public Object visitSequentialPackageDeclaration(SequentialPackageDeclaration ast, Object o) {
+        return(createBinary("Sequential Package Declaration", ast.P1, ast.P2));
+    }
+
+    @Override
+    public Object visitPackageDeclaration(PackageDeclaration ast, Object o) {
+        return(createBinary("Package Declaration", ast.I, ast.D));
+    }
+    
+    @Override
+    public Object visitInitVarDeclaration(InitVarDeclaration ast, Object o) {
+        return(createBinary("Init Var Declaration", ast.E, ast.I));
+    }
+    
+    @Override
+    public Object visitPrivateDeclaration(PrivateDeclaration ast, Object o) {
+        return(createBinary("Private Declaration", ast.D1, ast.D2));
+    }
+    
+    @Override
+    public Object visitForDeclaration(ForDeclaration ast, Object o) {
+        return(createBinary("For Declaration", ast.E, ast.I));
     }
     // </editor-fold>
     
@@ -365,6 +430,29 @@ public class TreeVisitor implements Visitor {
     public Object visitOperator(Operator ast, Object obj) {
         return(createNullary(ast.spelling));
     }
+    
+    /* Se agregaron los metodos visit de caseLiterals, simpleIdentifier,
+            caseIntegerLiteral, caseCharacterLiteral*/
+    
+    @Override
+    public Object visitCaseLiterals(CaseLiterals ast, Object o) {
+        return(createUnary("Case Literals", ast.CRange));
+    }
+    
+    @Override
+    public Object visitSimpleIdentifier(SimpleIdentifier ast, Object o) {
+        return(createUnary("Case Literals", ast.ID));
+    }
+
+    @Override
+    public Object visitCaseIntegerLiteral(CaseIntegerLiteral ast, Object o) {
+        return(createUnary("Case Literals", ast.IL));
+    }
+
+    @Override
+    public Object visitCaseCharacterLiteral(CaseCharacterLiteral ast, Object o) {
+        return(createUnary("Case Literals", ast.CL));
+    }
     // </editor-fold>
     
     // <editor-fold defaultstate="collapsed" desc=" Values or Variable Names ">
@@ -383,6 +471,13 @@ public class TreeVisitor implements Visitor {
     
     public Object visitProgram(Program ast, Object obj) {
         return(createUnary("Program", ast.C));
+    }
+    
+    /* Se agrego el metodo visitPackageVName */
+    
+    @Override
+    public Object visitPackageVName(PackageVName ast, Object o) {
+        return(createBinary("Package Vname", ast.V, ast.I));
     }
     // </editor-fold>
 
@@ -463,6 +558,7 @@ public class TreeVisitor implements Visitor {
         return(t);             
     }
     // </editor-fold>
+<<<<<<< HEAD
 
     @Override
     public Object visitCase(Case ast, Object o) {
@@ -489,95 +585,55 @@ public class TreeVisitor implements Visitor {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    @Override
-    public Object visitForDeclaration(ForDeclaration ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitForUntilCommand(ForUntilCommand ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitForWhileCommand(ForWhileCommand ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitSequentialCase(SequentialCase ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitSequentialRange(SequentialRange ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitSingleRange(SingleRange ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitUntilCommand(UntilCommand ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitPrivateDeclaration(PrivateDeclaration ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitDualRange(DualRange ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitElseCase(ElseCase ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitChooseCommand(ChooseCommand ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitInitVarDeclaration(InitVarDeclaration ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
+=======
+    
+    // <editor-fold defaultstate="collapsed" desc=" Program ">
+    // Se agregaron los metodos visit ProgramPackage y PackageId
+>>>>>>> 19266d39baeabe117606bf7b4aa17a5dd3d94a93
     @Override
     public Object visitProgramPackage(ProgramPackage ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitSequentialPackageDeclaration(SequentialPackageDeclaration ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitPackageDeclaration(PackageDeclaration ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitPackageVName(PackageVName ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return(createBinary("Program Package", ast.C, ast.P));
     }
 
     @Override
     public Object visitPackageId(PackageId ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return(createBinary("Package Id", ast.ID, ast.PckID));
+    }
+    // </editor-fold>
+
+    // <editor-fold defaultstate="collapsed" desc=" Cases ">
+    /* Se agregaron los metodos visit case, sequentialCase, sequentialRange, singleRange
+            dualRange, elseCase*/
+    @Override
+    public Object visitCase(Case ast, Object o) {
+        return(createBinary("Case", ast.C1, ast.C2));
     }
 
     @Override
-    public Object visitSimpleIdentifier(SimpleIdentifier ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Object visitSequentialCase(SequentialCase ast, Object o) {
+        return(createBinary("Sequential Case", ast.C1, ast.C2));
     }
+
+    @Override
+    public Object visitSequentialRange(SequentialRange ast, Object o) {
+        return(createBinary("Sequential Range", ast.R1, ast.R2));
+    }
+
+    @Override
+    public Object visitSingleRange(SingleRange ast, Object o) {
+        return(createUnary("Single Range", ast.C1));
+    }
+
+    @Override
+    public Object visitDualRange(DualRange ast, Object o) {
+        return(createBinary("Dual Range", ast.C1, ast.C2));
+    }
+
+    @Override
+    public Object visitElseCase(ElseCase ast, Object o) {
+        return(createUnary("Else Case", ast.C));
+    }
+<<<<<<< HEAD
 
     @Override
     public Object visitCaseIntegerLiteral(CaseIntegerLiteral ast, Object o) {
@@ -593,4 +649,7 @@ public class TreeVisitor implements Visitor {
     public Object visitLongIdentifier(LongIdentifier ast, Object o) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+=======
+    // </editor-fold>
+>>>>>>> 19266d39baeabe117606bf7b4aa17a5dd3d94a93
 }

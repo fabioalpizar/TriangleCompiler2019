@@ -147,6 +147,11 @@ public class LayoutVisitor implements Visitor {
     return layoutBinary("WhileCom.", ast.E, ast.C);
   }
   
+<<<<<<< HEAD
+=======
+  /* Se agregaron los metodos visit chooseCommand, untilCommand,
+            forUntilCommand, forWhileCommand, forCommand, doUntilCommand, doWhileCommand*/
+>>>>>>> 19266d39baeabe117606bf7b4aa17a5dd3d94a93
   @Override
     public Object visitDoUntilCommand(DoUntilCommand ast, Object o) {
         return layoutBinary("DoUntilCom.", ast.E, ast.C);
@@ -261,6 +266,11 @@ public class LayoutVisitor implements Visitor {
     return layoutBinary("VarDecl.", ast.I, ast.T);
   }
   
+<<<<<<< HEAD
+=======
+  /* Se agregaron los metodos visit de SequentialPackageDeclaration, 
+            PackageDeclaration, InitVarDeclaration, PrivateDeclaration, ForDeclaration*/
+>>>>>>> 19266d39baeabe117606bf7b4aa17a5dd3d94a93
   @Override
     public Object visitInitVarDeclaration(InitVarDeclaration ast, Object o) {
         return layoutBinary("InitVarDecl.", ast.I, ast.E);
@@ -429,6 +439,11 @@ public class LayoutVisitor implements Visitor {
     return layoutNullary(ast.spelling);
   }
   
+<<<<<<< HEAD
+=======
+  /* Se agregaron los metodos visit de caseLiterals, simpleIdentifier,
+            caseIntegerLiteral, caseCharacterLiteral*/
+>>>>>>> 19266d39baeabe117606bf7b4aa17a5dd3d94a93
   @Override
     public Object visitCaseLiterals(CaseLiterals ast, Object o) {
         return layoutUnary( "CaseLiterals" ,ast.CRange);
@@ -464,6 +479,10 @@ public class LayoutVisitor implements Visitor {
         ast.V, ast.E);
   }
   
+<<<<<<< HEAD
+=======
+  /* Se agrego el metodo visitPackageVName */
+>>>>>>> 19266d39baeabe117606bf7b4aa17a5dd3d94a93
   @Override
     public Object visitPackageVName(PackageVName ast, Object o) {       // Se agregó nueva
         return layoutBinary("Package.Vname", ast.I, ast.V);
@@ -475,6 +494,10 @@ public class LayoutVisitor implements Visitor {
     return layoutUnary("Program", ast.C);
   }
   
+<<<<<<< HEAD
+=======
+  // Se agregaron los metodos visit ProgramPackage y PackageId
+>>>>>>> 19266d39baeabe117606bf7b4aa17a5dd3d94a93
   @Override
     public Object visitProgramPackage(ProgramPackage ast, Object o) {
     return layoutBinary("ProgramPackage", ast.C, ast.P);
@@ -485,7 +508,12 @@ public class LayoutVisitor implements Visitor {
         return layoutBinary("PackageIdentifier", ast.ID, ast.PckID);
     }
     
+<<<<<<< HEAD
     // Cases
+=======
+    /* Se agregaron los metodos visit case, sequentialCase, sequentialRange, singleRange
+            dualRange, elseCase*/
+>>>>>>> 19266d39baeabe117606bf7b4aa17a5dd3d94a93
     
     @Override
     public Object visitCase(Case ast, Object o) {
@@ -695,9 +723,12 @@ public class LayoutVisitor implements Visitor {
     return r;
   }
 
+<<<<<<< HEAD
     @Override
     public Object visitLongIdentifier(LongIdentifier ast, Object o) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+=======
+>>>>>>> 19266d39baeabe117606bf7b4aa17a5dd3d94a93
 }

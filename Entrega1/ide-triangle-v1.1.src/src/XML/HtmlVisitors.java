@@ -900,11 +900,14 @@ public class HtmlVisitors implements Visitor {
         ast.CL.visit(this, null);
         writeLineHTML("</SimpleIdentifier>");
         return null;
+<<<<<<< HEAD
     }
 
     @Override
     public Object visitLongIdentifier(LongIdentifier ast, Object o) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+=======
+>>>>>>> 19266d39baeabe117606bf7b4aa17a5dd3d94a93
     }
 
 }
