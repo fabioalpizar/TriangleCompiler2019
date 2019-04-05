@@ -800,7 +800,11 @@ public class XmlVisitors implements Visitor {
 
     @Override
     public Object visitPackageId(PackageId ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        writeLineHTML("<ComplexIdentifier>");
+        ast.PckID.visit(this, null);
+        ast.ID.visit(this, null);
+        writeLineHTML("</ComplexIdentifier>");
+        return null;
     }
 
     @Override
@@ -815,7 +819,8 @@ public class XmlVisitors implements Visitor {
 
     @Override
     public Object visitSimpleIdentifier(SimpleIdentifier ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        ast.ID.visit(this, null);
+        return null;
     }
 
 }
