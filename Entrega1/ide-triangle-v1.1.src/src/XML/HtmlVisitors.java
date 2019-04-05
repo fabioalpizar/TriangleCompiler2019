@@ -416,6 +416,7 @@ public class HtmlVisitors implements Visitor {
         writeTxtHTML("<font color=#003399>");
         ast.I.visit(this, null);
         writeTxtHTML("</font>");
+        writeTxtHTML("<b> : </b>");
         ast.T.visit(this, null);
         writeTxtHTML("</p>");
         return null;
@@ -423,10 +424,13 @@ public class HtmlVisitors implements Visitor {
     
     @Override
     public Object visitForDeclaration(ForDeclaration ast, Object o) {
-        writeTxtHTML("<p style=\"text-indent: 40px\">const ");
+        writeTxtHTML("<p>");
+        writeTxtHTML("<b>for </b>");
+        writeTxtHTML("<font color=#003399>");
         ast.I.visit(this, null);
+        writeTxtHTML("</font>");
+        writeTxtHTML("<b> from </b>");
         ast.E.visit(this, null);
-        writeLineHTML("</ForDeclaration>");
         writeTxtHTML("</p>");
         return null;
     }
@@ -758,8 +762,8 @@ public class HtmlVisitors implements Visitor {
                         "font-family: Courier !important;\n}\n" +
                         "</style>\n</head>");
         writeLineHTML("<body>");
-        ast.C.visit(this, null);
         ast.P.visit(this, null);
+        ast.C.visit(this, null);
         writeLineHTML("\n</body>");
         writeLineHTML("\n</html>");
         return null;

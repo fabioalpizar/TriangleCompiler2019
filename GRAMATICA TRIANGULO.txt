@@ -63,7 +63,7 @@ Package-Identifier 		::= 	Identifier
 
 Long-Identifier 		::= 	[ Package-Identifier "$" ] Identifier
 
-V-name					::= 	[ Package-Identifier "$" ] Var-Name
+V-name					::= 	[ Package-Identifier "$" ] Var-Name (  "." Identifier | "[" Expression "]" )*
 
 /*
 Var-Name				::=		Identifier 
