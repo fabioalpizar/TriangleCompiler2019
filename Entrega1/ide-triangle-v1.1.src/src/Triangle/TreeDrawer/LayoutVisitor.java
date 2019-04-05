@@ -146,6 +146,8 @@ public class LayoutVisitor implements Visitor {
     return layoutBinary("WhileCom.", ast.E, ast.C);
   }
   
+  /* Se agregaron los metodos visit chooseCommand, untilCommand,
+            forUntilCommand, forWhileCommand, forCommand, doUntilCommand, doWhileCommand*/
   @Override
     public Object visitDoUntilCommand(DoUntilCommand ast, Object o) {
         return layoutBinary("DoUntilCom.", ast.E, ast.C);
@@ -260,6 +262,8 @@ public class LayoutVisitor implements Visitor {
     return layoutBinary("VarDecl.", ast.I, ast.T);
   }
   
+  /* Se agregaron los metodos visit de SequentialPackageDeclaration, 
+            PackageDeclaration, InitVarDeclaration, PrivateDeclaration, ForDeclaration*/
   @Override
     public Object visitInitVarDeclaration(InitVarDeclaration ast, Object o) {
         return layoutBinary("InitVarDecl.", ast.I, ast.E);
@@ -428,6 +432,8 @@ public class LayoutVisitor implements Visitor {
     return layoutNullary(ast.spelling);
   }
   
+  /* Se agregaron los metodos visit de caseLiterals, simpleIdentifier,
+            caseIntegerLiteral, caseCharacterLiteral*/
   @Override
     public Object visitCaseLiterals(CaseLiterals ast, Object o) {
         return layoutUnary( "CaseLiterals" ,ast.CRange);
@@ -463,6 +469,7 @@ public class LayoutVisitor implements Visitor {
         ast.V, ast.E);
   }
   
+  /* Se agrego el metodo visitPackageVName */
   @Override
     public Object visitPackageVName(PackageVName ast, Object o) {       // Se agregó nueva
         return layoutBinary("Package.Vname", ast.I, ast.V);
@@ -474,6 +481,7 @@ public class LayoutVisitor implements Visitor {
     return layoutUnary("Program", ast.C);
   }
   
+  // Se agregaron los metodos visit ProgramPackage y PackageId
   @Override
     public Object visitProgramPackage(ProgramPackage ast, Object o) {
     return layoutBinary("ProgramPackage", ast.C, ast.P);
@@ -484,7 +492,8 @@ public class LayoutVisitor implements Visitor {
         return layoutBinary("PackageIdentifier", ast.ID, ast.PckID);
     }
     
-    // Cases
+    /* Se agregaron los metodos visit case, sequentialCase, sequentialRange, singleRange
+            dualRange, elseCase*/
     
     @Override
     public Object visitCase(Case ast, Object o) {
