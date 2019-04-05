@@ -6,7 +6,7 @@ import Triangle.SyntacticAnalyzer.SourcePosition;
 public abstract class CaseLiteralAST extends AST {
 
   public CaseLiteralAST (SourcePosition thePosition) {
-    super (theSpelling, thePosition);
+    super (thePosition);
   }
 
 }

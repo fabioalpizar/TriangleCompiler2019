@@ -110,8 +110,10 @@ public interface Visitor {
     //____New Visitors____//
     //Case
     public abstract Object visitCase(Case ast, Object o);
-    public abstract Object visitCaseLiteral(CaseLiteral ast, Object o);
     public abstract Object visitCaseLiterals(CaseLiterals ast, Object o);
+    public abstract Object visitCaseIntegerLiteral(CaseIntegerLiteral ast, Object o);
+    public abstract Object visitCaseCharacterLiteral(CaseCharacterLiteral ast, Object o);
+    
     //Do
     public abstract Object visitDoUntilCommand(DoUntilCommand ast, Object o);
     public abstract Object visitDoWhileCommand(DoWhileCommand ast, Object o);

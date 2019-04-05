@@ -23,7 +23,8 @@ import Triangle.AbstractSyntaxTrees.BoolTypeDenoter;
 import Triangle.AbstractSyntaxTrees.CallCommand;
 import Triangle.AbstractSyntaxTrees.CallExpression;
 import Triangle.AbstractSyntaxTrees.Case;
-import Triangle.AbstractSyntaxTrees.CaseLiteral;
+import Triangle.AbstractSyntaxTrees.CaseCharacterLiteral;
+import Triangle.AbstractSyntaxTrees.CaseIntegerLiteral;
 import Triangle.AbstractSyntaxTrees.CaseLiterals;
 import Triangle.AbstractSyntaxTrees.CharTypeDenoter;
 import Triangle.AbstractSyntaxTrees.CharacterExpression;
@@ -158,7 +159,6 @@ public class HtmlVisitors implements Visitor {
     public Object visitSequentialCommand(SequentialCommand ast, Object obj) {
         if(SeqCommandFlag == false){
             this.SeqCommandFlag = true;
-            writeTxtHTML("<p><b>begin</b></p>");
             ast.C1.visit(this, null);
             ast.C2.visit(this, null);
             writeTxtHTML("<p><b>end</b></p>");
@@ -173,7 +173,6 @@ public class HtmlVisitors implements Visitor {
         writeTxtHTML("<b>while</b> (");
         ast.E.visit(this, null);
         writeTxtHTML(") <b>do</b>");
-        writeTxtHTML("<p><b>begin</b></p>");
         ast.C.visit(this, null);
         writeTxtHTML("<p><b>end;</b></p>");
         return null;
@@ -184,7 +183,6 @@ public class HtmlVisitors implements Visitor {
         writeTxtHTML("<b>choose</b> (");
         ast.E.visit(this, null);
         writeTxtHTML(") <b>from</b>");
-        writeTxtHTML("<p><b>begin</b></p>");
         ast.C.visit(this, null);
         writeTxtHTML("<p><b>end;</b></p>");
         return null;
@@ -195,7 +193,6 @@ public class HtmlVisitors implements Visitor {
         writeTxtHTML("<b>until</b> (");
         ast.E.visit(this, null);
         writeTxtHTML(") <b>do</b>");
-        writeTxtHTML("<p><b>begin</b></p>");
         ast.C.visit(this, null);
         writeTxtHTML("<p><b>end;</b></p>");
         return null;
@@ -234,7 +231,6 @@ public class HtmlVisitors implements Visitor {
         writeTxtHTML("<b>do</b> (");
         ast.C.visit(this, null);
         writeTxtHTML(") <b>until</b>");
-        writeTxtHTML("<p><b>begin</b></p>");
         ast.E.visit(this, null);
         writeTxtHTML("<p><b>end;</b></p>");
         return null;
@@ -245,7 +241,6 @@ public class HtmlVisitors implements Visitor {
         writeTxtHTML("<b>do</b> (");
         ast.C.visit(this, null);
         writeTxtHTML(") <b>while</b>");
-        writeTxtHTML("<p><b>begin</b></p>");
         ast.E.visit(this, null);
         writeTxtHTML("<p><b>end;</b></p>");
         return null;
@@ -817,7 +812,6 @@ public class HtmlVisitors implements Visitor {
     public Object visitSequentialCase(SequentialCase ast, Object o) {
         if(SeqCaseFlag == false){
             this.SeqCaseFlag = true;
-            writeTxtHTML("<p><b>begin</b></p>");
             ast.C1.visit(this, null);
             ast.C2.visit(this, null);
             writeTxtHTML("<p><b>end</b></p>");
@@ -832,7 +826,6 @@ public class HtmlVisitors implements Visitor {
     public Object visitSequentialRange(SequentialRange ast, Object o) {
         if(SeqRangeFlag == false){
             this.SeqRangeFlag = true;
-            writeTxtHTML("<p><b>begin</b></p>");
             ast.R1.visit(this, null);
             ast.R2.visit(this, null);
             writeTxtHTML("<p><b>end</b></p>");
@@ -866,23 +859,44 @@ public class HtmlVisitors implements Visitor {
     }
 
     @Override
-    public Object visitCaseLiteral(CaseLiteral ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
     public Object visitCaseLiterals(CaseLiterals ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        writeLineHTML("<CaseLiterals>");
+        ast.CRange.visit(this, null);
+        writeLineHTML("</CaseLiterals>");
+        return null;
     }
 
     @Override
     public Object visitPackageId(PackageId ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        writeLineHTML("<ComplexIdentifier>");
+        ast.PckID.visit(this, null);
+        ast.ID.visit(this, null);
+        writeLineHTML("</ComplexIdentifier>");
+        return null;
     }
 
     @Override
     public Object visitSimpleIdentifier(SimpleIdentifier ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        writeLineHTML("<SimpleIdentifier>");
+        ast.ID.visit(this, null);
+        writeLineHTML("</SimpleIdentifier>");
+        return null;
+    }
+
+    @Override
+    public Object visitCaseIntegerLiteral(CaseIntegerLiteral ast, Object o) {
+        writeLineHTML("<SimpleIdentifier>");
+        ast.IL.visit(this, null);
+        writeLineHTML("</SimpleIdentifier>");
+        return null;
+    }
+
+    @Override
+    public Object visitCaseCharacterLiteral(CaseCharacterLiteral ast, Object o) {
+        writeLineHTML("<SimpleIdentifier>");
+        ast.CL.visit(this, null);
+        writeLineHTML("</SimpleIdentifier>");
+        return null;
     }
 
 }
