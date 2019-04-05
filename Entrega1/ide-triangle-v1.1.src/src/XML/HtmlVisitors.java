@@ -845,8 +845,10 @@ public class HtmlVisitors implements Visitor {
 
     @Override
     public Object visitDualRange(DualRange ast, Object o) {
-        writeTxtHTML("<b>DualRange</b> (");
+        writeLineHTML("<font color=#3377ff>");
         ast.C1.visit(this, null);
+        writeLineHTML("</font>");
+        writeLineHTML("<p><b> .. </p></b>");
         ast.C2.visit(this, null);
         return null;
     }
