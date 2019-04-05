@@ -799,22 +799,34 @@ public class XmlVisitors implements Visitor {
 
     @Override
     public Object visitPackageId(PackageId ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        writeLineHTML("<PackageID>");
+        ast.PckID.visit(this, null);
+        ast.ID.visit(this, null);
+        writeLineHTML("</PackageID>");
+        return null;
     }
 
     @Override
     public Object visitCaseLiteral(CaseLiteral ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        writeLineHTML("<CaseLiteral>");
+        writeLineHTML("</CaseLiteral>");
+        return null;
     }
 
     @Override
     public Object visitCaseLiterals(CaseLiterals ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        writeLineHTML("<CaseLiterals>");
+        ast.CRange.visit(this, null);
+        writeLineHTML("</CaseLiterals>");
+        return null;
     }
 
     @Override
     public Object visitSimpleIdentifier(SimpleIdentifier ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        writeLineHTML("<SimpleIdentifier>");
+        ast.ID.visit(this, null);
+        writeLineHTML("</SimpleIdentifier>");
+        return null;
     }
 
 }
