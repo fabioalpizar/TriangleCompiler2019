@@ -430,22 +430,22 @@ public class LayoutVisitor implements Visitor {
   
   @Override
     public Object visitCaseLiterals(CaseLiterals ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return layoutUnary( "CaseLiterals" ,ast.CRange);
     }
     
     @Override
     public Object visitSimpleIdentifier(SimpleIdentifier ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return layoutUnary( "CaseLiterals" ,ast.ID);
     }
     
     @Override
     public Object visitCaseIntegerLiteral(CaseIntegerLiteral ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return layoutUnary( "CaseLiterals" ,ast.IL);
     }
 
     @Override
     public Object visitCaseCharacterLiteral(CaseCharacterLiteral ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return layoutUnary( "CaseLiterals" ,ast.CL);
     }
 
 
@@ -465,7 +465,7 @@ public class LayoutVisitor implements Visitor {
   
   @Override
     public Object visitPackageVName(PackageVName ast, Object o) {       // Se agregó nueva
-        return layoutUnary("Package.Vname", ast.);
+        return layoutBinary("Package.Vname", ast.I, ast.V);
     }
 
 
@@ -476,44 +476,44 @@ public class LayoutVisitor implements Visitor {
   
   @Override
     public Object visitProgramPackage(ProgramPackage ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    return layoutBinary("ProgramPackage", ast.C, ast.P);
     }
     
     @Override
     public Object visitPackageId(PackageId ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return layoutBinary("PackageIdentifier", ast.ID, ast.PckID);
     }
     
     // Cases
     
     @Override
     public Object visitCase(Case ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return layoutBinary("Case", ast.C1, ast.C2);
     }
 
     @Override
     public Object visitSequentialCase(SequentialCase ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return layoutBinary("SequentialCase", ast.C1, ast.C2);
     }
 
     @Override
     public Object visitSequentialRange(SequentialRange ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return layoutBinary("SequentialRange", ast.R1, ast.R2);
     }
 
     @Override
     public Object visitSingleRange(SingleRange ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return layoutUnary("SingleRange", ast.C1); 
     }
 
     @Override
     public Object visitDualRange(DualRange ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return layoutBinary("DualRange", ast.C1, ast.C2); 
     }
 
     @Override
     public Object visitElseCase(ElseCase ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return layoutUnary("ElseCase", ast.C);
     }
 
   private DrawingTree layoutCaption (String name) {
