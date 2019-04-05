@@ -13,10 +13,10 @@ public abstract class CaseCharacterLiteral extends CaseLiteralAST {
   }
 
    public Object visit(Visitor v, Object o) {
-    return v.visitIntegerLiteral(this, o);
+    return v.visitCaseCharacterLiteral(this, o);
   }
 
-  public IntegerLiteral CL;
+  public CharacterLiteral CL;
 
 
 
