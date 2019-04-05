@@ -165,6 +165,69 @@ public class TableVisitor implements Visitor {
       
       return(null);
   }
+  
+  /* Se agregaron los metodos visit chooseCommand, untilCommand,
+            forUntilCommand, forWhileCommand, forCommand, doUntilCommand, doWhileCommand*/
+  @Override
+    public Object visitChooseCommand(ChooseCommand ast, Object o) {
+        ast.E.visit(this, null);
+        ast.C.visit(this, null);
+      
+        return(null);
+    }
+    
+    @Override
+    public Object visitUntilCommand(UntilCommand ast, Object o) {
+        ast.E.visit(this, null);
+        ast.C.visit(this, null);
+      
+      return(null);
+    }
+    
+    @Override
+    public Object visitForUntilCommand(ForUntilCommand ast, Object o) {
+        ast.D.visit(this, null);
+        ast.C.visit(this, null);
+        ast.E1.visit(this, null);
+        ast.E2.visit(this, null);
+      
+        return(null);
+    }
+
+    @Override
+    public Object visitForWhileCommand(ForWhileCommand ast, Object o) {
+        ast.D.visit(this, null);
+        ast.C.visit(this, null);
+        ast.E1.visit(this, null);
+        ast.E2.visit(this, null);
+      
+        return(null);
+    }
+    
+    @Override
+    public Object visitDoUntilCommand(DoUntilCommand ast, Object o) {
+        ast.E.visit(this, null);
+        ast.C.visit(this, null);
+      
+        return(null);
+    }
+
+    @Override
+    public Object visitDoWhileCommand(DoWhileCommand ast, Object o) {
+        ast.E.visit(this, null);
+        ast.C.visit(this, null);
+      
+        return(null);
+    }
+
+    @Override
+    public Object visitForCommand(ForCommand ast, Object o) {
+        ast.D.visit(this, null);
+        ast.C.visit(this, null);
+        ast.E.visit(this, null);
+      
+        return(null);
+    }
   // </editor-fold>
 
   // <editor-fold defaultstate="collapsed" desc=" Expressions ">
@@ -333,6 +396,108 @@ public class TableVisitor implements Visitor {
       ast.T.visit(this, null);
       return(null);
   }
+  
+  /* Se agregaron los metodos visit de SequentialPackageDeclaration, 
+            PackageDeclaration, InitVarDeclaration, PrivateDeclaration, ForDeclaration*/
+  @Override
+    public Object visitSequentialPackageDeclaration(SequentialPackageDeclaration ast, Object o) {
+        ast.P1.visit(this, null);
+        ast.P2.visit(this, null);
+      
+        return(null);
+    }
+
+    @Override
+    public Object visitPackageDeclaration(PackageDeclaration ast, Object o) {
+        String name = ast.I.spelling;
+      String type = "N/A";
+      try {
+        int size = (ast.entity!=null?ast.entity.size:0);
+        int level = -1;
+        int displacement = -1;
+        int value = -1;
+      
+        if (ast.entity instanceof KnownValue) {
+              type = "KnownValue";
+              value = ((KnownValue)ast.entity).value;
+          }
+          else if (ast.entity instanceof UnknownValue) {
+              type = "UnknownValue";
+              level = ((UnknownValue)ast.entity).address.level;
+              displacement = ((UnknownValue)ast.entity).address.displacement;
+          }
+          addIdentifier(name, type, size, level, displacement, value);
+      } catch (NullPointerException e) { }
+      
+      ast.D.visit(this, null);
+      ast.I.visit(this, null);
+
+      return(null);
+    }
+    
+    @Override
+    public Object visitInitVarDeclaration(InitVarDeclaration ast, Object o) {
+        String name = ast.I.spelling;
+        String type = "N/A";
+        try {
+          int size = (ast.entity!=null?ast.entity.size:0);
+          int level = -1;
+          int displacement = -1;
+          int value = -1;
+
+          if (ast.entity instanceof KnownValue) {
+                type = "KnownValue";
+                value = ((KnownValue)ast.entity).value;
+            }
+            else if (ast.entity instanceof UnknownValue) {
+                type = "UnknownValue";
+                level = ((UnknownValue)ast.entity).address.level;
+                displacement = ((UnknownValue)ast.entity).address.displacement;
+            }
+            addIdentifier(name, type, size, level, displacement, value);
+        } catch (NullPointerException e) { }
+
+        ast.E.visit(this, null);
+        ast.I.visit(this, null);
+
+        return(null);
+    }
+    
+    @Override
+    public Object visitPrivateDeclaration(PrivateDeclaration ast, Object o) {
+        ast.D1.visit(this, null);
+        ast.D2.visit(this, null);
+      
+        return(null);
+    }
+    
+    @Override
+    public Object visitForDeclaration(ForDeclaration ast, Object o) {
+        String name = ast.I.spelling;
+        String type = "N/A";
+        try {
+          int size = (ast.entity!=null?ast.entity.size:0);
+          int level = -1;
+          int displacement = -1;
+          int value = -1;
+
+          if (ast.entity instanceof KnownValue) {
+                type = "KnownValue";
+                value = ((KnownValue)ast.entity).value;
+            }
+            else if (ast.entity instanceof UnknownValue) {
+                type = "UnknownValue";
+                level = ((UnknownValue)ast.entity).address.level;
+                displacement = ((UnknownValue)ast.entity).address.displacement;
+            }
+            addIdentifier(name, type, size, level, displacement, value);
+        } catch (NullPointerException e) { }
+
+        ast.E.visit(this, null);
+        ast.I.visit(this, null);
+
+        return(null);
+    }
   
   // </editor-fold>
 
@@ -578,6 +743,36 @@ public class TableVisitor implements Visitor {
   
       return(null);
   }
+  
+  /* Se agregaron los metodos visit de caseLiterals, simpleIdentifier,
+            caseIntegerLiteral, caseCharacterLiteral*/
+  @Override
+    public Object visitCaseLiterals(CaseLiterals ast, Object o) {
+        ast.CRange.visit(this, null);
+  
+        return(null);
+    }
+    
+    @Override
+    public Object visitSimpleIdentifier(SimpleIdentifier ast, Object o) {
+        ast.ID.visit(this, null);
+  
+        return(null);
+    }
+
+    @Override
+    public Object visitCaseIntegerLiteral(CaseIntegerLiteral ast, Object o) {
+        ast.IL.visit(this, null);
+  
+        return(null);
+    }
+
+    @Override
+    public Object visitCaseCharacterLiteral(CaseCharacterLiteral ast, Object o) {
+        ast.CL.visit(this, null);
+  
+        return(null);
+    }
   // </editor-fold>
 
   // <editor-fold defaultstate="collapsed" desc=" Values or Variable Names ">
@@ -601,6 +796,15 @@ public class TableVisitor implements Visitor {
   
       return(null);
   }
+  
+  /* Se agrego el metodo visitPackageVName */
+  @Override
+    public Object visitPackageVName(PackageVName ast, Object o) {
+        ast.I.visit(this, null);
+        ast.V.visit(this, null);
+  
+        return(null);
+    }
   // </editor-fold>
 
   // <editor-fold defaultstate="collapsed" desc=" Table Creation Methods ">
@@ -648,128 +852,74 @@ public class TableVisitor implements Visitor {
     private DefaultTableModel model;
     // </editor-fold>
 
-    @Override
-    public Object visitCase(Case ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitCaseLiterals(CaseLiterals ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitDoUntilCommand(DoUntilCommand ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitDoWhileCommand(DoWhileCommand ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitForCommand(ForCommand ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitForDeclaration(ForDeclaration ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitForUntilCommand(ForUntilCommand ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitForWhileCommand(ForWhileCommand ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitSequentialCase(SequentialCase ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitSequentialRange(SequentialRange ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitSingleRange(SingleRange ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitUntilCommand(UntilCommand ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitPrivateDeclaration(PrivateDeclaration ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitDualRange(DualRange ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitElseCase(ElseCase ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitChooseCommand(ChooseCommand ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitInitVarDeclaration(InitVarDeclaration ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
+  // <editor-fold defaultstate="collapsed" desc=" Program ">
+    // Se agregaron los metodos visit ProgramPackage y PackageId
     @Override
     public Object visitProgramPackage(ProgramPackage ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitSequentialPackageDeclaration(SequentialPackageDeclaration ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitPackageDeclaration(PackageDeclaration ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitPackageVName(PackageVName ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        ast.C.visit(this, null);
+        ast.P.visit(this, null);
+        
+        return(null);
     }
 
     @Override
     public Object visitPackageId(PackageId ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        ast.ID.visit(this, null);
+        ast.PckID.visit(this, null);
+        
+        return(null);
+    }
+    
+    // </editor-fold>
+    
+  // <editor-fold defaultstate="collapsed" desc=" Cases ">
+    /* Se agregaron los metodos visit case, sequentialCase, sequentialRange, singleRange
+            dualRange, elseCase*/
+    @Override
+    public Object visitCase(Case ast, Object o) {
+        ast.C1.visit(this, null);
+        ast.C2.visit(this, null);
+        
+        return(null);
     }
 
     @Override
-    public Object visitSimpleIdentifier(SimpleIdentifier ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Object visitSequentialCase(SequentialCase ast, Object o) {
+        ast.C1.visit(this, null);
+        ast.C2.visit(this, null);
+        
+        return(null);
     }
 
     @Override
-    public Object visitCaseIntegerLiteral(CaseIntegerLiteral ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Object visitSequentialRange(SequentialRange ast, Object o) {
+        ast.R1.visit(this, null);
+        ast.R2.visit(this, null);
+        
+        return(null);
     }
 
     @Override
-    public Object visitCaseCharacterLiteral(CaseCharacterLiteral ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Object visitSingleRange(SingleRange ast, Object o) {
+        ast.C1.visit(this, null);
+        
+        return(null);
     }
+
+    @Override
+    public Object visitDualRange(DualRange ast, Object o) {
+        ast.C1.visit(this, null);
+        ast.C2.visit(this, null);
+        
+        return(null);
+    }
+
+    @Override
+    public Object visitElseCase(ElseCase ast, Object o) {
+        ast.C.visit(this, null);
+        
+        return(null);
+    }
+    
+    // </editor-fold>
 }
