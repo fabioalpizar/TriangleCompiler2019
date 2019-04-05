@@ -4,6 +4,7 @@
  */
 
 package Core.Visitors;
+import Triangle.SyntacticAnalyzer.Parser;
 import Triangle.AbstractSyntaxTrees.AST;
 import Triangle.AbstractSyntaxTrees.AnyTypeDenoter;
 import Triangle.AbstractSyntaxTrees.ArrayExpression;
@@ -51,6 +52,7 @@ import Triangle.AbstractSyntaxTrees.IntegerExpression;
 import Triangle.AbstractSyntaxTrees.IntegerLiteral;
 import Triangle.AbstractSyntaxTrees.LetCommand;
 import Triangle.AbstractSyntaxTrees.LetExpression;
+import Triangle.AbstractSyntaxTrees.LongIdentifier;
 import Triangle.AbstractSyntaxTrees.MultipleActualParameterSequence;
 import Triangle.AbstractSyntaxTrees.MultipleArrayAggregate;
 import Triangle.AbstractSyntaxTrees.MultipleFieldTypeDenoter;
@@ -73,7 +75,6 @@ import Triangle.AbstractSyntaxTrees.SequentialCommand;
 import Triangle.AbstractSyntaxTrees.SequentialDeclaration;
 import Triangle.AbstractSyntaxTrees.SequentialPackageDeclaration;
 import Triangle.AbstractSyntaxTrees.SequentialRange;
-import Triangle.AbstractSyntaxTrees.SimpleIdentifier;
 import Triangle.AbstractSyntaxTrees.SimpleTypeDenoter;
 import Triangle.AbstractSyntaxTrees.SimpleVname;
 import Triangle.AbstractSyntaxTrees.SingleActualParameterSequence;
@@ -110,6 +111,7 @@ public class TreeVisitor implements Visitor {
      */
     public TreeVisitor() {
     }
+    
     
     // <editor-fold defaultstate="collapsed" desc=" Commands ">    
     // Commands  
@@ -176,7 +178,7 @@ public class TreeVisitor implements Visitor {
 
     @Override
     public Object visitDoWhileCommand(DoWhileCommand ast, Object o) {
-        return(createBinary("Do Until Command", ast.E, ast.C));
+        return(createBinary("Do While Command", ast.E, ast.C));
     }
     // </editor-fold>
     
@@ -437,20 +439,20 @@ public class TreeVisitor implements Visitor {
     public Object visitCaseLiterals(CaseLiterals ast, Object o) {
         return(createUnary("Case Literals", ast.CRange));
     }
-    
-    @Override
-    public Object visitSimpleIdentifier(SimpleIdentifier ast, Object o) {
-        return(createUnary("Case Literals", ast.ID));
-    }
 
     @Override
     public Object visitCaseIntegerLiteral(CaseIntegerLiteral ast, Object o) {
-        return(createUnary("Case Literals", ast.IL));
+        return(createUnary("Case Integer Literal", ast.IL));
     }
 
     @Override
     public Object visitCaseCharacterLiteral(CaseCharacterLiteral ast, Object o) {
-        return(createUnary("Case Literals", ast.CL));
+        return(createUnary("Case Character Literal", ast.CL));
+    }
+    
+    @Override
+    public Object visitLongIdentifier(LongIdentifier ast, Object o) {
+        return(createBinary("LongIdentifier", ast.pid, ast.id));
     }
     // </editor-fold>
     
@@ -576,7 +578,7 @@ public class TreeVisitor implements Visitor {
             dualRange, elseCase*/
     @Override
     public Object visitCase(Case ast, Object o) {
-        return(createBinary("Case", ast.C1, ast.C2));
+        return(createBinary("Case", ast.C1, ast.C2)); 
     }
 
     @Override
@@ -591,7 +593,7 @@ public class TreeVisitor implements Visitor {
 
     @Override
     public Object visitSingleRange(SingleRange ast, Object o) {
-        return(createUnary("Single Range", ast.C1));
+        return(createUnary("Single Range", ast.C1)); 
     }
 
     @Override
@@ -604,4 +606,5 @@ public class TreeVisitor implements Visitor {
         return(createUnary("Else Case", ast.C));
     }
     // </editor-fold>
+
 }

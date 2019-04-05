@@ -70,6 +70,7 @@ public class Compiler {
 
         if (source == null) {
             System.out.println("Can't access source file " + sourceName);
+            System.out.println("aajklsdfh");
             System.exit(1);
         }
 
@@ -80,12 +81,13 @@ public class Compiler {
         encoder  = new Encoder(reporter);
         drawer   = new Drawer();
 
-        // scanner.enableDebugging();
+        scanner.enableDebugging();
+        
         theAST = parser.parseProgram();				// 1st pass
         if (reporter.numErrors == 0) {
-            //if (showingAST) {
-            //    drawer.draw(theAST);
-            //}
+            if (showingAST) {
+                drawer.draw(theAST);
+            }
             System.out.println ("Contextual Analysis ...");
             checker.check(theAST);				// 2nd pass
             if (showingAST) {

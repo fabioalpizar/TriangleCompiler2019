@@ -6,21 +6,29 @@
 <SequentialDeclaration>
 <VarDeclaration>
 <Identifier value="i"/>
-<IntTypeDenoter/>
+<SimpleTypeDenoter>
+<Identifier value="Integer"/>
+</SimpleTypeDenoter>
 </VarDeclaration>
 <VarDeclaration>
 <Identifier value="j"/>
-<IntTypeDenoter/>
+<SimpleTypeDenoter>
+<Identifier value="Integer"/>
+</SimpleTypeDenoter>
 </VarDeclaration>
 </SequentialDeclaration>
 <VarDeclaration>
 <Identifier value="k"/>
-<IntTypeDenoter/>
+<SimpleTypeDenoter>
+<Identifier value="Integer"/>
+</SimpleTypeDenoter>
 </VarDeclaration>
 </SequentialDeclaration>
 <VarDeclaration>
 <Identifier value="num"/>
-<IntTypeDenoter/>
+<SimpleTypeDenoter>
+<Identifier value="Integer"/>
+</SimpleTypeDenoter>
 </VarDeclaration>
 </SequentialDeclaration>
 <SequentialCommand>

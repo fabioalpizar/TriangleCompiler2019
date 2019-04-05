@@ -47,6 +47,7 @@ public class IDECompiler {
         System.out.println("Syntactic Analysis ...");
         SourceFile source = new SourceFile(sourceName);
         Scanner scanner = new Scanner(source);
+        scanner.enableDebugging();
         report = new IDEReporter();
         Parser parser = new Parser(scanner, report);
         boolean success = false;

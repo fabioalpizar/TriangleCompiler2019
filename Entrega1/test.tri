@@ -1,0 +1,11 @@
+let
+ var i: Integer;
+ var j: Integer
+in
+ getint (var j);
+ i:=1;
+ loop while i<j do 
+  putint(i);
+  i:=i+2
+  end
+

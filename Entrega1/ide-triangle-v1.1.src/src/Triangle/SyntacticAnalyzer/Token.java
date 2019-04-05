@@ -75,9 +75,9 @@ final class Token extends Object {
     DO      = 7,
     ELSE    = 8,
     END     = 9,
-    FUNC    = 10,
-    FOR     = 11,   // Se agregó palabra reservada for
-    FROM    = 12,   // Se agregó palabra reservada from
+    FOR    = 10,
+    FROM     = 11,   // Se agregó palabra reservada for
+    FUNC    = 12,   // Se agregó palabra reservada from
     IF      = 13,
     IN      = 14,
     LET     = 15,
@@ -135,9 +135,9 @@ final class Token extends Object {
     "do",
     "else",
     "end",
-    "func",
-    "for",   // Se agregó el caracter de la palabra reservada for
-    "from",   // Se agregó el caracter de la palabra reservada from
+    "for",
+    "from",   // Se agregó el caracter de la palabra reservada for
+    "func",   // Se agregó el caracter de la palabra reservada from
     "if",
     "in",
     "let",

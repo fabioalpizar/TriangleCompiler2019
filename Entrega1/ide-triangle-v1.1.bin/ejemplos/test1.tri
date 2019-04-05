@@ -1,0 +1,1 @@
+loop do putint(1) from 5 to 8 pass end

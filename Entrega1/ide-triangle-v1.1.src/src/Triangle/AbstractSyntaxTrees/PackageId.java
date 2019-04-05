@@ -3,10 +3,10 @@ package Triangle.AbstractSyntaxTrees;
 
 import Triangle.SyntacticAnalyzer.SourcePosition;
 
-public class PackageId extends LongIdentifier {
+public class PackageId extends Identifier {
 
   public PackageId (Identifier id1AST, Identifier id2AST, SourcePosition thePosition) {
-    super (thePosition);
+    super (id1AST.spelling, thePosition);
     PckID = id1AST;
     ID = id2AST;
   }

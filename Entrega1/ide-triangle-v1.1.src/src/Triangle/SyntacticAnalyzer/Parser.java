@@ -107,7 +107,6 @@ import Triangle.AbstractSyntaxTrees.PackageVName;
 import Triangle.AbstractSyntaxTrees.ProgramPackage;
 import Triangle.AbstractSyntaxTrees.SequentialCase;
 import Triangle.AbstractSyntaxTrees.SequentialCaseRange;
-import Triangle.AbstractSyntaxTrees.SimpleIdentifier;
 import Triangle.AbstractSyntaxTrees.SingleRange;
 import Triangle.AbstractSyntaxTrees.Terminal;
 import Triangle.AbstractSyntaxTrees.WhileCommand;
@@ -320,12 +319,13 @@ public class Parser {
 
     switch (currentToken.kind) {
       case Token.PASS:      // Se agrega pass y se quitan los otros caracteres
-        finish(commandPos);
-        commandAST = new EmptyCommand(commandPos);
+          acceptIt();
+          finish(commandPos);
+          commandAST = new EmptyCommand(commandPos);
         break;
       case Token.IDENTIFIER:
         {
-          LongIdentifier iAST = parseLongIdentifier();
+          Identifier iAST = parseIdentifier();
           if (currentToken.kind == Token.LPAREN) {
             acceptIt();
             ActualParameterSequence apsAST = parseActualParameterSequence();
@@ -347,7 +347,10 @@ public class Parser {
                     vAST = new SubscriptVname(vAST, eAST, commandPos);
                 }
             }
-            accept(Token.BECOMES);
+            if (currentToken.kind == Token.BECOMES) {
+                acceptIt();
+                vAST = parseRestOfVname(iAST);
+            }
             Expression eAST = parseExpression();
             finish(commandPos);
             commandAST = new AssignCommand(vAST, eAST, commandPos);
@@ -432,7 +435,7 @@ public class Parser {
           commandAST = new ChooseCommand(eAST, cAST, commandPos);
         }
       default:
-        syntacticError("\"%\" cannot start a command",
+        syntacticError("\"%\" cannot start a commandASD",
           currentToken.spelling);
         break;
     }
@@ -528,6 +531,15 @@ public class Parser {
         }
         break;
 
+        case Token.PASS:
+        {
+          acceptIt();
+          accept(Token.END);
+          finish(commandPos);
+          commandAST = new EmptyCommand(commandPos);
+        }
+        break;
+        
       default:
         syntacticError("\"%\" cannot start a command", currentToken.spelling);
         break;
@@ -765,7 +777,7 @@ public class Parser {
 
     case Token.IDENTIFIER:
       {
-        LongIdentifier iAST= parseLongIdentifier();     // Se agregó 
+        Identifier iAST= parseIdentifier();     // Se agregó 
         if (currentToken.kind == Token.LPAREN) {
           acceptIt();
           ActualParameterSequence apsAST = parseActualParameterSequence();
@@ -789,6 +801,11 @@ public class Parser {
                   vAST = new SubscriptVname(vAST, eAST, expressionPos);
                 }
           }
+            if (currentToken.kind == Token.BECOMES) {
+                acceptIt();
+                vAST = parseRestOfVname(iAST);
+            }
+            vAST = parseRestOfVname(iAST);
           finish(expressionPos);
           expressionAST = new VnameExpression(vAST, expressionPos);
         }
@@ -1366,7 +1383,7 @@ public class Parser {
 
     case Token.IDENTIFIER:
       {
-        LongIdentifier iAST = parseLongIdentifier();    // Nuevo
+        Identifier iAST = parseIdentifier();    // Nuevo
         finish(typePos);
         typeAST = new SimpleTypeDenoter(iAST, typePos);
       }
@@ -1461,8 +1478,8 @@ public class Parser {
     return packageAST;
   }
 
-    LongIdentifier parseLongIdentifier() throws SyntaxError {
-      LongIdentifier indentifierAST = null;
+    Identifier parseLongIdentifier() throws SyntaxError {
+      Identifier indentifierAST = null;
       SourcePosition indentifierPos = new SourcePosition();
       start(indentifierPos);
 
@@ -1472,11 +1489,7 @@ public class Parser {
         Identifier i2AST = parseIdentifier();
         finish(indentifierPos);
         indentifierAST = new PackageId(i1AST, i2AST, indentifierPos);
-      }else{
-        finish(indentifierPos);
-        indentifierAST = new SimpleIdentifier(i1AST, indentifierPos);
-      }
-      
+      }    
       return indentifierAST;
   }
 

@@ -625,7 +625,7 @@ public class Main extends javax.swing.JFrame {
                 ((FileFrame)desktopPane.getSelectedFrame()).setTree((DefaultMutableTreeNode)treeVisitor.visitProgram(compiler.getAST(), null));
                 //((FileFrame)desktopPane.getSelectedFrame()).setTable(tableVisitor.getTable(compiler.getAST()));
                 //Initiates file creator class to create XML and HTML files during successful compilation     
-                FileCreator files = new FileCreator("xmlTEST", "htmlTEST");
+                FileCreator files = new FileCreator(desktopPane.getSelectedFrame().getTitle(), desktopPane.getSelectedFrame().getTitle());
                 try {
                     files.writeXML(compiler.getAST());
                     files.writeHTML(compiler.getAST());

@@ -139,6 +139,5 @@ public interface Visitor {
   
   //LongIdentifier
     public abstract Object visitPackageId(PackageId ast, Object o);
-    public abstract Object visitSimpleIdentifier(SimpleIdentifier ast, Object o);
-
+    public abstract Object visitLongIdentifier(LongIdentifier ast, Object o);
 }
