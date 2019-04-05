@@ -25,7 +25,10 @@ import Triangle.AbstractSyntaxTrees.BinaryExpression;
 import Triangle.AbstractSyntaxTrees.CallCommand;
 import Triangle.AbstractSyntaxTrees.CallExpression;
 import Triangle.AbstractSyntaxTrees.Case;
+import Triangle.AbstractSyntaxTrees.CaseCharacterLiteral;
 import Triangle.AbstractSyntaxTrees.CaseCommand;
+import Triangle.AbstractSyntaxTrees.CaseIntegerLiteral;
+import Triangle.AbstractSyntaxTrees.CaseLiteralAST;
 import Triangle.AbstractSyntaxTrees.CharacterExpression;
 import Triangle.AbstractSyntaxTrees.CharacterLiteral;
 import Triangle.AbstractSyntaxTrees.ChooseCommand;
@@ -61,7 +64,6 @@ import Triangle.AbstractSyntaxTrees.LetCommand;
 import Triangle.AbstractSyntaxTrees.LetExpression;
 import Triangle.AbstractSyntaxTrees.PackageDeclaration;
 import Triangle.AbstractSyntaxTrees.PrivateDeclaration;
-import Triangle.AbstractSyntaxTrees.CaseLiteral;
 import Triangle.AbstractSyntaxTrees.CaseLiterals;
 import Triangle.AbstractSyntaxTrees.CaseRange;
 import Triangle.AbstractSyntaxTrees.DualRange;
@@ -604,10 +606,10 @@ public class Parser {
     SourcePosition caseRangePos = new SourcePosition();
     start(caseRangePos);
 
-    CaseLiteral aAST = parseCaseLiteral();
+    CaseLiteralAST aAST = parseCaseLiteral();
     if(currentToken.kind == Token.RANGE){
       acceptIt();
-      CaseLiteral bAST = parseCaseLiteral();
+      CaseLiteralAST bAST = parseCaseLiteral();
       finish(caseRangePos);
       caseRangeAST = new DualRange(aAST, bAST, caseRangePos); //Se agrega nueva clase
     }else{
@@ -618,22 +620,28 @@ public class Parser {
   }
 
 
+  // Metodo nuevo
   CaseLiteralAST parseCaseLiteral() throws SyntaxError{
     CaseLiteralAST caseLiteralAST = null;
     SourcePosition caseLiteralPos = new SourcePosition();
     start(caseLiteralPos);
+    
     switch(currentToken.kind){
-      IntegerLiteral iAST = null;
+      
       case Token.INTLITERAL:
       {
+        IntegerLiteral iAST = null;
         iAST = parseIntegerLiteral();
         finish(caseLiteralPos);
-        caseLiteralAST =  new IntegerCaseLiteral(iAST, caseLiteralPos);
+        caseLiteralAST =  new CaseIntegerLiteral(iAST, caseLiteralPos) {};
         break;
       }
       case Token.CHARLITERAL:
       {
-        caseLiteralAST = parseCharacterLiteral();
+        CharacterLiteral iAST = null;
+        iAST = parseCharacterLiteral();
+        finish(caseLiteralPos);
+        caseLiteralAST =  new CaseCharacterLiteral(iAST, caseLiteralPos) {};
         break;
       }
       default:
@@ -642,7 +650,7 @@ public class Parser {
         break;
       }
     }
-    return (CaseLiteral) caseLiteralAST;
+    return caseLiteralAST;
   }
 
 

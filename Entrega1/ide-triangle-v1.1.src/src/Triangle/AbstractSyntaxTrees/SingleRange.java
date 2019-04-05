@@ -5,7 +5,7 @@ import Triangle.SyntacticAnalyzer.SourcePosition;
 
 public class SingleRange extends CaseRange {
 
-  public SingleRange (CaseLiteral c1AST, SourcePosition thePosition) {
+  public SingleRange (CaseLiteralAST c1AST, SourcePosition thePosition) {
     super (thePosition);
     C1 = c1AST;
   }
@@ -14,5 +14,5 @@ public class SingleRange extends CaseRange {
     return v.visitSingleRange(this, o);
   }
 
-  public CaseLiteral C1;
+  public CaseLiteralAST C1;
 }

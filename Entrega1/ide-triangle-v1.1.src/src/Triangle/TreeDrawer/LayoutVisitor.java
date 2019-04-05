@@ -27,7 +27,8 @@ import Triangle.AbstractSyntaxTrees.BoolTypeDenoter;
 import Triangle.AbstractSyntaxTrees.CallCommand;
 import Triangle.AbstractSyntaxTrees.CallExpression;
 import Triangle.AbstractSyntaxTrees.Case;
-import Triangle.AbstractSyntaxTrees.CaseLiteral;
+import Triangle.AbstractSyntaxTrees.CaseCharacterLiteral;
+import Triangle.AbstractSyntaxTrees.CaseIntegerLiteral;
 import Triangle.AbstractSyntaxTrees.CaseLiterals;
 import Triangle.AbstractSyntaxTrees.CharTypeDenoter;
 import Triangle.AbstractSyntaxTrees.CharacterExpression;
@@ -62,6 +63,7 @@ import Triangle.AbstractSyntaxTrees.IntegerExpression;
 import Triangle.AbstractSyntaxTrees.IntegerLiteral;
 import Triangle.AbstractSyntaxTrees.LetCommand;
 import Triangle.AbstractSyntaxTrees.LetExpression;
+import Triangle.AbstractSyntaxTrees.LongIdentifier;
 import Triangle.AbstractSyntaxTrees.MultipleActualParameterSequence;
 import Triangle.AbstractSyntaxTrees.MultipleArrayAggregate;
 import Triangle.AbstractSyntaxTrees.MultipleFieldTypeDenoter;
@@ -144,7 +146,41 @@ public class LayoutVisitor implements Visitor {
   public Object visitWhileCommand(WhileCommand ast, Object obj) {
     return layoutBinary("WhileCom.", ast.E, ast.C);
   }
+  
+  @Override
+    public Object visitDoUntilCommand(DoUntilCommand ast, Object o) {
+        return layoutBinary("DoUntilCom.", ast.E, ast.C);
+    }
 
+    @Override
+    public Object visitDoWhileCommand(DoWhileCommand ast, Object o) {
+        return layoutBinary("DoWhileCom.", ast.E, ast.C);
+    }
+
+    @Override
+    public Object visitForCommand(ForCommand ast, Object o) {
+        return layoutTernary("ForCom.", ast.E, ast.C, ast.D);
+    }
+    
+    @Override
+    public Object visitForUntilCommand(ForUntilCommand ast, Object o) {
+        return layoutQuaternary("ForUntilCom.", ast.C, ast.D, ast.E1, ast.E2);
+    }
+
+    @Override
+    public Object visitForWhileCommand(ForWhileCommand ast, Object o) {
+        return layoutQuaternary("ForWhileCom.", ast.C, ast.D, ast.E1, ast.E2);
+    }
+    
+    @Override
+    public Object visitUntilCommand(UntilCommand ast, Object o) {
+        return layoutBinary("UntilCom.", ast.E, ast.C);
+    }
+    
+        @Override
+    public Object visitChooseCommand(ChooseCommand ast, Object o) {
+        return layoutBinary("ChooseCom.", ast.E, ast.C);
+    }
 
   // Expressions
   public Object visitArrayExpression(ArrayExpression ast, Object obj) {
@@ -224,6 +260,31 @@ public class LayoutVisitor implements Visitor {
   public Object visitVarDeclaration(VarDeclaration ast, Object obj) {
     return layoutBinary("VarDecl.", ast.I, ast.T);
   }
+  
+  @Override
+    public Object visitInitVarDeclaration(InitVarDeclaration ast, Object o) {
+        return layoutBinary("InitVarDecl.", ast.I, ast.E);
+    }
+    
+    @Override
+    public Object visitForDeclaration(ForDeclaration ast, Object o) {
+        return layoutBinary("ForDecl.", ast.I, ast.E);
+    }
+    
+    @Override
+    public Object visitPrivateDeclaration(PrivateDeclaration ast, Object o) {
+        return layoutBinary("ForDecl.", ast.D1, ast.D2);
+    }
+    
+    @Override
+    public Object visitSequentialPackageDeclaration(SequentialPackageDeclaration ast, Object o) {
+        return layoutBinary("ForDecl.", ast.P1, ast.P2);
+    }
+
+    @Override
+    public Object visitPackageDeclaration(PackageDeclaration ast, Object o) {
+        return layoutBinary("ForDecl.", ast.I, ast.D);
+    }
 
 
   // Array Aggregates
@@ -367,6 +428,26 @@ public class LayoutVisitor implements Visitor {
   public Object visitOperator(Operator ast, Object obj) {
     return layoutNullary(ast.spelling);
   }
+  
+  @Override
+    public Object visitCaseLiterals(CaseLiterals ast, Object o) {
+        return layoutUnary( "CaseLiterals" ,ast.CRange);
+    }
+    
+    @Override
+    public Object visitSimpleIdentifier(SimpleIdentifier ast, Object o) {
+        return layoutUnary( "CaseLiterals" ,ast.ID);
+    }
+    
+    @Override
+    public Object visitCaseIntegerLiteral(CaseIntegerLiteral ast, Object o) {
+        return layoutUnary( "CaseLiterals" ,ast.IL);
+    }
+
+    @Override
+    public Object visitCaseCharacterLiteral(CaseCharacterLiteral ast, Object o) {
+        return layoutUnary( "CaseLiterals" ,ast.CL);
+    }
 
 
   // Value-or-variable names
@@ -382,12 +463,59 @@ public class LayoutVisitor implements Visitor {
     return layoutBinary("Sub.Vname",
         ast.V, ast.E);
   }
+  
+  @Override
+    public Object visitPackageVName(PackageVName ast, Object o) {       // Se agregó nueva
+        return layoutBinary("Package.Vname", ast.I, ast.V);
+    }
 
 
   // Programs
   public Object visitProgram(Program ast, Object obj) {
     return layoutUnary("Program", ast.C);
   }
+  
+  @Override
+    public Object visitProgramPackage(ProgramPackage ast, Object o) {
+    return layoutBinary("ProgramPackage", ast.C, ast.P);
+    }
+    
+    @Override
+    public Object visitPackageId(PackageId ast, Object o) {
+        return layoutBinary("PackageIdentifier", ast.ID, ast.PckID);
+    }
+    
+    // Cases
+    
+    @Override
+    public Object visitCase(Case ast, Object o) {
+        return layoutBinary("Case", ast.C1, ast.C2);
+    }
+
+    @Override
+    public Object visitSequentialCase(SequentialCase ast, Object o) {
+        return layoutBinary("SequentialCase", ast.C1, ast.C2);
+    }
+
+    @Override
+    public Object visitSequentialRange(SequentialRange ast, Object o) {
+        return layoutBinary("SequentialRange", ast.R1, ast.R2);
+    }
+
+    @Override
+    public Object visitSingleRange(SingleRange ast, Object o) {
+        return layoutUnary("SingleRange", ast.C1); 
+    }
+
+    @Override
+    public Object visitDualRange(DualRange ast, Object o) {
+        return layoutBinary("DualRange", ast.C1, ast.C2); 
+    }
+
+    @Override
+    public Object visitElseCase(ElseCase ast, Object o) {
+        return layoutUnary("ElseCase", ast.C);
+    }
 
   private DrawingTree layoutCaption (String name) {
     int w = fontMetrics.stringWidth(name) + 4;
@@ -568,122 +696,7 @@ public class LayoutVisitor implements Visitor {
   }
 
     @Override
-    public Object visitInitVarDeclaration(InitVarDeclaration ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitProgramPackage(ProgramPackage ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitCase(Case ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitCaseLiteral(CaseLiteral ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitCaseLiterals(CaseLiterals ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitDoUntilCommand(DoUntilCommand ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitDoWhileCommand(DoWhileCommand ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitForCommand(ForCommand ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitForDeclaration(ForDeclaration ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitForUntilCommand(ForUntilCommand ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitForWhileCommand(ForWhileCommand ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitSequentialCase(SequentialCase ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitSequentialRange(SequentialRange ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitSingleRange(SingleRange ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitUntilCommand(UntilCommand ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitPrivateDeclaration(PrivateDeclaration ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitDualRange(DualRange ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitElseCase(ElseCase ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitChooseCommand(ChooseCommand ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitSequentialPackageDeclaration(SequentialPackageDeclaration ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitPackageDeclaration(PackageDeclaration ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitPackageVName(PackageVName ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitPackageId(PackageId ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitSimpleIdentifier(SimpleIdentifier ast, Object o) {
+    public Object visitLongIdentifier(LongIdentifier ast, Object o) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

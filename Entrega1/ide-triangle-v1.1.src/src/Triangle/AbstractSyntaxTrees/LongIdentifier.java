@@ -12,9 +12,10 @@ import Triangle.SyntacticAnalyzer.SourcePosition;
  * @author Gabriel
  */
 public abstract class LongIdentifier extends AST {
+
+    public String spelling;
     
     public LongIdentifier (SourcePosition thePosition) {
         super (thePosition);
     }
-
 }

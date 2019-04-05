@@ -23,7 +23,8 @@ import Triangle.AbstractSyntaxTrees.BoolTypeDenoter;
 import Triangle.AbstractSyntaxTrees.CallCommand;
 import Triangle.AbstractSyntaxTrees.CallExpression;
 import Triangle.AbstractSyntaxTrees.Case;
-import Triangle.AbstractSyntaxTrees.CaseLiteral;
+import Triangle.AbstractSyntaxTrees.CaseCharacterLiteral;
+import Triangle.AbstractSyntaxTrees.CaseIntegerLiteral;
 import Triangle.AbstractSyntaxTrees.CaseLiterals;
 import Triangle.AbstractSyntaxTrees.CharTypeDenoter;
 import Triangle.AbstractSyntaxTrees.CharacterExpression;
@@ -58,6 +59,7 @@ import Triangle.AbstractSyntaxTrees.IntegerExpression;
 import Triangle.AbstractSyntaxTrees.IntegerLiteral;
 import Triangle.AbstractSyntaxTrees.LetCommand;
 import Triangle.AbstractSyntaxTrees.LetExpression;
+import Triangle.AbstractSyntaxTrees.LongIdentifier;
 import Triangle.AbstractSyntaxTrees.MultipleActualParameterSequence;
 import Triangle.AbstractSyntaxTrees.MultipleArrayAggregate;
 import Triangle.AbstractSyntaxTrees.MultipleFieldTypeDenoter;
@@ -799,17 +801,10 @@ public class XmlVisitors implements Visitor {
 
     @Override
     public Object visitPackageId(PackageId ast, Object o) {
-        writeLineHTML("<PackageID>");
+        writeLineHTML("<ComplexIdentifier>");
         ast.PckID.visit(this, null);
         ast.ID.visit(this, null);
-        writeLineHTML("</PackageID>");
-        return null;
-    }
-
-    @Override
-    public Object visitCaseLiteral(CaseLiteral ast, Object o) {
-        writeLineHTML("<CaseLiteral>");
-        writeLineHTML("</CaseLiteral>");
+        writeLineHTML("</ComplexIdentifier>");
         return null;
     }
 
@@ -827,6 +822,27 @@ public class XmlVisitors implements Visitor {
         ast.ID.visit(this, null);
         writeLineHTML("</SimpleIdentifier>");
         return null;
+    }
+
+    @Override
+    public Object visitCaseIntegerLiteral(CaseIntegerLiteral ast, Object o) {
+        writeLineHTML("<CaseIntegerLiteral>");
+        ast.IL.visit(this, null);
+        writeLineHTML("</CaseIntegerLiteral>");
+        return null;
+    }
+
+    @Override
+    public Object visitCaseCharacterLiteral(CaseCharacterLiteral ast, Object o) {
+        writeLineHTML("<CaseCharacterLiteral>");
+        ast.CL.visit(this, null);
+        writeLineHTML("</CaseCharacterLiteral>");
+        return null;
+    }
+
+    @Override
+    public Object visitLongIdentifier(LongIdentifier ast, Object o) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

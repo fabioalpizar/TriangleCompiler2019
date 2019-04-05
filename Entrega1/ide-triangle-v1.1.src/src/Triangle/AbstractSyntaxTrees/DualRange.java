@@ -5,7 +5,7 @@ import Triangle.SyntacticAnalyzer.SourcePosition;
 
 public class DualRange extends CaseRange {
 
-  public DualRange (CaseLiteral c1AST, CaseLiteral c2AST, SourcePosition thePosition) {
+  public DualRange (CaseLiteralAST c1AST, CaseLiteralAST c2AST, SourcePosition thePosition) {
     super (thePosition);
     C1 = c1AST;
     C2 = c2AST;
@@ -15,5 +15,5 @@ public class DualRange extends CaseRange {
     return v.visitDualRange(this, o);
   }
 
-  public CaseLiteral C1, C2;
+  public CaseLiteralAST C1, C2;
 }

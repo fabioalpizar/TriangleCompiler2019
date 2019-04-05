@@ -8,12 +8,13 @@ import Triangle.SyntacticAnalyzer.SourcePosition;
 public abstract class CaseIntegerLiteral extends CaseLiteralAST {
 
   public CaseIntegerLiteral (IntegerLiteral iAST ,SourcePosition thePosition) {
+      super (thePosition);
   	this.IL = iAST; 
-    super (thePosition);
+    
   }
 
    public Object visit(Visitor v, Object o) {
-    return v.visitIntegerLiteral(this, o);
+    return v.visitCaseIntegerLiteral(this, o);
   }
 
   public IntegerLiteral IL;
