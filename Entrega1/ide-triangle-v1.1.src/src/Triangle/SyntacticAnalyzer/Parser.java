@@ -618,15 +618,17 @@ public class Parser {
   }
 
 
-  CaseLiteral parseCaseLiteral() throws SyntaxError{
-    Terminal caseLiteralAST = null;
+  CaseLiteralAST parseCaseLiteral() throws SyntaxError{
+    CaseLiteralAST caseLiteralAST = null;
     SourcePosition caseLiteralPos = new SourcePosition();
     start(caseLiteralPos);
     switch(currentToken.kind){
+      IntegerLiteral iAST = null;
       case Token.INTLITERAL:
       {
+        iAST = parseIntegerLiteral();
         finish(caseLiteralPos);
-        caseLiteralAST =  parseIntegerLiteral();
+        caseLiteralAST =  new IntegerCaseLiteral(iAST, caseLiteralPos);
         break;
       }
       case Token.CHARLITERAL:
