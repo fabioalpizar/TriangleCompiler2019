@@ -355,7 +355,6 @@ public class Parser {
                 {
                   //
                   commandAST = ParseDoCommand();
-                  accept(Token.END);
                   finish(commandPos);
                 }
                 break;
@@ -1481,7 +1480,9 @@ public class Parser {
     start(packagePos);
     accept(Token.PACKAGE);
     Identifier piAST = parseIdentifier();
+    
     accept(Token.IS);
+    
     Declaration dAST = parseDeclaration();
     accept(Token.END);
     finish(packagePos);
