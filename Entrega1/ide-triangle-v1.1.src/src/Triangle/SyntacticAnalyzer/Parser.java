@@ -413,6 +413,7 @@ public class Parser {
           Declaration dAST = parseDeclaration();
           accept(Token.IN);
           Command cAST = parseCommand();      // Se cambio de parseSingleCommand a parseCommand
+          accept(Token.END);
           finish(commandPos);
           commandAST = new LetCommand(dAST, cAST, commandPos);
         }
@@ -425,6 +426,7 @@ public class Parser {
           Command c1AST = parseCommand();      // Se cambio de parseSingleCommand a parseCommand
           accept(Token.ELSE);
           Command c2AST = parseCommand();      // Se cambio de parseSingleCommand a parseCommand
+          accept(Token.END);
           finish(commandPos);
           commandAST = new IfCommand(eAST, c1AST, c2AST, commandPos);
         }
@@ -435,6 +437,7 @@ public class Parser {
           Expression eAST = parseExpression();
           accept(Token.FROM);
           SequentialCase cAST = parseCases(); //Agregar parse
+          accept(Token.END);
           finish(commandPos);
           commandAST = new ChooseCommand(eAST, cAST, commandPos);
         }
@@ -1032,7 +1035,11 @@ public class Parser {
       {
         acceptIt();
         Declaration d1AST = parseDeclaration();
+        
+        accept(Token.IN);
+        
         Declaration d2AST = parseDeclaration();
+        accept(Token.END);
         finish(declarationPos);
         declarationAST = new PrivateDeclaration(d1AST, d2AST, declarationPos);
       }
