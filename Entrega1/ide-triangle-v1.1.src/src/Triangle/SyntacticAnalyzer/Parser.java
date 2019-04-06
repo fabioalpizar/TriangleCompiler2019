@@ -180,6 +180,7 @@ public class Parser {
     SourcePosition pos = new SourcePosition();
     try {
       Declaration p1AST = null;
+      
       if(currentToken.kind == Token.PACKAGE){
         p1AST = parsePackageDeclaration();
         accept(Token.SEMICOLON);
@@ -323,41 +324,6 @@ public class Parser {
           finish(commandPos);
           commandAST = new EmptyCommand(commandPos);
         break;
-      case Token.IDENTIFIER:
-        {
-          Identifier iAST = parseIdentifier();
-          if (currentToken.kind == Token.LPAREN) {
-            acceptIt();
-            ActualParameterSequence apsAST = parseActualParameterSequence();
-            accept(Token.RPAREN);
-            finish(commandPos);
-            commandAST = new CallCommand(iAST, apsAST, commandPos);
-          } else {
-            Vname vAST = null;
-            while (currentToken.kind == Token.DOT || currentToken.kind == Token.LBRACKET) {
-                if (currentToken.kind == Token.DOT) {
-                    acceptIt();
-                    Identifier i2AST = parseIdentifier();
-                    vAST = new DotVname(vAST, i2AST, commandPos);
-                  } else {
-                    acceptIt();
-                    Expression eAST = parseExpression();
-                    accept(Token.RBRACKET);
-                    finish(commandPos);
-                    vAST = new SubscriptVname(vAST, eAST, commandPos);
-                }
-            }
-            if (currentToken.kind == Token.BECOMES) {
-                acceptIt();
-                vAST = parseRestOfVname(iAST);
-            }
-            Expression eAST = parseExpression();
-            finish(commandPos);
-            commandAST = new AssignCommand(vAST, eAST, commandPos);
-          }
-        }
-        break;
-        
       case Token.LOOP:
         {
           acceptIt();
@@ -441,6 +407,40 @@ public class Parser {
           finish(commandPos);
           commandAST = new ChooseCommand(eAST, cAST, commandPos);
         }
+        case Token.IDENTIFIER:
+        {
+          Identifier iAST = parseIdentifier();
+          if (currentToken.kind == Token.LPAREN) {
+            acceptIt();
+            ActualParameterSequence apsAST = parseActualParameterSequence();
+            accept(Token.RPAREN);
+            finish(commandPos);
+            commandAST = new CallCommand(iAST, apsAST, commandPos);
+          } else {
+            Vname vAST = null;
+            while (currentToken.kind == Token.DOT || currentToken.kind == Token.LBRACKET) {
+                if (currentToken.kind == Token.DOT) {
+                    acceptIt();
+                    Identifier i2AST = parseIdentifier();
+                    vAST = new DotVname(vAST, i2AST, commandPos);
+                  } else {
+                    acceptIt();
+                    Expression eAST = parseExpression();
+                    accept(Token.RBRACKET);
+                    finish(commandPos);
+                    vAST = new SubscriptVname(vAST, eAST, commandPos);
+                }
+            }
+            if (currentToken.kind == Token.BECOMES) {
+                acceptIt();
+                vAST = parseRestOfVname(iAST);
+            }
+            Expression eAST = parseExpression();
+            finish(commandPos);
+            commandAST = new AssignCommand(vAST, eAST, commandPos);
+          }
+        }
+        break;
       default:
         syntacticError("\"%\" cannot start a commandASD",
           currentToken.spelling);

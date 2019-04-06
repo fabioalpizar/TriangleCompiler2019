@@ -1,19 +1,7 @@
-/*
- * @(#)Token.java                        2.1 2003/10/07
- *
- * Copyright (C) 1999, 2003 D.A. Watt and D.F. Brown
- * Dept. of Computing Science, University of Glasgow, Glasgow G12 8QQ Scotland
- * and School of Computer and Math Sciences, The Robert Gordon University,
- * St. Andrew Street, Aberdeen AB25 1HG, Scotland.
- * All rights reserved.
- *
- * This software is provided free for educational use only. It may
- * not be used for commercial purposes without the prior written permission
- * of the authors.
- */
 
 package Triangle.SyntacticAnalyzer;
 
+import Triangle.SyntacticAnalyzer.SourcePosition;
 
 final class Token extends Object {
 
@@ -75,54 +63,54 @@ final class Token extends Object {
     DO      = 7,
     ELSE    = 8,
     END     = 9,
-    FOR    = 10,
-    FROM     = 11,   // Se agregó palabra reservada for
-    FUNC    = 12,   // Se agregó palabra reservada from
+    FUNC    = 10,
+    FOR     = 11,   // Se agregó palabra reservada for
+    FROM    = 12,   // Se agregó palabra reservada from
     IF      = 13,
     IN      = 14,
     LET     = 15,
     LOOP    = 16,   // Se agregó palabra reservada loop
     OF      = 17,
-    PAR     = 18,   // Se agregó palabra reservada par
-    PASS    = 19,   // Se agregó palabra reservada pass
-    PRIVATE = 20,   // Se agregó palabra reservada private
-    PROC    = 21,
-    RECORD  = 22,
-    RECURSIVE   = 23,   // Se agregó palabra reservada recursive
-    THEN        = 24,
-    TO      = 25,   // Se agregó palabra reservada to
-    TYPE    = 26,
-    UNTIL   = 27,   // Se agregó palabra reservada until
-    VAR     = 28,
-    WHEN    = 29,   // Se agregó palabra reservada when
-    WHILE   = 30,
+    PACKAGE = 18,
+    PAR     = 19,   // Se agregó palabra reservada par
+    PASS    = 20,   // Se agregó palabra reservada pass
+    PRIVATE = 21,   // Se agregó palabra reservada private
+    PROC    = 22,
+    RECORD  = 23,
+    RECURSIVE   = 24,   // Se agregó palabra reservada recursive
+    THEN        = 25,
+    TO      = 26,   // Se agregó palabra reservada to
+    TYPE    = 27,
+    UNTIL   = 28,   // Se agregó palabra reservada until
+    VAR     = 29,
+    WHEN    = 30,   // Se agregó palabra reservada when
+    WHILE   = 31,
   
     // punctuation...
-    DOT         = 31,
-    COLON       = 32,
-    SEMICOLON   = 33,
-    COMMA       = 34,
-    BECOMES     = 35,
-    IS          = 36,
-    PIPE        = 37,   // Se agregó simbolo |
-    INITIALIZE  = 38,   // Se agregó simbolo ::=
-    DOLLAR      = 39,   // Se agregó simbolo $
-    RANGE       = 40,   // Se agregó simbolo ..
+    DOT         = 32,
+    COLON       = 33,
+    SEMICOLON   = 34,
+    COMMA       = 35,
+    BECOMES     = 36,
+    IS          = 37,
+    PIPE        = 38,   // Se agregó simbolo |
+    INITIALIZE  = 39,   // Se agregó simbolo ::=
+    DOLLAR      = 40,   // Se agregó simbolo $
+    RANGE       = 41,   // Se agregó simbolo ..
 
     // brackets...
-    LPAREN      = 41,
-    RPAREN      = 42,
-    LBRACKET    = 43,
-    RBRACKET    = 44,
-    LCURLY      = 45,
-    RCURLY      = 46,
+    LPAREN      = 42,
+    RPAREN      = 43,
+    LBRACKET    = 44,
+    RBRACKET    = 45,
+    LCURLY      = 46,
+    RCURLY      = 47,
 
     // special tokens...
-    EOT         = 47,
-    ERROR       = 48,
+    EOT         = 48,
+    ERROR       = 49;
   
     // package
-    PACKAGE     = 49;
 
   private static String[] tokenTable = new String[] {
     "<int>",
@@ -135,14 +123,15 @@ final class Token extends Object {
     "do",
     "else",
     "end",
-    "for",
-    "from",   // Se agregó el caracter de la palabra reservada for
-    "func",   // Se agregó el caracter de la palabra reservada from
+    "func",
+    "for",   // Se agregó el caracter de la palabra reservada for
+    "from",   // Se agregó el caracter de la palabra reservada from
     "if",
     "in",
     "let",
     "loop",   // Se agregó el caracter de la palabra reservada loop
     "of",
+    "package",
     "par",   // Se agregó el caracter de la palabra reservada par
     "pass",   // Se agregó el caracter de la palabra reservada pass
     "private",   // Se agregó el caracter de la palabra reservada private
@@ -173,8 +162,7 @@ final class Token extends Object {
     "{",
     "}",
     "",
-    "<error>",
-    "package"
+    "<error>"
   };
 
   private final static int  firstReservedWord = Token.ARRAY,
