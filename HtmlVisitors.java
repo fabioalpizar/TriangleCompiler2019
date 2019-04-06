@@ -22,24 +22,38 @@ import Triangle.AbstractSyntaxTrees.BinaryOperatorDeclaration;
 import Triangle.AbstractSyntaxTrees.BoolTypeDenoter;
 import Triangle.AbstractSyntaxTrees.CallCommand;
 import Triangle.AbstractSyntaxTrees.CallExpression;
+import Triangle.AbstractSyntaxTrees.Case;
+import Triangle.AbstractSyntaxTrees.CaseCharacterLiteral;
+import Triangle.AbstractSyntaxTrees.CaseIntegerLiteral;
+import Triangle.AbstractSyntaxTrees.CaseLiterals;
 import Triangle.AbstractSyntaxTrees.CharTypeDenoter;
 import Triangle.AbstractSyntaxTrees.CharacterExpression;
 import Triangle.AbstractSyntaxTrees.CharacterLiteral;
+import Triangle.AbstractSyntaxTrees.ChooseCommand;
 import Triangle.AbstractSyntaxTrees.ConstActualParameter;
 import Triangle.AbstractSyntaxTrees.ConstDeclaration;
 import Triangle.AbstractSyntaxTrees.ConstFormalParameter;
+import Triangle.AbstractSyntaxTrees.DoUntilCommand;
+import Triangle.AbstractSyntaxTrees.DoWhileCommand;
 import Triangle.AbstractSyntaxTrees.DotVname;
+import Triangle.AbstractSyntaxTrees.DualRange;
+import Triangle.AbstractSyntaxTrees.ElseCase;
 import Triangle.AbstractSyntaxTrees.EmptyActualParameterSequence;
 import Triangle.AbstractSyntaxTrees.EmptyCommand;
 import Triangle.AbstractSyntaxTrees.EmptyExpression;
 import Triangle.AbstractSyntaxTrees.EmptyFormalParameterSequence;
 import Triangle.AbstractSyntaxTrees.ErrorTypeDenoter;
+import Triangle.AbstractSyntaxTrees.ForCommand;
+import Triangle.AbstractSyntaxTrees.ForDeclaration;
+import Triangle.AbstractSyntaxTrees.ForUntilCommand;
+import Triangle.AbstractSyntaxTrees.ForWhileCommand;
 import Triangle.AbstractSyntaxTrees.FuncActualParameter;
 import Triangle.AbstractSyntaxTrees.FuncDeclaration;
 import Triangle.AbstractSyntaxTrees.FuncFormalParameter;
 import Triangle.AbstractSyntaxTrees.Identifier;
 import Triangle.AbstractSyntaxTrees.IfCommand;
 import Triangle.AbstractSyntaxTrees.IfExpression;
+import Triangle.AbstractSyntaxTrees.InitVarDeclaration;
 import Triangle.AbstractSyntaxTrees.IntTypeDenoter;
 import Triangle.AbstractSyntaxTrees.IntegerExpression;
 import Triangle.AbstractSyntaxTrees.IntegerLiteral;
@@ -51,25 +65,36 @@ import Triangle.AbstractSyntaxTrees.MultipleFieldTypeDenoter;
 import Triangle.AbstractSyntaxTrees.MultipleFormalParameterSequence;
 import Triangle.AbstractSyntaxTrees.MultipleRecordAggregate;
 import Triangle.AbstractSyntaxTrees.Operator;
+import Triangle.AbstractSyntaxTrees.PackageDeclaration;
+import Triangle.AbstractSyntaxTrees.PackageId;
+import Triangle.AbstractSyntaxTrees.PackageVName;
+import Triangle.AbstractSyntaxTrees.PrivateDeclaration;
 import Triangle.AbstractSyntaxTrees.ProcActualParameter;
 import Triangle.AbstractSyntaxTrees.ProcDeclaration;
 import Triangle.AbstractSyntaxTrees.ProcFormalParameter;
 import Triangle.AbstractSyntaxTrees.Program;
+import Triangle.AbstractSyntaxTrees.ProgramPackage;
 import Triangle.AbstractSyntaxTrees.RecordExpression;
 import Triangle.AbstractSyntaxTrees.RecordTypeDenoter;
+import Triangle.AbstractSyntaxTrees.SequentialCase;
 import Triangle.AbstractSyntaxTrees.SequentialCommand;
 import Triangle.AbstractSyntaxTrees.SequentialDeclaration;
+import Triangle.AbstractSyntaxTrees.SequentialPackageDeclaration;
+import Triangle.AbstractSyntaxTrees.SequentialRange;
+import Triangle.AbstractSyntaxTrees.SimpleIdentifier;
 import Triangle.AbstractSyntaxTrees.SimpleTypeDenoter;
 import Triangle.AbstractSyntaxTrees.SimpleVname;
 import Triangle.AbstractSyntaxTrees.SingleActualParameterSequence;
 import Triangle.AbstractSyntaxTrees.SingleArrayAggregate;
 import Triangle.AbstractSyntaxTrees.SingleFieldTypeDenoter;
 import Triangle.AbstractSyntaxTrees.SingleFormalParameterSequence;
+import Triangle.AbstractSyntaxTrees.SingleRange;
 import Triangle.AbstractSyntaxTrees.SingleRecordAggregate;
 import Triangle.AbstractSyntaxTrees.SubscriptVname;
 import Triangle.AbstractSyntaxTrees.TypeDeclaration;
 import Triangle.AbstractSyntaxTrees.UnaryExpression;
 import Triangle.AbstractSyntaxTrees.UnaryOperatorDeclaration;
+import Triangle.AbstractSyntaxTrees.UntilCommand;
 import Triangle.AbstractSyntaxTrees.VarActualParameter;
 import Triangle.AbstractSyntaxTrees.VarDeclaration;
 import Triangle.AbstractSyntaxTrees.VarFormalParameter;
@@ -85,6 +110,8 @@ public class HtmlVisitors implements Visitor {
     private FileWriter fileWriter;
     private boolean SeqDeclarationFlag = false;
     private boolean SeqCommandFlag = false;
+    private boolean SeqCaseFlag = false;
+    private boolean SeqRangeFlag = false;
 
     HtmlVisitors(FileWriter fileWriter) {
         this.fileWriter = fileWriter;
@@ -94,45 +121,51 @@ public class HtmlVisitors implements Visitor {
     public Object visitAssignCommand(AssignCommand ast, Object obj) {
         writeTxtHTML("<p>");
         ast.V.visit(this, null);
-        writeTxtHTML(" := ");
+        writeTxtHTML("<b> := </b>");
         ast.E.visit(this, null);
-        writeTxtHTML(";</p>");
+        writeTxtHTML("</p>");
         return null;
     }
 
     public Object visitCallCommand(CallCommand ast, Object obj) {
-        writeLineHTML("<CallCommand>");
+        writeLineHTML("<p>");
         ast.I.visit(this, null);
+        writeLineHTML(" ( ");
         ast.APS.visit(this, null);
-        writeLineHTML("</CallCommand>");
+        writeLineHTML(" )</p>");
         return null;
     }
 
     public Object visitEmptyCommand(EmptyCommand ast, Object obj) {
-        writeLineHTML("<EmptyCommand/>");
+        writeLineHTML("pass");
         return null;
     }
 
     public Object visitIfCommand(IfCommand ast, Object obj) {
-        writeLineHTML("<IfCommand>");
+        writeLineHTML("<p>");
+        writeLineHTML("<b>if</b>");
         ast.E.visit(this, null);
+        writeLineHTML("<b> then </b>");
         ast.C1.visit(this, null);
+        writeLineHTML("<b> else </b>");
         ast.C2.visit(this, null);
-        writeLineHTML("</IfCommand>");
+        writeLineHTML("</p>");
         return null;
     }
 
     public Object visitLetCommand(LetCommand ast, Object obj) {
-        writeTxtHTML("<p><b>let</b></p>\n");
+        writeLineHTML("<p>");
+        writeTxtHTML("<b>let</b>");
         ast.D.visit(this, null);
+        writeTxtHTML("<b>in</b>");
         ast.C.visit(this, null);
+        writeLineHTML("</p>");
         return null;
     }
 
     public Object visitSequentialCommand(SequentialCommand ast, Object obj) {
         if(SeqCommandFlag == false){
             this.SeqCommandFlag = true;
-            writeTxtHTML("<p><b>begin</b></p>");
             ast.C1.visit(this, null);
             ast.C2.visit(this, null);
             writeTxtHTML("<p><b>end</b></p>");
@@ -147,54 +180,132 @@ public class HtmlVisitors implements Visitor {
         writeTxtHTML("<b>while</b> (");
         ast.E.visit(this, null);
         writeTxtHTML(") <b>do</b>");
-        writeTxtHTML("<p><b>begin</b></p>");
+        ast.C.visit(this, null);
+        writeTxtHTML("<p><b>end;</b></p>");
+        return null;
+    }
+    
+    @Override
+    public Object visitChooseCommand(ChooseCommand ast, Object o) {
+        writeTxtHTML("<b>choose</b> (");
+        ast.E.visit(this, null);
+        writeTxtHTML(") <b>from</b>");
+        ast.C.visit(this, null);
+        writeTxtHTML("<p><b>end;</b></p>");
+        return null;
+    }
+    
+    @Override
+    public Object visitUntilCommand(UntilCommand ast, Object o) {
+        writeTxtHTML("<b>until</b> (");
+        ast.E.visit(this, null);
+        writeTxtHTML(") <b>do</b>");
+        ast.C.visit(this, null);
+        writeTxtHTML("<p><b>end;</b></p>");
+        return null;
+    }
+    
+        @Override
+    public Object visitForUntilCommand(ForUntilCommand ast, Object o) {
+        writeTxtHTML("<b>for</b> (");
+        ast.D.visit(this, null);
+        writeTxtHTML(") <b>to</b>");
+        ast.E1.visit(this,null);
+        writeTxtHTML("<p><b>until</b></p>");
+        ast.E2.visit(this, null);
+        writeTxtHTML("<p><b>do;</b></p>");
         ast.C.visit(this, null);
         writeTxtHTML("<p><b>end;</b></p>");
         return null;
     }
 
-
-    // Expressions
-    public Object visitArrayExpression(ArrayExpression ast, Object obj) {
-        writeLineHTML("<ArrayExpression>");
-        ast.AA.visit(this, null);
-        writeLineHTML("</ArrayExpression>");
+    @Override
+    public Object visitForWhileCommand(ForWhileCommand ast, Object o) {
+        writeTxtHTML("<b>for</b> (");
+        ast.D.visit(this, null);
+        writeTxtHTML(") <b>to</b>");
+        ast.E1.visit(this,null);
+        writeTxtHTML("<p><b>while</b></p>");
+        ast.E2.visit(this, null);
+        writeTxtHTML("<p><b>do;</b></p>");
+        ast.C.visit(this, null);
+        writeTxtHTML("<p><b>end;</b></p>");
+        return null;
+    }
+    
+    @Override
+    public Object visitDoUntilCommand(DoUntilCommand ast, Object o) {
+        writeTxtHTML("<b>do</b> (");
+        ast.C.visit(this, null);
+        writeTxtHTML(") <b>until</b>");
+        ast.E.visit(this, null);
+        writeTxtHTML("<p><b>end;</b></p>");
         return null;
     }
 
+    @Override
+    public Object visitDoWhileCommand(DoWhileCommand ast, Object o) {
+        writeTxtHTML("<b>do</b> (");
+        ast.C.visit(this, null);
+        writeTxtHTML(") <b>while</b>");
+        ast.E.visit(this, null);
+        writeTxtHTML("<p><b>end;</b></p>");
+        return null;
+    }
+
+    @Override
+    public Object visitForCommand(ForCommand ast, Object o) {
+        writeTxtHTML("<b>for</b> (");
+        ast.D.visit(this, null);
+        writeTxtHTML(") <b>to</b>");
+        ast.E.visit(this,null);
+        writeTxtHTML("<p><b>do;</b></p>");
+        ast.C.visit(this, null);
+        writeTxtHTML("<p><b>end;</b></p>");
+        return null;
+    }
+
+    // Expressions
+    public Object visitArrayExpression(ArrayExpression ast, Object obj) {
+        writeLineHTML("<b>[ </b>");
+        ast.AA.visit(this, null);
+        writeLineHTML("<b> ]</b>");
+        return null;
+    }
+    
+    
     public Object visitBinaryExpression(BinaryExpression ast, Object obj) {
-        writeLineHTML("<BinaryExpression>");
         ast.E1.visit(this, null);
         ast.O.visit(this, null);
         ast.E2.visit(this, null);
-        writeLineHTML("</BinaryExpression>");
         return null;
     }
 
     public Object visitCallExpression(CallExpression ast, Object obj) {
-        writeLineHTML("<CallExpression>");
+        writeLineHTML("<p>");
         ast.I.visit(this, null);
+        writeLineHTML("(");
         ast.APS.visit(this, null);
-        writeLineHTML("</CallExpression>");
+        writeLineHTML(")</p>");
         return null;
     }
 
     public Object visitCharacterExpression(CharacterExpression ast, Object obj) {
-        writeLineHTML("<CharacterExpression>");
         ast.CL.visit(this, null);
-        writeLineHTML("</CharacterExpression>");
         return null;
     }
 
     public Object visitEmptyExpression(EmptyExpression ast, Object obj) {
-        writeLineHTML("<EmptyExpression/>");
+        writeLineHTML("pass");
         return null;
     }
 
     public Object visitIfExpression(IfExpression ast, Object obj) {
-        writeTxtHTML("<b>if</b>");
+        writeTxtHTML("<b> if </b>");
         ast.E1.visit(this, null);
+        writeTxtHTML("<b> then </b>");
         ast.E2.visit(this, null);
+        writeTxtHTML("<b> then </b>");
         ast.E3.visit(this, null);
         return null;
     }
@@ -207,25 +318,22 @@ public class HtmlVisitors implements Visitor {
     }
 
     public Object visitLetExpression(LetExpression ast, Object obj) {
-        writeTxtHTML("<p><b>let</b></p>");
+        writeTxtHTML("<p><b>let</b>");
         ast.D.visit(this, null);
+        writeTxtHTML("<b>in</b>");
         ast.E.visit(this, null);
-        writeTxtHTML("<p><b>end</b></p>");
+        writeTxtHTML("<b>end</b></p>");
         return null;
     }
 
     public Object visitRecordExpression(RecordExpression ast, Object obj) {
-        writeLineHTML("<RecordExpression>");
         ast.RA.visit(this, null);
-        writeLineHTML("</RecordExpression>");
         return null;
     }
 
     public Object visitUnaryExpression(UnaryExpression ast, Object obj) {
-        writeLineHTML("<UnaryExpression>");
         ast.O.visit(this, null);
         ast.E.visit(this, null);
-        writeLineHTML("</UnaryExpression>");
         return null;
     }
 
@@ -239,12 +347,10 @@ public class HtmlVisitors implements Visitor {
 
     // Declarations
     public Object visitBinaryOperatorDeclaration(BinaryOperatorDeclaration ast, Object obj) {
-        writeLineHTML("<BinaryOperatorDeclaration>");
         ast.O.visit(this, null);
         ast.ARG1.visit(this, null);
         ast.ARG2.visit(this, null);
         ast.RES.visit(this, null);
-        writeLineHTML("</BinaryOperatorDeclaration>");
         return null;
     }
 
@@ -252,7 +358,6 @@ public class HtmlVisitors implements Visitor {
         writeTxtHTML("<p style=\"text-indent: 40px\">const ");
         ast.I.visit(this, null);
         ast.E.visit(this, null);
-        writeLineHTML("</ConstDeclaration>");
         writeTxtHTML("</p>");
         return null;
     }
@@ -260,19 +365,24 @@ public class HtmlVisitors implements Visitor {
     public Object visitFuncDeclaration(FuncDeclaration ast, Object obj) {
         writeTxtHTML("<p style=\"text-indent: 40px\">func ");
         ast.I.visit(this, null);
+        writeTxtHTML(" (");
         ast.FPS.visit(this, null);
+        writeTxtHTML(" ) : ");
         ast.T.visit(this, null);
+        writeTxtHTML(" ~ ");
         ast.E.visit(this, null);
-        writeTxtHTML("</p>");
+        writeTxtHTML(")</p>");
         return null;
     }
 
     public Object visitProcDeclaration(ProcDeclaration ast, Object obj) {
         writeTxtHTML("<p style=\"text-indent: 40px\">proc ");
         ast.I.visit(this, null);
+        writeTxtHTML(" (");
         ast.FPS.visit(this, null);
+        writeTxtHTML(" ) <b> ~ </b>");
         ast.C.visit(this, null);
-        writeTxtHTML("</p>");
+        writeTxtHTML("<b>end</b></p>");
         return null;
     }
 
@@ -297,12 +407,12 @@ public class HtmlVisitors implements Visitor {
         return null;
     }
 
+
+
     public Object visitUnaryOperatorDeclaration(UnaryOperatorDeclaration ast, Object obj) {
-        writeLineHTML("<UnaryOperatorDeclaration>");
         ast.O.visit(this, null);
         ast.ARG.visit(this, null);
         ast.RES.visit(this, null);
-        writeLineHTML("</UnaryOperatorDeclaration>");
         return null;
     }
 
@@ -312,6 +422,68 @@ public class HtmlVisitors implements Visitor {
         ast.I.visit(this, null);
         writeTxtHTML("</font>");
         ast.T.visit(this, null);
+        writeTxtHTML("</p>");
+        return null;
+    }
+    
+    @Override
+    public Object visitForDeclaration(ForDeclaration ast, Object o) {
+        writeTxtHTML("<p style=\"text-indent: 40px\"> ");
+        ast.I.visit(this, null);
+        writeTxtHTML("<b> from </b>");
+        ast.E.visit(this, null);
+        writeTxtHTML("</p>");
+        return null;
+    }
+    
+    @Override
+    public Object visitPrivateDeclaration(PrivateDeclaration ast, Object o) {
+        writeTxtHTML("<p style=\"text-indent: 40px\">private ");
+        ast.D1.visit(this, null);
+        writeTxtHTML("<b> in </b> ");
+        ast.D2.visit(this, null);
+        writeTxtHTML("<b> end </b></p>");
+        return null;
+    }
+
+    
+    @Override
+    public Object visitInitVarDeclaration(InitVarDeclaration ast, Object o) {
+        writeTxtHTML("<p style=\"text-indent: 40px\">const ");
+        ast.I.visit(this, null);
+        writeTxtHTML("<b> ::= </b>");
+        ast.E.visit(this, null);
+        writeTxtHTML("</p>");
+        return null;
+    }
+
+
+/*
+=============================================================
+
+            LISTO HASTA AQUI
+
+=============================================================
+*/
+    
+    @Override
+    public Object visitSequentialPackageDeclaration(SequentialPackageDeclaration ast, Object o) {
+        writeTxtHTML("<p style=\"text-indent: 40px\">const ");
+        ast.P1.visit(this, null);
+        ast.P2.visit(this, null);
+        writeLineHTML("</SequentialPackageDeclaration>");
+        writeTxtHTML("</p>");
+        return null;
+    }
+
+    @Override
+    public Object visitPackageDeclaration(PackageDeclaration ast, Object o) {
+        writeTxtHTML("<p style=\"text-indent: 40px\">");
+        writeTxtHTML("<b> package </b>");
+        ast.I.visit(this, null);
+        writeTxtHTML("<b> ~ </b>");
+        ast.D.visit(this, null);
+        writeTxtHTML("<b> end </b>");
         writeTxtHTML("</p>");
         return null;
     }
@@ -570,6 +742,15 @@ public class HtmlVisitors implements Visitor {
         writeLineHTML("</SubscriptVname>");
         return null;
     }
+    
+    @Override
+    public Object visitPackageVName(PackageVName ast, Object o) {
+        writeLineHTML("<SubscriptVname>");
+        ast.I.visit(this, null);
+        ast.V.visit(this, null);
+        writeLineHTML("</SubscriptVname>");
+        return null;
+    }
 
 
     // Programs
@@ -581,6 +762,21 @@ public class HtmlVisitors implements Visitor {
                         "</style>\n</head>");
         writeLineHTML("<body>");
         ast.C.visit(this, null);
+        writeLineHTML("\n</body>");
+        writeLineHTML("\n</html>");
+        return null;
+    }
+    
+    @Override
+    public Object visitProgramPackage(ProgramPackage ast, Object o) {
+        writeLineHTML("<html>");
+        writeLineHTML("<head>\n<style>" +
+                        "\n body {\nfont-size: 1em !important;\n" +
+                        "font-family: Courier !important;\n}\n" +
+                        "</style>\n</head>");
+        writeLineHTML("<body>");
+        ast.C.visit(this, null);
+        ast.P.visit(this, null);
         writeLineHTML("\n</body>");
         writeLineHTML("\n</html>");
         return null;
@@ -604,6 +800,7 @@ public class HtmlVisitors implements Visitor {
             e.printStackTrace();
         }
     }
+    
 
     /*
     * Convert the characters "<" & "<=" to their equivalents in html
@@ -615,6 +812,110 @@ public class HtmlVisitors implements Visitor {
             return "&lt;=";
         else
             return operator;
+    }
+
+    
+    // Cases
+    @Override
+    public Object visitCase(Case ast, Object o) {
+        writeTxtHTML("<b>when</b> (");
+        ast.C1.visit(this, null);
+        writeTxtHTML(") <b>then</b>");
+        ast.C2.visit(this,null);
+        return null;
+    }
+    
+    @Override
+    public Object visitSequentialCase(SequentialCase ast, Object o) {
+        if(SeqCaseFlag == false){
+            this.SeqCaseFlag = true;
+            ast.C1.visit(this, null);
+            ast.C2.visit(this, null);
+            writeTxtHTML("<p><b>end</b></p>");
+        }else{
+            ast.C1.visit(this, null);
+            ast.C2.visit(this, null);
+        }
+        return null;
+    }
+
+    @Override
+    public Object visitSequentialRange(SequentialRange ast, Object o) {
+        if(SeqRangeFlag == false){
+            this.SeqRangeFlag = true;
+            ast.R1.visit(this, null);
+            ast.R2.visit(this, null);
+            writeTxtHTML("<p><b>end</b></p>");
+        }else{
+            ast.R1.visit(this, null);
+            ast.R2.visit(this, null);
+        }
+        return null;
+    }
+
+    @Override
+    public Object visitSingleRange(SingleRange ast, Object o) {
+        writeTxtHTML("<b>singleRange</b> (");
+        ast.C1.visit(this, null);
+        return null;
+    }
+
+    @Override
+    public Object visitDualRange(DualRange ast, Object o) {
+        writeLineHTML("<font color=#3377ff>");
+        ast.C1.visit(this, null);
+        writeLineHTML("</font>");
+        writeLineHTML("<p><b> .. </p></b>");
+        ast.C2.visit(this, null);
+        return null;
+    }
+
+    @Override
+    public Object visitElseCase(ElseCase ast, Object o) {
+        writeTxtHTML("<b>else</b> (");
+        ast.C.visit(this, null);
+        return null;
+    }
+
+    @Override
+    public Object visitCaseLiterals(CaseLiterals ast, Object o) {
+        writeLineHTML("<CaseLiterals>");
+        ast.CRange.visit(this, null);
+        writeLineHTML("</CaseLiterals>");
+        return null;
+    }
+
+    @Override
+    public Object visitPackageId(PackageId ast, Object o) {
+        writeLineHTML("<ComplexIdentifier>");
+        ast.PckID.visit(this, null);
+        ast.ID.visit(this, null);
+        writeLineHTML("</ComplexIdentifier>");
+        return null;
+    }
+
+    @Override
+    public Object visitSimpleIdentifier(SimpleIdentifier ast, Object o) {
+        writeLineHTML("<SimpleIdentifier>");
+        ast.ID.visit(this, null);
+        writeLineHTML("</SimpleIdentifier>");
+        return null;
+    }
+
+    @Override
+    public Object visitCaseIntegerLiteral(CaseIntegerLiteral ast, Object o) {
+        writeLineHTML("<SimpleIdentifier>");
+        ast.IL.visit(this, null);
+        writeLineHTML("</SimpleIdentifier>");
+        return null;
+    }
+
+    @Override
+    public Object visitCaseCharacterLiteral(CaseCharacterLiteral ast, Object o) {
+        writeLineHTML("<SimpleIdentifier>");
+        ast.CL.visit(this, null);
+        writeLineHTML("</SimpleIdentifier>");
+        return null;
     }
 
 }

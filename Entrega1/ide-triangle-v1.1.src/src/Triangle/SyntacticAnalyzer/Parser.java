@@ -355,6 +355,7 @@ public class Parser {
                 {
                   //
                   commandAST = ParseDoCommand();
+                  
                   finish(commandPos);
                 }
                 break;
@@ -450,7 +451,7 @@ public class Parser {
   }
 
 
-  // Se agregó 
+  // Se agrego
   /* FOR */
   Command ParseForCommand() throws SyntaxError {
     Command commandAST = null; // in case there's a syntactic error

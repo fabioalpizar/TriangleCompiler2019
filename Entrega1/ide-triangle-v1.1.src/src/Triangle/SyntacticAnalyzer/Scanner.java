@@ -160,6 +160,7 @@ public final class Scanner {
       return Token.COMMA;
 
     case '~':
+        
       takeIt();
       return Token.IS;
 		    
