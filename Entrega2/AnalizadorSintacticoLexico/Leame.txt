@@ -1,0 +1,1 @@
+Por motivos de seguridad Gmail no permite enviar el .jar por correo, inclusive dentro del zip, por ende se cambio la extension del ejecutable a .jar.txt para engañar al sistema de seguridad, para correr el ejecutable se debe borrar el .txt que esta despues del .jar
