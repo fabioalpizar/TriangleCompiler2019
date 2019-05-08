@@ -1,0 +1,53 @@
+<?xml version="1.0" standalone="yes"?>
+<Program>
+<LetCommand>
+<SequentialDeclaration>
+<SequentialDeclaration>
+<VarDeclaration>
+<Identifier value="i"/>
+<SimpleTypeDenoter>
+<Identifier value="Integer"/>
+</SimpleTypeDenoter>
+</VarDeclaration>
+<VarDeclaration>
+<Identifier value="k"/>
+<SimpleTypeDenoter>
+<Identifier value="Integer"/>
+</SimpleTypeDenoter>
+</VarDeclaration>
+</SequentialDeclaration>
+<VarDeclaration>
+<Identifier value="t"/>
+<SimpleTypeDenoter>
+<Identifier value="Char"/>
+</SimpleTypeDenoter>
+</VarDeclaration>
+</SequentialDeclaration>
+<SequentialCommand>
+<CallCommand>
+<Identifier value="putint"/>
+<SingleActualParameterSequence>
+<ConstActualParameter>
+<VnameExpression>
+<SimpleVname>
+<Identifier value="i"/>
+</SimpleVname>
+</VnameExpression>
+</ConstActualParameter>
+</SingleActualParameterSequence>
+</CallCommand>
+<CallCommand>
+<Identifier value="put"/>
+<SingleActualParameterSequence>
+<ConstActualParameter>
+<VnameExpression>
+<SimpleVname>
+<Identifier value="t"/>
+</SimpleVname>
+</VnameExpression>
+</ConstActualParameter>
+</SingleActualParameterSequence>
+</CallCommand>
+</SequentialCommand>
+</LetCommand>
+</Program>

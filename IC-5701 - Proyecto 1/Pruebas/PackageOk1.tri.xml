@@ -1,0 +1,31 @@
+<?xml version="1.0" standalone="yes"?>
+<Program>
+<LetCommand>
+<VarDeclaration>
+<Identifier value="b"/>
+<SimpleTypeDenoter>
+<Identifier value="Integer"/>
+</SimpleTypeDenoter>
+</VarDeclaration>
+<CallCommand>
+<Identifier value="putint"/>
+<SingleActualParameterSequence>
+<ConstActualParameter>
+<BinaryExpression>
+<VnameExpression>
+<SimpleVname>
+<Identifier value="myP"/>
+</SimpleVname>
+</VnameExpression>
+<Operator value="$"/>
+<VnameExpression>
+<SimpleVname>
+<Identifier value="a"/>
+</SimpleVname>
+</VnameExpression>
+</BinaryExpression>
+</ConstActualParameter>
+</SingleActualParameterSequence>
+</CallCommand>
+</LetCommand>
+</Program>

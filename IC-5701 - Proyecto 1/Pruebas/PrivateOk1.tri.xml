@@ -1,0 +1,63 @@
+<?xml version="1.0" standalone="yes"?>
+<Program>
+<LetCommand>
+<SequentialDeclaration>
+<PrivateDeclaration>
+<SequentialDeclaration>
+<InitVarDeclaration>
+<IntegerExpression>
+<IntegerLiteral value="5"/>
+</IntegerExpression>
+<Identifier value="a"/>
+</InitVarDeclaration>
+<InitVarDeclaration>
+<IntegerExpression>
+<IntegerLiteral value="15"/>
+</IntegerExpression>
+<Identifier value="b"/>
+</InitVarDeclaration>
+</SequentialDeclaration>
+<InitVarDeclaration>
+<BinaryExpression>
+<BinaryExpression>
+<VnameExpression>
+<SimpleVname>
+<Identifier value="a"/>
+</SimpleVname>
+</VnameExpression>
+<Operator value="*"/>
+<VnameExpression>
+<SimpleVname>
+<Identifier value="b"/>
+</SimpleVname>
+</VnameExpression>
+</BinaryExpression>
+<Operator value="*"/>
+<IntegerExpression>
+<IntegerLiteral value="2"/>
+</IntegerExpression>
+</BinaryExpression>
+<Identifier value="c"/>
+</InitVarDeclaration>
+</PrivateDeclaration>
+<InitVarDeclaration>
+<IntegerExpression>
+<IntegerLiteral value="5"/>
+</IntegerExpression>
+<Identifier value="d"/>
+</InitVarDeclaration>
+</SequentialDeclaration>
+<CallCommand>
+<Identifier value="putint"/>
+<SingleActualParameterSequence>
+<ConstActualParameter>
+<VnameExpression>
+<SimpleVname>
+<Identifier value="c"/>
+</SimpleVname>
+</VnameExpression>
+</ConstActualParameter>
+</SingleActualParameterSequence>
+</CallCommand>
+</LetCommand>
+</Program>
